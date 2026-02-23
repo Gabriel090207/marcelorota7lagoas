@@ -54,147 +54,145 @@ export default function Noticias() {
 </div>
         <div className="newsPage__grid">
 
-          <article className="newsCard">
-            <div 
-              className="newsImage"
-              style={{ backgroundImage: `url(${news1})` }}
-            />
-            <div className="newsContent">
-              <span className="newsCategory">Mercado</span>
+  {/* CARD 1 */}
+  <article className="newsCard">
+    <div 
+      className="newsImage"
+      style={{ backgroundImage: `url(${news1})` }}
+    />
+    <div className="newsContent">
+      <span className="newsCategory">Mercado</span>
 
+      <div className="newsTags">
+        <span className="newsTag">Lançamento</span>
+        <span className="newsTag">Big Trail</span>
+        <span className="newsTag">Tecnologia</span>
+      </div>
 
-              <div className="newsTags">
-  <span className="newsTag">Lançamento</span>
-  <span className="newsTag">Big Trail</span>
+      <h3>Novo lançamento big trail chega ao Brasil</h3>
+      <p>Modelo promete mais autonomia e tecnologia para viagens longas.</p>
+      <button className="btn btn--outline newsReadMore">
+        Ler mais
+      </button>
+    </div>
+  </article>
+
+  {/* CARD 2 */}
+  <article className="newsCard">
+    <div 
+      className="newsImage"
+      style={{ backgroundImage: `url(${news2})` }}
+    />
+    <div className="newsContent">
+      <span className="newsCategory">Região</span>
+
+      <div className="newsTags">
+        <span className="newsTag">Encontro</span>
+        <span className="newsTag">Comunidade</span>
+        <span className="newsTag">Sete Lagoas</span>
+      </div>
+
+      <h3>Encontro de moto clubes reúne centenas</h3>
+      <p>Evento fortaleceu a cultura motociclística local.</p>
+      <button className="btn btn--outline newsReadMore">
+        Ler mais
+      </button>
+    </div>
+  </article>
+
+  {/* CARD 3 */}
+  <article className="newsCard">
+    <div 
+      className="newsImage"
+      style={{ backgroundImage: `url(${news3})` }}
+    />
+    <div className="newsContent">
+      <span className="newsCategory">Dicas</span>
+
+      <div className="newsTags">
+        <span className="newsTag">Segurança</span>
+        <span className="newsTag">Viagem</span>
+        <span className="newsTag">Checklist</span>
+      </div>
+
+      <h3>Como se preparar para uma viagem segura</h3>
+      <p>Checklist essencial para evitar imprevistos na estrada.</p>
+      <button className="btn btn--outline newsReadMore">
+        Ler mais
+      </button>
+    </div>
+  </article>
+
+  {/* CARD 4 */}
+  <article className="newsCard">
+    <div 
+      className="newsImage"
+      style={{ backgroundImage: `url(${news1})` }}
+    />
+    <div className="newsContent">
+      <span className="newsCategory">Mercado</span>
+
+      <div className="newsTags">
+        <span className="newsTag">Indústria</span>
+        <span className="newsTag">Lançamento</span>
+        <span className="newsTag">Adventure</span>
+      </div>
+
+      <h3>Nova geração de motos adventure é anunciada</h3>
+      <p>Modelos prometem mais desempenho e conforto em longas distâncias.</p>
+      <button className="btn btn--outline newsReadMore">
+        Ler mais
+      </button>
+    </div>
+  </article>
+
+  {/* CARD 5 */}
+  <article className="newsCard">
+    <div 
+      className="newsImage"
+      style={{ backgroundImage: `url(${news2})` }}
+    />
+    <div className="newsContent">
+      <span className="newsCategory">Região</span>
+
+      <div className="newsTags">
+        <span className="newsTag">Passeio</span>
+        <span className="newsTag">Motoclube</span>
+        <span className="newsTag">Serra</span>
+      </div>
+
+      <h3>Passeio regional reúne motociclistas da região</h3>
+      <p>Evento fortaleceu a união entre os grupos locais.</p>
+      <button className="btn btn--outline newsReadMore">
+        Ler mais
+      </button>
+    </div>
+  </article>
+
+  {/* CARD 6 */}
+  <article className="newsCard">
+    <div 
+      className="newsImage"
+      style={{ backgroundImage: `url(${news3})` }}
+    />
+    <div className="newsContent">
+      <span className="newsCategory">Dicas</span>
+
+      <div className="newsTags">
+        <span className="newsTag">Manutenção</span>
+        <span className="newsTag">Estrada</span>
+        <span className="newsTag">Prevenção</span>
+      </div>
+
+      <h3>Cuidados essenciais antes de pegar estrada</h3>
+      <p>Verificações básicas que evitam problemas durante a viagem.</p>
+      <button className="btn btn--outline newsReadMore">
+        Ler mais
+      </button>
+    </div>
+  </article>
+
 </div>
-              <h3>Novo lançamento big trail chega ao Brasil</h3>
-              <p>Modelo promete mais autonomia e tecnologia para viagens longas.</p>
-              <button className="btn btn--outline newsReadMore">
-  Ler mais
-</button>
-            </div>
-          </article>
-
-          <article className="newsCard">
-            <div 
-              className="newsImage"
-              style={{ backgroundImage: `url(${news2})` }}
-            />
-            <div className="newsContent">
-              <span className="newsCategory">Região</span>
-              <h3>Encontro de moto clubes reúne centenas</h3>
-              <p>Evento fortaleceu a cultura motociclística local.</p>
-              <button className="btn btn--outline newsReadMore">
-  Ler mais
-</button>
-            </div>
-          </article>
-
-          <article className="newsCard">
-            <div 
-              className="newsImage"
-              style={{ backgroundImage: `url(${news3})` }}
-            />
-            <div className="newsContent">
-              <span className="newsCategory">Dicas</span>
-              <h3>Como se preparar para uma viagem segura</h3>
-              <p>Checklist essencial para evitar imprevistos na estrada.</p>
-              <button className="btn btn--outline newsReadMore">
-  Ler mais
-</button>
-            </div>
-          </article>
-
-          <article className="newsCard">
-            <div 
-              className="newsImage"
-              style={{ backgroundImage: `url(${news1})` }}
-            />
-            <div className="newsContent">
-              <span className="newsCategory">Mercado</span>
-              <h3>Novo lançamento big trail chega ao Brasil</h3>
-              <p>Modelo promete mais autonomia e tecnologia para viagens longas.</p>
-              <button className="btn btn--outline newsReadMore">
-  Ler mais
-</button>
-            </div>
-          </article>
-
-          <article className="newsCard">
-            <div 
-              className="newsImage"
-              style={{ backgroundImage: `url(${news2})` }}
-            />
-            <div className="newsContent">
-              <span className="newsCategory">Região</span>
-              <h3>Encontro de moto clubes reúne centenas</h3>
-              <p>Evento fortaleceu a cultura motociclística local.</p>
-              <button className="btn btn--outline newsReadMore">
-  Ler mais
-</button>
-            </div>
-          </article>
-
-          <article className="newsCard">
-            <div 
-              className="newsImage"
-              style={{ backgroundImage: `url(${news3})` }}
-            />
-            <div className="newsContent">
-              <span className="newsCategory">Dicas</span>
-              <h3>Como se preparar para uma viagem segura</h3>
-              <p>Checklist essencial para evitar imprevistos na estrada.</p>
-              <button className="btn btn--outline newsReadMore">
-  Ler mais
-</button>
-            </div>
-          </article>
-          <article className="newsCard">
-            <div 
-              className="newsImage"
-              style={{ backgroundImage: `url(${news1})` }}
-            />
-            <div className="newsContent">
-              <span className="newsCategory">Mercado</span>
-              <h3>Novo lançamento big trail chega ao Brasil</h3>
-              <p>Modelo promete mais autonomia e tecnologia para viagens longas.</p>
-              <button className="btn btn--outline newsReadMore">
-  Ler mais
-</button>
-            </div>
-          </article>
-
-          <article className="newsCard">
-            <div 
-              className="newsImage"
-              style={{ backgroundImage: `url(${news2})` }}
-            />
-            <div className="newsContent">
-              <span className="newsCategory">Região</span>
-              <h3>Encontro de moto clubes reúne centenas</h3>
-              <p>Evento fortaleceu a cultura motociclística local.</p>
-              <button className="btn btn--outline newsReadMore">
-  Ler mais
-</button>
-            </div>
-          </article>
-
-          <article className="newsCard">
-            <div 
-              className="newsImage"
-              style={{ backgroundImage: `url(${news3})` }}
-            />
-            <div className="newsContent">
-              <span className="newsCategory">Dicas</span>
-              <h3>Como se preparar para uma viagem segura</h3>
-              <p>Checklist essencial para evitar imprevistos na estrada.</p>
-              <button className="btn btn--outline newsReadMore">
-  Ler mais
-</button>
-            </div>
-          </article>
-
-        </div>
       </section>
 
     </main>
