@@ -1,0 +1,182 @@
+.dicas {
+  padding-top: 160px;
+  padding-bottom: 80px;
+}
+
+/* HEADER */
+
+.dicas__header {
+  padding: 0 24px 60px 24px;
+}
+
+.dicas__headerInner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dicas__label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-primary);
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.dicas__header h1 {
+  font-size: 2.4rem;
+  margin-bottom: 20px;
+}
+
+.dicas__header p {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  max-width: 700px;
+}
+
+/* CATEGORIAS */
+
+.dicas__categories {
+  padding: 0 24px 50px 24px;
+}
+
+.dicas__categoriesInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.dicasCategory {
+  padding: 10px 18px;
+  border-radius: 30px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: var(--transition-default);
+}
+
+.dicasCategory:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.dicasCategory.active {
+  background: var(--color-primary);
+  color: #000;
+  border-color: var(--color-primary);
+}
+
+
+/* ================= FEATURED ================= */
+
+.dicas__featured {
+  padding: 0 24px 80px 24px;
+}
+
+.dicas__featuredInner {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.featuredDica__image {
+  height: 360px;
+  border-radius: 20px;
+  background: linear-gradient(135deg,#222,#111);
+}
+
+.featuredDica__content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.featuredDica__content h2 {
+  font-size: 2rem;
+}
+
+.featuredDica__content p {
+  color: var(--color-text-secondary);
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 900px) {
+  .dicas__featuredInner {
+    grid-template-columns: 1fr;
+  }
+
+  .featuredDica__image {
+    height: 260px;
+  }
+}
+/* GRID */
+
+.dicas__gridSection {
+  padding: 0 24px;
+}
+
+.dicas__gridInner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dicasGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.dicaCard {
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: var(--transition-default);
+}
+
+.dicaCard:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-4px);
+}
+
+.dicaCard__image {
+  height: 180px;
+  background: linear-gradient(135deg, #222, #111);
+}
+
+.dicaCard__content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dicaCategoryTag {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-primary);
+}
+
+.dicaCard__content p {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.dicaReadMore {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0;
+}

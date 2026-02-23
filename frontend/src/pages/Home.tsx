@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { FiCalendar, FiFileText, FiTool, FiShoppingBag } from 'react-icons/fi'
+import { FiCalendar, FiFileText, FiTool, FiShoppingBag, FiUsers } from 'react-icons/fi'
 import './Home.css'
 import news1 from '../assets/images/news/news-1.jpg'
 import news2 from '../assets/images/news/news-2.jpg'
@@ -77,6 +77,68 @@ export default function Home() {
       </Link>
 
     </div>
+  </div>
+</section>
+
+{/* MOTO CLUBES & GRUPOS */}
+<section className="home__clubs">
+  <div className="home__clubsInner">
+
+    <div className="home__clubsHeader">
+      <div>
+        <span className="clubsLabel">
+          <FiUsers size={14} />
+          Comunidade
+        </span>
+        <h2>Moto Clubes & Grupos da Região</h2>
+        <p>
+          Conheça os grupos que movimentam o motociclismo
+          em Sete Lagoas e entorno.
+        </p>
+      </div>
+
+      <Link to="/grupos" className="btn btn--outline">
+        Ver todos os grupos
+      </Link>
+    </div>
+
+    <div className="home__clubsGrid">
+
+      <div className="clubCard">
+        <div className="clubCard__image" />
+        <div className="clubCard__content">
+          <h3>Os Viajantes</h3>
+          <span>Fundado em 2012 • Turismo e estrada</span>
+          <Link to="/grupos/os-viajantes">
+            Ver perfil
+          </Link>
+        </div>
+      </div>
+
+      <div className="clubCard">
+        <div className="clubCard__image" />
+        <div className="clubCard__content">
+          <h3>Easy Rider SL</h3>
+          <span>Custom • Encontros regionais</span>
+          <Link to="/grupos/easy-rider">
+            Ver perfil
+          </Link>
+        </div>
+      </div>
+
+      <div className="clubCard">
+        <div className="clubCard__image" />
+        <div className="clubCard__content">
+          <h3>Bravões Moto Clube</h3>
+          <span>Big trail • Aventuras off-road</span>
+          <Link to="/grupos/bravoes">
+            Ver perfil
+          </Link>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 </section>
 

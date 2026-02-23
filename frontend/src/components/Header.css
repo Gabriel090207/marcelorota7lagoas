@@ -249,9 +249,16 @@
 
 /* ===== RESPONSIVO ===== */
 @media (max-width: 900px) {
+
+ 
+
   .header__nav {
     display: none;
   }
+
+  .header__cartBtn {
+  display: none;
+}
 
   .header__menuBtn {
     display: flex;
@@ -267,5 +274,69 @@
 
   .header__left img {
     height: 52px;
+  }
+}
+
+/* ================= CARRINHO ================= */
+
+.header__cartBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 18px;
+  border-radius: 14px;
+
+  background: #1a1a1a;
+  color: #ffffff;
+
+  border: 1px solid #ffffff;
+
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.header__cartBtn:hover {
+  background: #2a2a2a;
+  transform: translateY(-2px);
+}
+
+/* MOBILE */
+
+.header__drawerCart {
+  width: 100%;
+  padding: 14px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  margin-top: 15px;
+
+  background: #1a1a1a;
+  color: #ffffff;
+
+  border: 1px solid #ffffff;
+  border-radius: 12px;
+
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+/* ================= RESPONSIVO ================= */
+
+@media (max-width: 768px) {
+  .header__cartBtn {
+    display: none;
+  }
+}
+
+/* Esconde Carrinho em telas menores que 1024px */
+@media (max-width: 1024px) {
+  .header__cartBtn {
+    display: none;
   }
 }

@@ -1,12 +1,18 @@
 import { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom'
-import { FiUser, FiX, FiMenu } from 'react-icons/fi'
+import { NavLink, useLocation } from 'react-router-dom'
+import { FiUser, FiX, FiMenu, FiShoppingCart } from 'react-icons/fi'
 import logo from '../assets/logo.png'
 import './Header.css'
 
 import { AuthModal } from './AuthModal/AuthModal'
 
 export function Header() {
+
+
+  const location = useLocation()
+  const isClassificados = location.pathname === '/classificados'
+
+
   const [isAuthOpen, setIsAuthOpen] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
@@ -68,6 +74,14 @@ export function Header() {
 
           {/* Ações direita */}
           <div className="header__actions">
+
+
+            {isClassificados && (
+  <button className="header__cartBtn">
+    <FiShoppingCart size={18} />
+    Carrinho
+  </button>
+)}
             {/* Botão Entrar (desktop) */}
             <button
               className="btn btn--primary header__loginBtn"
@@ -118,6 +132,13 @@ export function Header() {
 
           <div className="header__drawerDivider" />
 
+
+{isClassificados && (
+  <button className="header__drawerCart">
+    <FiShoppingCart size={18} />
+    Carrinho
+  </button>
+)}
           {/* Botão Entrar (mobile) */}
           <button
             className="btn btn--primary header__drawerLogin"
