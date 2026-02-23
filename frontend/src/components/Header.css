@@ -1,0 +1,268 @@
+/* ===== HEADER BASE ===== */
+.header {
+  background: linear-gradient(
+    180deg,
+    #0f0f0f 0%,
+    #141414 100%
+  );
+  border-bottom: 1px solid #1f1f1f;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* ===== CONTAINER ===== */
+.header__container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 14px 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ===== LOGO ===== */
+.header__left img {
+  height: 60px;
+  cursor: pointer;
+}
+
+/* ===== MENU ===== */
+.header__nav {
+  display: flex;
+  gap: 30px;
+  justify-content: center; /* centraliza horizontalmente */
+  flex: 1; /* ocupa espaço entre logo e ações */
+}
+
+.header__nav {
+  /* ...o que já tem... */
+  transform: translateX(40px);
+}
+
+.header__nav a {
+  text-decoration: none;
+  color: var(--color-primary);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  position: relative;
+  transition: 0.3s;
+}
+
+.header__nav a:hover {
+  opacity: 0.8;
+}
+
+/* Linha animada */
+.header__nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0%;
+  height: 2px;
+  background: var(--color-primary);
+  transition: 0.3s;
+}
+
+.header__nav a:hover::after {
+  width: 100%;
+}
+
+.header__nav a.active::after {
+  width: 100%;
+}
+
+/* ===== AÇÕES DIREITA ===== */
+.header__actions {
+  display: flex;
+  gap: 16px;
+}
+
+/* ===== BOTÕES ===== */
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: 0.3s;
+  border: none;
+  cursor: pointer;
+}
+
+.btn--outline {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  border: 1px solid #2a2a2a;
+}
+
+.btn--outline:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.btn--primary {
+  background: linear-gradient(
+    90deg,
+    #ff7a00,
+    #ff9100
+  );
+  color: #000;
+}
+
+.btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 122, 0, 0.4);
+}
+
+/* ===== BOTÃO MENU (MOBILE) ===== */
+.header__menuBtn {
+  display: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: #fff;
+  cursor: pointer;
+  transition: 0.25s ease;
+  align-items: center;
+  justify-content: center;
+}
+
+.header__menuBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ===== OVERLAY ===== */
+.header__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+  z-index: 1200;
+}
+
+.header__overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ===== DRAWER (SIDEBAR) ===== */
+.header__drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 320px;
+  max-width: 85vw;
+  height: 100vh;
+
+  background: #0f0f0f;
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  z-index: 1300;
+
+  transform: translateX(100%);
+  transition: transform 0.28s ease;
+
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+}
+
+.header__drawer.is-open {
+  transform: translateX(0);
+}
+
+.header__drawerTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 14px;
+}
+
+.header__drawerTitle {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.header__closeBtn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  color: #fff;
+  cursor: pointer;
+  transition: 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header__closeBtn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.header__drawerNav {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.header__drawerNav a {
+  text-decoration: none;
+  color: #fff;
+  padding: 12px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: 0.2s ease;
+}
+
+.header__drawerNav a:hover {
+  border-color: rgba(255, 122, 0, 0.5);
+}
+
+.header__drawerNav a.active {
+  border-color: rgba(255, 122, 0, 0.7);
+  color: var(--color-primary);
+}
+
+.header__drawerDivider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 18px 0;
+}
+
+.header__drawerLogin {
+  width: 100%;
+  justify-content: center;
+}
+
+/* ===== RESPONSIVO ===== */
+@media (max-width: 900px) {
+  .header__nav {
+    display: none;
+  }
+
+  .header__menuBtn {
+    display: flex;
+  }
+
+  .header__loginBtn {
+    display: none;
+  }
+
+  .header__container {
+    padding: 12px 18px;
+  }
+
+  .header__left img {
+    height: 52px;
+  }
+}
