@@ -496,3 +496,146 @@
   text-align: center;
 }
 
+
+
+/* ================= TABLET GRANDE ================= */
+@media (max-width: 1024px) {
+
+  .classifieds__hero h1 {
+    font-size: 2.8rem;
+  }
+
+  .classifieds__hero p {
+    font-size: 1rem;
+  }
+
+}
+
+
+/* ================= TABLET ================= */
+@media (max-width: 900px) {
+
+  .classifieds__hero {
+    height: 60vh;
+    min-height: 420px;
+  }
+
+  .classifieds__heroContent {
+    padding: 0 24px;
+  }
+
+  .classifieds__hero h1 {
+    font-size: 2.3rem;
+  }
+
+  .heroButton {
+    padding: 14px 24px;
+    font-size: 0.95rem;
+  }
+
+  .lodgingGrid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+}
+
+
+/* ================= MOBILE ================= */
+@media (max-width: 600px) {
+
+  .classifieds__hero {
+    height: auto;
+    min-height: 380px;
+    padding: 80px 0;
+  }
+
+  .classifieds__heroContent {
+    padding: 0 16px;
+  }
+
+  .classifieds__hero h1 {
+    font-size: 1.8rem;
+    margin-top: 20px;
+  }
+
+  .classifieds__hero p {
+    font-size: 0.9rem;
+    max-width: 100%;
+  }
+
+  .heroButton {
+    width: 100%;
+    min-width: unset;
+    padding: 14px;
+  }
+
+  .classifieds__filters {
+    padding: 0 16px;
+  }
+ .classifieds__filtersInner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    overflow: visible;
+  }
+
+  .filterButton {
+    flex: 1 1 calc(50% - 10px);
+    text-align: center;
+  }
+
+
+  .classifieds__filtersInner::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filterButton {
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    padding: 8px 14px;
+  }
+
+  .classifieds__search {
+    padding: 0 16px;
+  }
+
+  .classifieds__featured,
+  .classifieds__motorcycles,
+  .classifieds__gear,
+  .classifieds__services,
+  .classifieds__lodging {
+    padding: 0 16px;
+  }
+
+  .featuredCard__image,
+  .gearCard__image,
+  .serviceCard__image {
+    height: 160px;
+  }
+
+  .motorcycleCard__image {
+    height: 170px;
+  }
+
+  .lodgingCard__image {
+    height: 180px;
+  }
+
+  .motorcycleCard__content,
+  .gearCard__content,
+  .serviceCard__content,
+  .featuredCard__content,
+  .lodgingCard__content {
+    padding: 16px;
+  }
+
+  .motorcyclePrice,
+  .gearPrice {
+    font-size: 1rem;
+  }
+
+  .classifieds__cta {
+    padding: 70px 16px;
+  }
+
+}
