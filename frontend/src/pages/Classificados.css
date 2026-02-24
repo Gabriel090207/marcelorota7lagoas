@@ -293,7 +293,7 @@
 }
 
 .motorcycleCard__image {
-  height: 200px;
+  height: 340px;
   background-size: cover;
   background-position: center;
 }
@@ -358,7 +358,7 @@
 }
 
 .gearCard__image {
-  height: 180px;
+    height: 340px;
   background-size: cover;
   background-position: center;
 }
@@ -408,7 +408,7 @@
 }
 
 .serviceCard__image {
-  height: 180px;
+   height: 340px;
   background-size: cover;
   background-position: center;
 }
@@ -461,7 +461,7 @@
 }
 
 .lodgingCard__image {
-  height: 220px;
+   height: 340px;
   background-size: cover;
   background-position: center;
 }
@@ -610,15 +610,15 @@
   .featuredCard__image,
   .gearCard__image,
   .serviceCard__image {
-    height: 160px;
+    height: 360px;
   }
 
   .motorcycleCard__image {
-    height: 170px;
+    height: 400px;
   }
 
   .lodgingCard__image {
-    height: 180px;
+    height: 380px;
   }
 
   .motorcycleCard__content,
