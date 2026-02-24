@@ -7,7 +7,8 @@ import Noticias from '../pages/Noticias'
 import Classificados from '../pages/Classificados'
 import Dicas from '../pages/Dicas'
 import Galeria from '../pages/Galeria'
-
+import QuemSomos from '../pages/QuemSomos'
+import Grupos from '../pages/Grupos'
 
 
 export function AppRoutes() {
@@ -19,6 +20,10 @@ export function AppRoutes() {
       <Route path="/classificados" element={<Classificados />} />
       <Route path="/dicas" element={<Dicas />} />
       <Route path="/galeria" element={<Galeria />} />
+      <Route path="/quem-somos" element={<QuemSomos />} />
+      <Route path="/grupos" element={<Grupos />} />
+
+
 
     </Routes>
   )

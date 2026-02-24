@@ -69,6 +69,50 @@
   border-color: var(--color-primary);
 }
 
+/* ================= SEARCH ================= */
+
+.dicas__search {
+  padding: 0 24px 60px 24px;
+  
+}
+
+.dicas__searchInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  margin-top: -20px;
+}
+
+.searchInputWrapper {
+  position: relative;
+  width: 100%;
+}
+
+.searchInputWrapper input {
+  width: 100%;
+  padding: 14px 16px 14px 45px;
+
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+
+  color: var(--color-text);
+  font-size: 0.95rem;
+
+  transition: var(--transition-default);
+}
+
+.searchInputWrapper input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.searchIcon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-text-secondary);
+}
 
 /* ================= FEATURED ================= */
 
@@ -243,12 +287,17 @@
   .dicas__categories {
     padding: 0 16px 40px 16px;
   }
+  
+.dicas__categoriesInner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 
-  .dicas__categoriesInner {
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    padding-bottom: 10px;
-  }
+.dicasCategory {
+  flex: 1 1 calc(50% - 10px);
+  text-align: center;
+}
 
   .dicas__categoriesInner::-webkit-scrollbar {
     display: none;

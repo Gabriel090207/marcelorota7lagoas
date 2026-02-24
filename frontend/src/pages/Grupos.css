@@ -1,0 +1,279 @@
+.grupos {
+  padding-top: 160px;
+
+}
+
+/* HEADER */
+
+.grupos__header {
+  padding: 0 24px 60px 24px;
+}
+
+.grupos__headerInner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.grupos__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-primary);
+  margin-bottom: 16px;
+}
+
+.grupos__header h1 {
+  font-size: 2.4rem;
+  margin-bottom: 20px;
+}
+
+.grupos__header p {
+  color: var(--color-text-secondary);
+  max-width: 700px;
+}
+
+/* FILTROS */
+
+.grupos__filters {
+  padding: 0 24px 40px 24px;
+}
+
+.grupos__filtersInner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.grupoFilter {
+  padding: 10px 18px;
+  border-radius: 30px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: var(--transition-default);
+}
+
+.grupoFilter:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.grupoFilter.active {
+  background: var(--color-primary);
+  color: #000;
+  border-color: var(--color-primary);
+}
+
+/* BUSCA */
+
+.grupos__search {
+  padding: 0 24px 60px 24px;
+}
+
+.grupos__searchInner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* GRID */
+
+.grupos__gridSection {
+  padding: 0 24px;
+}
+
+.grupos__gridInner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.gruposGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.grupoCard {
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: var(--transition-default);
+}
+
+.grupoCard:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-4px);
+}
+
+.grupoCard__image {
+  height: 180px;
+  background: linear-gradient(135deg,#222,#111);
+}
+
+.grupoCard__content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.grupoCard__content span {
+  color: var(--color-primary);
+}
+
+.grupoCard__content p {
+  color: var(--color-text-secondary);
+}
+
+.grupos__cta {
+  padding: 120px 24px;
+  margin-top: 120px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255,122,0,0.08),
+    rgba(255,145,0,0.04)
+  );
+
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+
+.grupos__ctaInner {
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.grupos__ctaInner .cta__label {
+  display: inline-block;
+  margin-bottom: 18px;
+}
+
+.grupos__ctaInner h2 {
+  font-size: 2.3rem;
+  margin-bottom: 22px;
+  line-height: 1.2;
+}
+
+.grupos__ctaInner p {
+  color: var(--color-text-secondary);
+  margin-bottom: 35px;
+  font-size: 1rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* ================= TABLET GRANDE ================= */
+@media (max-width: 1024px) {
+
+  .grupos__header h1 {
+    font-size: 2.1rem;
+  }
+
+}
+
+
+/* ================= TABLET ================= */
+@media (max-width: 900px) {
+
+  .grupos {
+    padding-top: 120px;
+  }
+
+  .grupos__header {
+    padding: 0 20px 50px 20px;
+  }
+
+  .grupos__featuredInner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+}
+
+
+/* ================= MOBILE ================= */
+@media (max-width: 600px) {
+
+  .grupos {
+    padding-top: 110px;
+    padding-bottom: 60px;
+  }
+
+  .grupos__header {
+    padding: 0 16px 40px 16px;
+  }
+
+  .grupos__header h1 {
+    font-size: 1.6rem;
+    line-height: 1.3;
+  }
+
+  .grupos__header p {
+    font-size: 0.9rem;
+  }
+
+  /* FILTROS 2x2 IGUAL DICAS */
+  .grupos__filters {
+    padding: 0 16px 40px 16px;
+  }
+
+  .grupos__filtersInner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .grupoFilter {
+    flex: 1 1 calc(50% - 10px);
+    text-align: center;
+    font-size: 0.85rem;
+    padding: 8px 14px;
+  }
+
+  /* GRID IGUAL DICAS */
+  .grupos__gridSection {
+    padding: 0 16px;
+  }
+
+  .gruposGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .grupoCard__image {
+    height: 160px;
+  }
+
+  .grupoCard__content {
+    padding: 16px;
+  }
+
+  .grupoCard__content span {
+    font-size: 0.85rem;
+  }
+
+  /* CTA IGUAL PADRÃO */
+  .grupos__cta {
+    padding: 70px 16px;
+  }
+
+  .grupos__ctaInner h2 {
+    font-size: 1.4rem;
+    line-height: 1.3;
+    max-width: 320px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+}

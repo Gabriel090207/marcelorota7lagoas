@@ -67,9 +67,9 @@ export function Header() {
             <NavLink to="/classificados" className={({ isActive }) => (isActive ? 'active' : '')}>
               Classificados
             </NavLink>
-            <NavLink to="/galeria" className={({ isActive }) => (isActive ? 'active' : '')}>
-              Galeria
-            </NavLink>
+            <NavLink to="/quem-somos" className={({ isActive }) => (isActive ? 'active' : '')}>
+  Quem Somos
+</NavLink>
           </nav>
 
           {/* Ações direita */}
@@ -127,7 +127,7 @@ export function Header() {
             <NavLink to="/eventos" onClick={closeMenu}>Agenda</NavLink>
             <NavLink to="/dicas" onClick={closeMenu}>Dicas</NavLink>
             <NavLink to="/classificados" onClick={closeMenu}>Classificados</NavLink>
-            <NavLink to="/galeria" onClick={closeMenu}>Galeria</NavLink>
+           <NavLink to="/quem-somos" onClick={closeMenu}>Quem Somos</NavLink>
           </nav>
 
           <div className="header__drawerDivider" />

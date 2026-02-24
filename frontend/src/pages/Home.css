@@ -107,7 +107,7 @@
 /* ===== ATALHOS ===== */
 
 .home__shortcuts {
-  padding: 80px 24px;
+    padding: 120px 24px 20px 24px;
   background: linear-gradient(180deg, #111 0%, #0f0f0f 100%);
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -257,9 +257,9 @@
 /* ===== PRÓXIMOS EVENTOS ===== */
 
 .home__events {
-  padding: 80px 24px;
+    padding: 30px 24px 120px 24px;
   background: var(--color-background);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  
 }
 
 .home__eventsInner {
@@ -627,7 +627,10 @@
 }
 
 .marketLabel {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 1.5px;
@@ -764,16 +767,25 @@
 }
 
 
-/* ===== NEWSLETTER ===== */
+/* ================= NEWSLETTER (PADRÃO CTA) ================= */
 
 .home__newsletter {
-  padding: 100px 24px;
-  background: linear-gradient(
-    135deg,
-    #0f0f0f 0%,
-    #1a1a1a 100%
-  );
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 120px 24px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,122,0,0.10),
+      rgba(255,145,0,0.05)
+    ),
+    radial-gradient(
+      circle at top right,
+      rgba(255,122,0,0.08),
+      transparent 60%
+    );
+
+  border-top: 1px solid rgba(255,255,255,0.06);
+  position: relative;
+  overflow: hidden;
 }
 
 .home__newsletterInner {
@@ -792,19 +804,23 @@
 }
 
 .newsletterContent h2 {
-  font-size: 2.2rem;
-  margin-bottom: 14px;
+  font-size: 2.4rem;
+  margin-bottom: 18px;
+  line-height: 1.2;
 }
 
 .newsletterContent p {
   color: var(--color-text-secondary);
-  margin-bottom: 30px;
+  margin-bottom: 32px;
   font-size: 1rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .newsletterForm {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   justify-content: center;
   flex-wrap: wrap;
 }
@@ -813,10 +829,11 @@
   padding: 14px 18px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(0, 0, 0, 0.3);
   color: #fff;
   min-width: 260px;
   outline: none;
+  transition: 0.2s ease;
 }
 
 .newsletterForm input:focus {
@@ -838,39 +855,19 @@
   opacity: 0.85;
 }
 
-/* ===== NEWSLETTER RESPONSIVO ===== */
 
-@media (max-width: 1200px) {
-  .home__newsletter {
-    padding: 80px 24px;
-  }
+/* ================= RESPONSIVO ================= */
 
+@media (max-width: 900px) {
   .newsletterContent h2 {
     font-size: 2rem;
   }
 }
 
-@media (max-width: 900px) {
-  .home__newsletter {
-    padding: 70px 20px;
-  }
-
-  .newsletterContent h2 {
-    font-size: 1.8rem;
-  }
-
-  .newsletterContent p {
-    font-size: 0.95rem;
-  }
-
-  .newsletterForm {
-    gap: 14px;
-  }
-}
-
 @media (max-width: 600px) {
+
   .home__newsletter {
-    padding: 60px 18px;
+    padding: 80px 16px;
   }
 
   .newsletterContent h2 {
@@ -886,24 +883,20 @@
     align-items: stretch;
   }
 
-  .newsletterForm input {
-    min-width: unset;
-    width: 100%;
-  }
-
+  .newsletterForm input,
   .newsletterForm button {
     width: 100%;
   }
-}
 
+}
 
 
 
 /* ================= CLUBS ================= */
 
 .home__clubs {
-  padding: 100px 24px;
-  border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 30px 24px 20px 24px;
+ 
 }
 
 .home__clubsInner {
@@ -994,5 +987,87 @@
   .home__clubsHeader {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+
+/* ================= GALERIA HOME ================= */
+
+.home__gallery {
+  padding: 100px 24px;
+  background: var(--color-background-secondary);
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.home__galleryInner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.home__galleryHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.galleryLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--color-primary);
+  margin-bottom: 10px;
+}
+
+.home__galleryHeader h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.home__galleryHeader p {
+  color: var(--color-text-secondary);
+  max-width: 500px;
+}
+
+.home__galleryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.galleryItem {
+  height: 200px;
+  border-radius: 14px;
+  background: linear-gradient(135deg,#222,#111);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: var(--transition-default);
+}
+
+.galleryItem:hover {
+  border-color: var(--color-primary);
+  transform: scale(1.03);
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 900px) {
+  .home__galleryHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 600px) {
+  .home__gallery {
+    padding: 70px 16px;
+  }
+
+  .galleryItem {
+    height: 160px;
   }
 }

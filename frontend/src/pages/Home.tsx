@@ -1,9 +1,19 @@
 import { Link } from 'react-router-dom'
-import { FiCalendar, FiFileText, FiTool, FiShoppingBag, FiUsers } from 'react-icons/fi'
+import { 
+  FiCalendar, 
+  FiFileText, 
+  FiTool, 
+  FiShoppingBag, 
+  FiUsers,
+  FiImage
+} from 'react-icons/fi'
 import './Home.css'
 import news1 from '../assets/images/news/news-1.jpg'
 import news2 from '../assets/images/news/news-2.jpg'
 import news3 from '../assets/images/news/news-3.jpg'
+
+import { SectionDivider } from '../components/SectionDivider/SectionDivider'
+
 
 export default function Home() {
   return (
@@ -32,6 +42,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+
 
 
       {/* ATALHOS RÁPIDOS */}
@@ -79,6 +91,8 @@ export default function Home() {
     </div>
   </div>
 </section>
+
+        <SectionDivider />
 
 {/* MOTO CLUBES & GRUPOS */}
 <section className="home__clubs">
@@ -141,6 +155,8 @@ export default function Home() {
 
   </div>
 </section>
+
+        <SectionDivider />
 
 
 {/* PRÓXIMOS EVENTOS */}
@@ -274,7 +290,10 @@ export default function Home() {
   <div className="home__marketInner">
 
     <div className="home__marketLeft">
-      <span className="marketLabel">Mercado Regional</span>
+      <span className="marketLabel">
+  <FiShoppingBag size={14} />
+  Mercado Regional
+</span>
       <h2>Empresas que movem a Rota 7</h2>
       <p>
         Oficinas, lojas e serviços que fortalecem o motociclismo em
@@ -338,6 +357,43 @@ export default function Home() {
           WhatsApp
         </a>
       </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+{/* GALERIA */}
+<section className="home__gallery">
+  <div className="home__galleryInner">
+
+    <div className="home__galleryHeader">
+      <div>
+        <span className="galleryLabel">
+  <FiImage size={14} />
+  Momentos da Comunidade
+</span>
+        <h2>Galeria Rota 7 Lagoas</h2>
+        <p>
+          Registros de encontros, passeios, trilhas e momentos
+          que fortalecem o motociclismo na região.
+        </p>
+      </div>
+
+      <Link to="/galeria" className="btn btn--outline">
+        Ver galeria completa
+      </Link>
+    </div>
+
+    <div className="home__galleryGrid">
+
+      <div className="galleryItem" />
+      <div className="galleryItem" />
+      <div className="galleryItem" />
+      <div className="galleryItem" />
+      <div className="galleryItem" />
+  
 
     </div>
 

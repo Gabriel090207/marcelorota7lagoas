@@ -1,5 +1,7 @@
 import './Dicas.css'
 
+import { FiSearch } from 'react-icons/fi'
+
 export default function Dicas() {
   return (
     <main className="dicas">
@@ -65,6 +67,19 @@ export default function Dicas() {
           <button className="dicasCategory">Segurança</button>
         </div>
       </section>
+
+      {/* BARRA DE BUSCA */}
+<section className="dicas__search">
+  <div className="dicas__searchInner">
+    <div className="searchInputWrapper">
+      <FiSearch size={18} className="searchIcon" />
+      <input
+        type="text"
+        placeholder="Buscar dicas, manutenção, segurança..."
+      />
+    </div>
+  </div>
+</section>
 
       {/* GRID DE ARTIGOS */}
       <section className="dicas__gridSection">

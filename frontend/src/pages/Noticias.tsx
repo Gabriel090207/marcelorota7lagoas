@@ -3,6 +3,9 @@ import news1 from '../assets/images/news/news-1.jpg'
 import news2 from '../assets/images/news/news-2.jpg'
 import news3 from '../assets/images/news/news-3.jpg'
 
+
+import { FiSearch } from 'react-icons/fi'
+
 export default function Noticias() {
   return (
     <main className="newsPage">
@@ -44,6 +47,20 @@ export default function Noticias() {
           <button className="newsCategoryFilter">Moto Clubes</button>
         </div>
       </section>
+
+
+      {/* BARRA DE PESQUISA */}
+<section className="newsPage__search">
+  <div className="newsPage__searchInner">
+    <div className="searchInputWrapper">
+      <FiSearch size={18} className="searchIcon" />
+      <input
+        type="text"
+        placeholder="Buscar notícias, mercado, eventos..."
+      />
+    </div>
+  </div>
+</section>
 
       {/* LISTAGEM */}
       <section className="newsPage__list">
