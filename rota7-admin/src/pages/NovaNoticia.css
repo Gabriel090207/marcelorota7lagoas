@@ -1,0 +1,237 @@
+.novaNoticia {
+
+  padding: 40px;
+
+  max-width: 1200px; /* largura maior */
+
+  margin: 0 auto;
+}
+
+/* HEADER */
+
+.novaNoticia__header {
+  margin-bottom: 30px;
+}
+
+.novaNoticia__header h1 {
+  font-size: 2rem;
+}
+
+/* FORM */
+
+.form {
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 24px;
+}
+
+/* CAMPOS */
+
+.field {
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 6px;
+
+  font-size: 0.85rem;
+
+  color: var(--color-text-secondary);
+}
+
+/* INPUT */
+
+.input {
+
+  width: 100%;
+
+  padding: 14px 16px;
+
+  border-radius: 10px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(255,255,255,0.03);
+
+  color: #fff;
+
+  font-size: 0.95rem;
+
+  outline: none;
+
+  transition: 0.2s;
+}
+
+.input:focus {
+
+  border-color: rgba(255,122,0,0.6);
+}
+
+/* GRID */
+
+.formRow {
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 20px;
+}
+
+/* SELECT */
+
+.selectInput {
+
+  width: 100%;
+
+  padding: 14px 42px 14px 16px;
+
+  border-radius: 10px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background-color: rgba(255,255,255,0.03);
+
+  color: #fff;
+
+  font-size: 0.95rem;
+
+  outline: none;
+
+  cursor: pointer;
+
+  appearance: none;
+
+  transition: 0.2s;
+
+  /* SETA PERSONALIZADA */
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff7a00' viewBox='0 0 20 20'%3E%3Cpath d='M5 7l5 5 5-5z'/%3E%3C/svg%3E");
+
+  background-repeat: no-repeat;
+
+  background-position: right 14px center;
+
+  background-size: 16px;
+}
+
+.selectInput:focus {
+
+  border-color: rgba(255,122,0,0.6);
+
+  box-shadow: 0 0 0 1px rgba(255,122,0,0.3);
+}
+
+.selectInput option {
+
+  background: #111;
+
+  color: #fff;
+}
+
+.selectInput:focus {
+
+  border-color: rgba(255,122,0,0.6);
+}
+
+/* UPLOAD */
+
+.uploadBox {
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  height: 48px;
+
+  border-radius: 10px;
+
+  border: 1px dashed rgba(255,255,255,0.15);
+
+  background: rgba(255,255,255,0.02);
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.uploadBox:hover {
+
+  border-color: rgba(255,122,0,0.6);
+
+  background: rgba(255,122,0,0.08);
+}
+
+.uploadBox span {
+
+  font-size: 0.9rem;
+
+  color: var(--color-text-secondary);
+}
+
+.uploadBox input {
+
+  display: none;
+}
+
+/* EDITOR */
+
+.editor {
+
+  border-radius: 14px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(255,255,255,0.02);
+
+  padding: 20px;
+
+  min-height: 300px;
+}
+
+/* REMOVE BORDA BRANCA DO TIPTAP */
+
+.ProseMirror {
+
+  outline: none;
+}
+
+.ProseMirror p {
+
+  margin-bottom: 16px;
+
+  line-height: 1.7;
+
+  text-indent: 24px;
+}
+
+/* BOTÃO */
+
+.publishBtn {
+
+  margin-top: 10px;
+
+  padding: 14px;
+
+  border-radius: 10px;
+
+  border: none;
+
+  background: var(--color-primary);
+
+  color: #000;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.publishBtn:hover {
+
+  opacity: 0.9;
+}

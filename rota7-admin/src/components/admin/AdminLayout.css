@@ -1,0 +1,25 @@
+.adminWrapper {
+  min-height: 100vh;
+}
+
+/* área abaixo do header */
+
+.adminLayout {
+  display: flex;
+}
+
+/* conteúdo principal */
+
+.adminContent {
+
+  margin-left: 120px; /* largura da sidebar */
+  margin-top: 70px;   /* altura do header */
+
+  padding: 40px;
+
+  width: calc(100% - 180px);
+
+  background: var(--color-background);
+
+  min-height: calc(100vh - 70px);
+}

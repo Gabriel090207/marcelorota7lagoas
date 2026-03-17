@@ -1,0 +1,92 @@
+.adminSidebar {
+
+  position: fixed;
+
+  top: 90px;
+  left: 0;
+
+  width: 110px;
+  height: calc(100vh - 70px);
+
+  background: #141414; /* mais escuro que header */
+
+  border-right: 1px solid rgba(255,255,255,0.06);
+
+  display: flex;
+  justify-content: center;
+
+  padding-top: 30px;
+}
+
+/* NAV */
+
+.adminSidebar__nav {
+
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ITEM */
+
+.sidebarItem {
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  gap: 6px;
+
+  text-decoration: none;
+
+  color: var(--color-text-secondary);
+
+  font-size: 0.75rem;
+
+  transition: 0.25s ease;
+}
+
+/* ICON */
+
+.sidebarIcon {
+
+  font-size: 38px;
+
+  color: var(--color-text-secondary);
+
+  padding: 10px;
+
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255,255,255,0.05);
+
+  transition: 0.25s ease;
+}
+
+/* HOVER */
+
+.sidebarItem:hover {
+
+  color: var(--color-primary);
+}
+
+.sidebarItem:hover .sidebarIcon {
+
+  background: rgba(255,122,0,0.15);
+}
+
+/* ACTIVE */
+
+.sidebarItem.active {
+
+  color: var(--color-primary);
+}
+
+.sidebarItem.active .sidebarIcon {
+
+  background: rgba(255,122,0,0.2);
+}

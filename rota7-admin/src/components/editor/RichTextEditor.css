@@ -1,0 +1,43 @@
+.editor {
+
+  border-radius: 12px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(255,255,255,0.02);
+
+  padding: 20px;
+
+  min-height: 250px;
+}
+
+/* texto */
+
+.editorContent p {
+
+  margin-bottom: 16px;
+
+  line-height: 1.7;
+
+  text-indent: 24px; /* margem da primeira palavra */
+}
+
+/* títulos */
+
+.editorContent h1,
+.editorContent h2,
+.editorContent h3 {
+
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* listas */
+
+.editorContent ul {
+  padding-left: 20px;
+}
+
+.editorContent li {
+  margin-bottom: 6px;
+}

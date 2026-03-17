@@ -1,0 +1,245 @@
+.novoEvento {
+
+  padding: 40px;
+
+  max-width: 1200px;
+
+  margin: 0 auto;
+}
+
+/* HEADER */
+
+.novoEvento h1 {
+
+  font-size: 2rem;
+
+  margin-bottom: 30px;
+}
+
+/* FORM */
+
+.form {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 24px;
+}
+
+/* GRID */
+
+.formRow {
+
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 20px;
+}
+
+/* INPUT GROUP */
+
+.inputGroup {
+
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+}
+
+/* ICON */
+
+.inputIcon {
+
+  position: absolute;
+
+  left: 14px;
+
+  font-size: 18px;
+
+  color: var(--color-primary);
+}
+
+/* INPUT */
+
+.input {
+
+  width: 100%;
+
+  padding: 14px 16px 14px 42px;
+
+  border-radius: 10px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(255,255,255,0.03);
+
+  color: #fff;
+
+  font-size: 0.95rem;
+
+  outline: none;
+
+  transition: 0.2s;
+}
+
+.input::placeholder {
+
+  color: rgba(255,255,255,0.4);
+}
+
+.input:focus {
+
+  border-color: rgba(255,122,0,0.6);
+
+  box-shadow: 0 0 0 1px rgba(255,122,0,0.3);
+}
+
+/* DATE E TIME ICON */
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+
+  filter: invert(58%) sepia(86%) saturate(529%) hue-rotate(357deg) brightness(101%) contrast(102%);
+
+  cursor: pointer;
+}
+
+/* TEXTAREA */
+
+.textarea {
+
+  width: 100%;
+
+  padding: 16px;
+
+  border-radius: 10px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(255,255,255,0.03);
+
+  color: #fff;
+
+  font-size: 0.95rem;
+
+  resize: none;
+
+  outline: none;
+
+  transition: 0.2s;
+}
+
+.textarea:focus {
+
+  border-color: rgba(255,122,0,0.6);
+}
+
+/* UPLOAD */
+
+.uploadBox {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 10px;
+
+  height: 54px;
+
+  border-radius: 10px;
+
+  border: 1px dashed rgba(255,255,255,0.15);
+
+  background: rgba(255,255,255,0.02);
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.uploadBox:hover {
+
+  border-color: rgba(255,122,0,0.6);
+
+  background: rgba(255,122,0,0.08);
+}
+
+.uploadIcon {
+
+  font-size: 18px;
+
+  color: var(--color-primary);
+}
+
+.uploadBox span {
+
+  font-size: 0.9rem;
+
+  color: var(--color-text-secondary);
+}
+
+.uploadBox input {
+
+  display: none;
+}
+
+/* BOTÃO */
+
+.publishBtn {
+
+  margin-top: 10px;
+
+  padding: 14px;
+
+  border-radius: 10px;
+
+  border: none;
+
+  background: var(--color-primary);
+
+  color: #000;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.publishBtn:hover {
+
+  opacity: 0.9;
+}
+
+
+.timeInputWrapper {
+
+  position: relative;
+
+  width: 100%;
+}
+
+.timeIcon {
+
+  position: absolute;
+
+  left: 14px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: var(--color-primary);
+
+  font-size: 18px;
+}
+
+.timeInput {
+
+  padding-left: 42px;
+}

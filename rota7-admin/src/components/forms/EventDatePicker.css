@@ -1,0 +1,179 @@
+.datePickerWrapper {
+
+  position: relative;
+
+  width: 100%;
+
+  display: block;
+}
+
+/* WRAPPER DO DATEPICKER */
+
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker__input-container {
+  width: 100%;
+}
+
+/* ÍCONE */
+
+.dateIcon {
+
+  position: absolute;
+
+  left: 14px;
+
+  top: 40%;
+
+  transform: translateY(-50%);
+
+  color: var(--color-primary);
+
+  font-size: 18px;
+}
+
+/* INPUT */
+
+.dateInput {
+
+  width: 100%;
+
+  padding: 14px 16px 14px 42px;
+
+  border-radius: 10px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(255,255,255,0.03);
+
+  color: #fff;
+
+  outline: none;
+
+  cursor: pointer;
+}
+
+
+/* ========================= */
+/* CALENDÁRIO DARK */
+/* ========================= */
+
+.react-datepicker {
+
+  background: #0f0f0f;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  color: #c00c0c;
+
+  border-radius: 10px;
+
+  padding: 8px;
+}
+
+/* HEADER */
+
+.react-datepicker__header {
+
+  background: #111;
+
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* TÍTULO DO MÊS */
+
+.react-datepicker__current-month {
+
+  color: #fff;
+
+  font-weight: 600;
+}
+
+/* DIAS DA SEMANA */
+
+.react-datepicker__day-name {
+
+  color: #fff;
+
+  font-weight: 500;
+}
+
+/* DIAS NORMAIS */
+
+.react-datepicker__day {
+
+  color: var(--color-primary);
+
+  border-radius: 8px;
+
+  transition: all 0.15s ease;
+}
+
+/* HOVER DO DIA */
+
+.react-datepicker__day:hover {
+
+  background: rgba(255,255,255,0.08);
+
+  border: 1px solid var(--color-primary);
+
+  color: var(--color-primary);
+}
+
+/* DIA SELECIONADO */
+
+.react-datepicker__day--selected {
+
+  background: var(--color-primary);
+
+  color: #000;
+
+  border-radius: 8px;
+}
+
+/* REMOVER SELEÇÃO AZUL PADRÃO */
+
+.react-datepicker__day--keyboard-selected {
+
+  background: transparent;
+
+  color: var(--color-primary);
+}
+
+/* SETAS */
+
+.react-datepicker__navigation-icon::before {
+
+  border-color: var(--color-primary);
+}
+
+/* ========================= */
+/* POSIÇÃO DO CALENDÁRIO */
+/* ========================= */
+
+.react-datepicker-popper {
+
+  transform: translate3d(0px, 54px, 0px) !important;
+
+  left: 0 !important;
+}
+
+.react-datepicker {
+
+  margin-top: 6px;
+}
+
+/* DIA ATUAL */
+
+.react-datepicker__day--today {
+
+  background: rgba(255,255,255,0.08);
+
+  color: var(--color-primary);
+
+  border-radius: 8px;
+
+  font-weight: 600;
+}

@@ -1,0 +1,100 @@
+.adminPage {
+  padding: 40px;
+}
+
+/* HEADER */
+
+.adminPage__header {
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 30px;
+}
+
+.adminPage__header h1 {
+  margin-bottom: 5px;
+}
+
+.adminPage__header p {
+  color: var(--color-text-secondary);
+}
+
+/* TABELA */
+
+.adminTable {
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.adminTable__row {
+
+  display: grid;
+
+  grid-template-columns: 1fr 140px 120px;
+
+  align-items: center;
+
+  padding: 18px;
+
+  border-radius: 14px;
+
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+
+  transition: 0.25s;
+}
+
+.adminTable__row:hover {
+  border-color: rgba(255,122,0,0.5);
+}
+
+.adminTable__title {
+  font-weight: 500;
+}
+
+.adminTable__category {
+
+  font-size: 0.85rem;
+
+  color: var(--color-primary);
+}
+
+/* AÇÕES */
+
+.adminTable__actions {
+
+  display: flex;
+  gap: 10px;
+}
+
+.iconBtn {
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  border-radius: 8px;
+
+  background: rgba(255,255,255,0.05);
+
+  color: var(--color-text);
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.iconBtn:hover {
+  background: rgba(255,122,0,0.2);
+}
+
+.iconBtn.danger:hover {
+  background: rgba(255,60,60,0.25);
+}
