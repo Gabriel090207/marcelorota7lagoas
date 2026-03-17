@@ -16,10 +16,13 @@ import SolicitacaoParceiro from "./pages/SolicitacaoParceiro"
 import Galeria from "./pages/Galeria"
 
 import NovaNoticia from "./pages/NovaNoticia"
+import EditarNoticia from "./pages/EditarNoticia"
+
 import NovaDica from "./pages/NovaDica"
 import NovoEvento from "./pages/NovoEvento"
 import NovoParceiro from "./pages/NovoParceiro"
 import NovaImagem from "./pages/NovaImagem"
+
 
 function App() {
   return (
@@ -47,6 +50,7 @@ function App() {
 />
         <Route path="/noticias" element={<Noticias />} />
         <Route path="/noticias/nova" element={<NovaNoticia />} />
+        <Route path="/noticias/editar/:id" element={<EditarNoticia />} />
 
 
         <Route path="/dicas" element={<Dicas />} />
@@ -63,7 +67,7 @@ function App() {
 
         <Route path="/galeria" element={<Galeria />} />
         <Route path="/galeria/nova" element={<PrivateRoute><NovaImagem /></PrivateRoute>} />
-        
+
       </Routes>
     </BrowserRouter>
   )

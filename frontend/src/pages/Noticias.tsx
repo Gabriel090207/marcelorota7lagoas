@@ -1,40 +1,50 @@
 import './Noticias.css'
-import news1 from '../assets/images/news/news-1.jpg'
-import news2 from '../assets/images/news/news-2.jpg'
-import news3 from '../assets/images/news/news-3.jpg'
-
-
 import { FiSearch } from 'react-icons/fi'
 
+import { useEffect, useState } from 'react'
+import { getNoticias } from '../services/api'
+import { useNavigate } from 'react-router-dom'
+
 export default function Noticias() {
+
+  const [noticias, setNoticias] = useState<any[]>([])
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    getNoticias().then(setNoticias)
+  }, [])
+
   return (
     <main className="newsPage">
 
-      {/* HERO COM NOTÍCIA PRINCIPAL */}
-<section className="newsPage__hero">
+      {/* HERO (usa primeira notícia) */}
+      {noticias.length > 0 && (
+        <section className="newsPage__hero">
+          <div
+            className="newsHeroImage"
+            style={{
+              backgroundImage: `url(${noticias[0].imagem || ""})`
+            }}
+          >
+            <div className="newsHeroOverlay">
 
-  <div 
-    className="newsHeroImage"
-    style={{ backgroundImage: `url(${news1})` }}
-  >
-    <div className="newsHeroOverlay">
+              <h1>{noticias[0].titulo}</h1>
 
-      <h1>Novo lançamento big trail chega ao Brasil</h1>
-      <p>
-        Modelo promete mais autonomia, tecnologia embarcada e conforto
-        para viagens longas.
-      </p>
+              <p>
+                {noticias[0].conteudo?.replace(/<[^>]+>/g, "").slice(0, 120)}...
+              </p>
 
-      <button className="btn btn--primary">
-        Ler matéria completa
-      </button>
-    </div>
-  </div>
+              <button
+                className="btn btn--primary"
+                onClick={() => navigate(`/noticia/${noticias[0].id}`)}
+              >
+                Ler matéria completa
+              </button>
 
-</section>
-
-
-
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CATEGORIAS */}
       <section className="newsPage__categories">
@@ -48,168 +58,69 @@ export default function Noticias() {
         </div>
       </section>
 
-
-      {/* BARRA DE PESQUISA */}
-<section className="newsPage__search">
-  <div className="newsPage__searchInner">
-    <div className="searchInputWrapper">
-      <FiSearch size={18} className="searchIcon" />
-      <input
-        type="text"
-        placeholder="Buscar notícias, mercado, eventos..."
-      />
-    </div>
-  </div>
-</section>
+      {/* BUSCA */}
+      <section className="newsPage__search">
+        <div className="newsPage__searchInner">
+          <div className="searchInputWrapper">
+            <FiSearch size={18} className="searchIcon" />
+            <input
+              type="text"
+              placeholder="Buscar notícias, mercado, eventos..."
+            />
+          </div>
+        </div>
+      </section>
 
       {/* LISTAGEM */}
       <section className="newsPage__list">
 
         <div className="newsPage__sectionHeader">
-  <h2>Mais notícias</h2>
-  <p>Confira as últimas novidades do portal Rota 7 Lagoas.</p>
-</div>
+          <h2>Mais notícias</h2>
+          <p>Confira as últimas novidades do portal Rota 7 Lagoas.</p>
+        </div>
+
         <div className="newsPage__grid">
 
-  {/* CARD 1 */}
-  <article className="newsCard">
-    <div 
-      className="newsImage"
-      style={{ backgroundImage: `url(${news1})` }}
-    />
-    <div className="newsContent">
-      <span className="newsCategory">Mercado</span>
+          {noticias.map((noticia) => (
 
-      <div className="newsTags">
-        <span className="newsTag">Lançamento</span>
-        <span className="newsTag">Big Trail</span>
-        <span className="newsTag">Tecnologia</span>
-      </div>
+            <article key={noticia.id} className="newsCard">
 
-      <h3>Novo lançamento big trail chega ao Brasil</h3>
-      <p>Modelo promete mais autonomia e tecnologia para viagens longas.</p>
-      <button className="btn btn--outline newsReadMore">
-        Ler mais
-      </button>
-    </div>
-  </article>
+              <div
+                className="newsImage"
+                style={{
+                  backgroundImage: `url(${noticia.imagem || ""})`
+                }}
+              />
 
-  {/* CARD 2 */}
-  <article className="newsCard">
-    <div 
-      className="newsImage"
-      style={{ backgroundImage: `url(${news2})` }}
-    />
-    <div className="newsContent">
-      <span className="newsCategory">Região</span>
+              <div className="newsContent">
 
-      <div className="newsTags">
-        <span className="newsTag">Encontro</span>
-        <span className="newsTag">Comunidade</span>
-        <span className="newsTag">Sete Lagoas</span>
-      </div>
+                <span className="newsCategory">
+                  {noticia.categoria || "Notícia"}
+                </span>
 
-      <h3>Encontro de moto clubes reúne centenas</h3>
-      <p>Evento fortaleceu a cultura motociclística local.</p>
-      <button className="btn btn--outline newsReadMore">
-        Ler mais
-      </button>
-    </div>
-  </article>
+                <h3>{noticia.titulo}</h3>
 
-  {/* CARD 3 */}
-  <article className="newsCard">
-    <div 
-      className="newsImage"
-      style={{ backgroundImage: `url(${news3})` }}
-    />
-    <div className="newsContent">
-      <span className="newsCategory">Dicas</span>
+                <p>
+                  {noticia.conteudo
+                    ?.replace(/<[^>]+>/g, "")
+                    .slice(0, 100)}...
+                </p>
 
-      <div className="newsTags">
-        <span className="newsTag">Segurança</span>
-        <span className="newsTag">Viagem</span>
-        <span className="newsTag">Checklist</span>
-      </div>
+                <button
+                  className="btn btn--outline newsReadMore"
+                  onClick={() => navigate(`/noticia/${noticia.id}`)}
+                >
+                  Ler mais
+                </button>
 
-      <h3>Como se preparar para uma viagem segura</h3>
-      <p>Checklist essencial para evitar imprevistos na estrada.</p>
-      <button className="btn btn--outline newsReadMore">
-        Ler mais
-      </button>
-    </div>
-  </article>
+              </div>
 
-  {/* CARD 4 */}
-  <article className="newsCard">
-    <div 
-      className="newsImage"
-      style={{ backgroundImage: `url(${news1})` }}
-    />
-    <div className="newsContent">
-      <span className="newsCategory">Mercado</span>
+            </article>
 
-      <div className="newsTags">
-        <span className="newsTag">Indústria</span>
-        <span className="newsTag">Lançamento</span>
-        <span className="newsTag">Adventure</span>
-      </div>
+          ))}
 
-      <h3>Nova geração de motos adventure é anunciada</h3>
-      <p>Modelos prometem mais desempenho e conforto em longas distâncias.</p>
-      <button className="btn btn--outline newsReadMore">
-        Ler mais
-      </button>
-    </div>
-  </article>
+        </div>
 
-  {/* CARD 5 */}
-  <article className="newsCard">
-    <div 
-      className="newsImage"
-      style={{ backgroundImage: `url(${news2})` }}
-    />
-    <div className="newsContent">
-      <span className="newsCategory">Região</span>
-
-      <div className="newsTags">
-        <span className="newsTag">Passeio</span>
-        <span className="newsTag">Motoclube</span>
-        <span className="newsTag">Serra</span>
-      </div>
-
-      <h3>Passeio regional reúne motociclistas da região</h3>
-      <p>Evento fortaleceu a união entre os grupos locais.</p>
-      <button className="btn btn--outline newsReadMore">
-        Ler mais
-      </button>
-    </div>
-  </article>
-
-  {/* CARD 6 */}
-  <article className="newsCard">
-    <div 
-      className="newsImage"
-      style={{ backgroundImage: `url(${news3})` }}
-    />
-    <div className="newsContent">
-      <span className="newsCategory">Dicas</span>
-
-      <div className="newsTags">
-        <span className="newsTag">Manutenção</span>
-        <span className="newsTag">Estrada</span>
-        <span className="newsTag">Prevenção</span>
-      </div>
-
-      <h3>Cuidados essenciais antes de pegar estrada</h3>
-      <p>Verificações básicas que evitam problemas durante a viagem.</p>
-      <button className="btn btn--outline newsReadMore">
-        Ler mais
-      </button>
-    </div>
-  </article>
-
-</div>
       </section>
 
     </main>

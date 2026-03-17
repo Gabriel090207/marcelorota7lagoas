@@ -1,23 +1,36 @@
 import { useEditor, EditorContent } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
+import { useEffect } from "react"
 import "./RichTextEditor.css"
 
-export default function RichTextEditor() {
+type Props = {
+  content?: string
+  onChange: (value: string) => void
+}
+
+export default function RichTextEditor({ content = "", onChange }: Props) {
 
   const editor = useEditor({
     extensions: [StarterKit],
-    content: `
-      <p></p>
-    `
+    content: content || "<p></p>",
+    onUpdate: ({ editor }) => {
+      onChange(editor.getHTML())
+    }
   })
+
+  // 🔥 ATUALIZA QUANDO VEM DO BACKEND
+  useEffect(() => {
+    if (!editor) return
+
+    editor.commands.setContent(content || "<p></p>")
+
+  }, [content, editor])
 
   return (
     <div className="editor">
-
       <div className="editorContent">
         <EditorContent editor={editor} />
       </div>
-
     </div>
   )
 }

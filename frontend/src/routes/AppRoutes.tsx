@@ -10,6 +10,8 @@ import Galeria from '../pages/Galeria'
 import QuemSomos from '../pages/QuemSomos'
 import Grupos from '../pages/Grupos'
 
+import NoticiaDetalhe from "../pages/NoticiaDetalhe"
+
 
 export function AppRoutes() {
   return (
@@ -22,6 +24,9 @@ export function AppRoutes() {
       <Route path="/galeria" element={<Galeria />} />
       <Route path="/quem-somos" element={<QuemSomos />} />
       <Route path="/grupos" element={<Grupos />} />
+
+
+      <Route path="/noticia/:id" element={<NoticiaDetalhe />} />
 
 
 
