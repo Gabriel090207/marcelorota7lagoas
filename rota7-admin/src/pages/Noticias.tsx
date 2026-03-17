@@ -5,11 +5,30 @@ import "./Noticias.css"
 import { FiPlus, FiEdit, FiTrash } from "react-icons/fi"
 import { useEffect, useState } from "react"
 
+
+import ConfirmModal from "../components/admin/ConfirmModal"
+import { deleteNoticia } from "../services/api"
+
 export default function Noticias() {
 
   const navigate = useNavigate()
 
   const [noticias, setNoticias] = useState<any[]>([])
+
+
+  const [modalOpen, setModalOpen] = useState(false)
+const [selectedId, setSelectedId] = useState<string | null>(null)
+
+const handleDelete = async () => {
+  if (!selectedId) return
+
+  await deleteNoticia(selectedId)
+
+  setNoticias(prev => prev.filter(n => n.id !== selectedId))
+
+  setModalOpen(false)
+} 
+
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/noticias`)
@@ -60,9 +79,15 @@ export default function Noticias() {
   <FiEdit />
 </button>
 
-                <button className="iconBtn danger">
-                  <FiTrash />
-                </button>
+                <button
+  className="iconBtn danger"
+  onClick={() => {
+    setSelectedId(noticia.id)
+    setModalOpen(true)
+  }}
+>
+  <FiTrash />
+</button>
 
               </div>
 
@@ -72,8 +97,18 @@ export default function Noticias() {
 
         </div>
 
+        <ConfirmModal
+  open={modalOpen}
+  title="Excluir notícia"
+  message="Tem certeza que deseja excluir esta notícia?"
+  onConfirm={handleDelete}
+  onCancel={() => setModalOpen(false)}
+/>
+
       </main>
 
     </AdminLayout>
+
+    
   )
 }

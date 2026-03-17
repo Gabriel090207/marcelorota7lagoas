@@ -13,8 +13,12 @@
 
   padding: 0 30px;
 
-  background: var(--color-background-secondary);
-  border-bottom: 1px solid var(--color-border);
+ background: linear-gradient(
+    180deg,
+    #0f0f0f 0%,
+    #141414 100%
+  );
+  border-bottom: 1px solid #1f1f1f;
 
   z-index: 1000;
 }
@@ -42,7 +46,7 @@
 
 .adminUser__name {
   font-size: 0.9rem;
-  color: var(--color-text);
+  color: var(--color-primary);
 }
 
 /* AVATAR */

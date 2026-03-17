@@ -1,12 +1,36 @@
 import './Dicas.css'
 
 import { FiSearch } from 'react-icons/fi'
+import { useEffect, useState } from "react"
+import { getDicas } from "../services/api"
+import { useNavigate } from "react-router-dom"
 
 export default function Dicas() {
+
+  const [dicas, setDicas] = useState<any[]>([])
+  const [busca, setBusca] = useState("")
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    getDicas()
+      .then(setDicas)
+      .catch(console.error)
+  }, [])
+
+  if (!dicas.length) {
+    return <div style={{ padding: 40 }}>Carregando dicas...</div>
+  }
+
+  const destaque = dicas[0]
+
+  const dicasFiltradas = dicas.filter((d) =>
+    d.titulo.toLowerCase().includes(busca.toLowerCase())
+  )
+
   return (
     <main className="dicas">
 
-      {/* HEADER EDITORIAL */}
+      {/* HEADER */}
       <section className="dicas__header">
         <div className="dicas__headerInner">
           <span className="dicas__label">
@@ -19,115 +43,110 @@ export default function Dicas() {
 
           <p>
             Conteúdos sobre segurança, técnicas de condução,
-            manutenção e experiências da comunidade motociclista
-            de Sete Lagoas e região.
+            manutenção e experiências da comunidade motociclista.
           </p>
         </div>
       </section>
 
-      
+      {/* DESTAQUE */}
+      {destaque && (
+        <section className="dicas__featured">
+          <div className="dicas__featuredInner">
 
+            <div
+              className="featuredDica__image"
+              style={{
+                backgroundImage: `url(${destaque.imagem})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center"
+              }}
+            />
 
-            {/* ARTIGO DESTAQUE */}
-      <section className="dicas__featured">
-        <div className="dicas__featuredInner">
+            <div className="featuredDica__content">
+              <span className="dicaCategoryTag">
+                {destaque.categoria}
+              </span>
 
-          <div className="featuredDica__image" />
+              <h2>{destaque.titulo}</h2>
 
-          <div className="featuredDica__content">
-            <span className="dicaCategoryTag">
-              Segurança
-            </span>
+              <p>
+                {destaque.conteudo
+                  ?.replace(/<[^>]+>/g, "")
+                  .slice(0, 140)}...
+              </p>
 
-            <h2>
-              Como pilotar com segurança em rodovias movimentadas
-            </h2>
+              <button
+                className="btn btn--primary"
+                onClick={() => navigate(`/dicas/${destaque.id}`)}
+              >
+                Ler artigo completo
+              </button>
+            </div>
 
-            <p>
-              Técnicas avançadas de posicionamento, leitura de tráfego
-              e antecipação de riscos para viagens mais seguras.
-            </p>
-
-            <button className="btn btn--primary">
-              Ler artigo completo
-            </button>
           </div>
+        </section>
+      )}
 
+      {/* BUSCA */}
+      <section className="dicas__search">
+        <div className="dicas__searchInner">
+          <div className="searchInputWrapper">
+            <FiSearch size={18} className="searchIcon" />
+            <input
+              type="text"
+              placeholder="Buscar dicas..."
+              value={busca}
+              onChange={(e) => setBusca(e.target.value)}
+            />
+          </div>
         </div>
       </section>
 
-      {/* CATEGORIAS */}
-      <section className="dicas__categories">
-        <div className="dicas__categoriesInner">
-          <button className="dicasCategory active">Todos</button>
-          <button className="dicasCategory">Asfalto</button>
-          <button className="dicasCategory">Off-road</button>
-          <button className="dicasCategory">Manutenção</button>
-          <button className="dicasCategory">Grupo</button>
-          <button className="dicasCategory">Segurança</button>
-        </div>
-      </section>
-
-      {/* BARRA DE BUSCA */}
-<section className="dicas__search">
-  <div className="dicas__searchInner">
-    <div className="searchInputWrapper">
-      <FiSearch size={18} className="searchIcon" />
-      <input
-        type="text"
-        placeholder="Buscar dicas, manutenção, segurança..."
-      />
-    </div>
-  </div>
-</section>
-
-      {/* GRID DE ARTIGOS */}
+      {/* GRID */}
       <section className="dicas__gridSection">
         <div className="dicas__gridInner">
 
           <div className="dicasGrid">
 
-            <article className="dicaCard">
-              <div className="dicaCard__image" />
+            {dicasFiltradas.slice(1).map((dica) => (
 
-              <div className="dicaCard__content">
-                <span className="dicaCategoryTag">Segurança</span>
-                <h3>5 Técnicas para pilotar com mais segurança na cidade</h3>
-                <p>
-                  Dicas práticas para evitar riscos no trânsito urbano
-                  e melhorar sua condução no dia a dia.
-                </p>
-                <button className="dicaReadMore">Ler mais</button>
-              </div>
-            </article>
+              <article key={dica.id} className="dicaCard">
 
-            <article className="dicaCard">
-              <div className="dicaCard__image" />
+                <div
+                  className="dicaCard__image"
+                  style={{
+                    backgroundImage: `url(${dica.imagem})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center"
+                  }}
+                />
 
-              <div className="dicaCard__content">
-                <span className="dicaCategoryTag">Manutenção</span>
-                <h3>Checklist básico antes de pegar estrada</h3>
-                <p>
-                  Verificações simples que podem evitar problemas
-                  e garantir uma viagem mais tranquila.
-                </p>
-                <button className="dicaReadMore">Ler mais</button>
-              </div>
-            </article>
+                <div className="dicaCard__content">
 
-            <article className="dicaCard">
-              <div className="dicaCard__image" />
+                  <span className="dicaCategoryTag">
+                    {dica.categoria}
+                  </span>
 
-              <div className="dicaCard__content">
-                <span className="dicaCategoryTag">Grupo</span>
-                <h3>Como organizar um passeio em grupo com segurança</h3>
-                <p>
-                  Estratégias para manter organização, comunicação
-                  e segurança durante o trajeto.
-                </p>
-                <button className="dicaReadMore">Ler mais</button>
-              </div>
-            </article>
+                  <h3>{dica.titulo}</h3>
+
+                  <p>
+                    {dica.conteudo
+                      ?.replace(/<[^>]+>/g, "")
+                      .slice(0, 100)}...
+                  </p>
+
+                  <button
+                    className="dicaReadMore"
+                    onClick={() => navigate(`/dicas/${dica.id}`)}
+                  >
+                    Ler mais
+                  </button>
+
+                </div>
+
+              </article>
+
+            ))}
 
           </div>
 

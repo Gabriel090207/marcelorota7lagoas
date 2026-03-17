@@ -127,12 +127,14 @@
 /* ===== BOTÃO MENU (MOBILE) ===== */
 .header__menuBtn {
   display: none;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  color: #fff;
+  width: 40px;
+  height: 40px;
+
+  border-radius: 8px;
+
+  background: rgba(255,255,255,0.05);
+
+  color: var(--color-primary);
   cursor: pointer;
   transition: 0.25s ease;
   align-items: center;

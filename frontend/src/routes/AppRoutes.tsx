@@ -11,6 +11,7 @@ import QuemSomos from '../pages/QuemSomos'
 import Grupos from '../pages/Grupos'
 
 import NoticiaDetalhe from "../pages/NoticiaDetalhe"
+import DicaDetalhe from "../pages/DicaDetalhe"
 
 
 export function AppRoutes() {
@@ -27,6 +28,7 @@ export function AppRoutes() {
 
 
       <Route path="/noticia/:id" element={<NoticiaDetalhe />} />
+      <Route path="/dicas/:id" element={<DicaDetalhe />} />
 
 
 

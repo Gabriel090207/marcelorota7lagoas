@@ -46,3 +46,16 @@ def atualizar_noticia(id: str, noticia: Noticia):
     doc_ref.update(noticia.dict())
 
     return {"msg": "Notícia atualizada com sucesso"}
+
+
+
+@router.delete("/{id}")
+def deletar_noticia(id: str):
+    doc_ref = db.collection("noticias").document(id)
+
+    if not doc_ref.get().exists:
+        return {"erro": "Notícia não encontrada"}
+
+    doc_ref.delete()
+
+    return {"msg": "Notícia deletada com sucesso"}

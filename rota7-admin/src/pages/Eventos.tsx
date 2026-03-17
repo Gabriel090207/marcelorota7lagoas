@@ -9,23 +9,28 @@ export default function Eventos() {
   const eventos = [
     {
       id: 1,
-      titulo: "Encontro Rota 7 Lagoas",
-      data: "12 OUT",
-      local: "Praça Central"
-    },
-    {
-      id: 2,
-      titulo: "Passeio Serra do Espinhaço",
-      data: "19 OUT",
-      local: "Posto X"
-    },
-    {
-      id: 3,
-      titulo: "Trilha Off-road Regional",
-      data: "02 NOV",
-      local: "Espinhaço"
+      titulo: "Teste",
+      data: "03/03/2026 15:00",
+      local: "Rua teste 123"
     }
   ]
+
+  // 🔥 formatar data
+  const formatarData = (dataStr: string) => {
+    const [data, hora] = dataStr.split(" ")
+    const [dia, mes] = data.split("/")
+
+    const meses = [
+      "JAN","FEV","MAR","ABR","MAI","JUN",
+      "JUL","AGO","SET","OUT","NOV","DEZ"
+    ]
+
+    return {
+      dia,
+      mes: meses[Number(mes) - 1],
+      hora
+    }
+  }
 
   return (
     <AdminLayout>
@@ -48,36 +53,50 @@ export default function Eventos() {
 
         <div className="eventsTable">
 
-          {eventos.map(evento => (
+          {eventos.map(evento => {
 
-            <div key={evento.id} className="eventRow">
+            const { dia, mes, hora } = formatarData(evento.data)
 
-              <div className="eventDate">
-                {evento.data}
+            return (
+
+              <div key={evento.id} className="eventRow">
+
+                {/* DATA */}
+                <div className="eventDateBox">
+                  <span className="eventDay">{dia}</span>
+                  <span className="eventMonth">{mes}</span>
+                </div>
+
+                {/* INFO */}
+                <div className="eventInfo">
+
+                  <h3>{evento.titulo}</h3>
+
+                  <p className="eventMeta">
+                    {evento.local}
+                    <span className="dot" />
+                    {hora}
+                  </p>
+
+                </div>
+
+                {/* AÇÕES */}
+                <div className="adminTable__actions">
+
+                  <button className="iconBtn">
+                    <FiEdit />
+                  </button>
+
+                  <button className="iconBtn danger">
+                    <FiTrash />
+                  </button>
+
+                </div>
+
               </div>
 
-              <div className="eventInfo">
-
-                <h3>{evento.titulo}</h3>
-                <p>{evento.local}</p>
-
-              </div>
-
-              <div className="adminTable__actions">
-
-                <button className="iconBtn">
-                  <FiEdit />
-                </button>
-
-                <button className="iconBtn danger">
-                  <FiTrash />
-                </button>
-
-              </div>
-
-            </div>
-
-          ))}
+            )
+          })}
 
         </div>
 

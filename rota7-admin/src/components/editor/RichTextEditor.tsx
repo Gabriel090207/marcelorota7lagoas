@@ -19,12 +19,18 @@ export default function RichTextEditor({ content = "", onChange }: Props) {
   })
 
   // 🔥 ATUALIZA QUANDO VEM DO BACKEND
-  useEffect(() => {
-    if (!editor) return
+ useEffect(() => {
+  if (!editor) return
 
-    editor.commands.setContent(content || "<p></p>")
+  const current = editor.getHTML()
 
-  }, [content, editor])
+  if (content && content !== current) {
+    editor.commands.setContent(content, {
+  emitUpdate: false
+})
+  }
+
+}, [content, editor])
 
   return (
     <div className="editor">

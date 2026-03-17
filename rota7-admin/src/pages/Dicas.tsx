@@ -4,20 +4,40 @@ import "./Dicas.css"
 import { FiPlus, FiEdit, FiTrash } from "react-icons/fi"
 import { Link } from "react-router-dom"
 
+import { useEffect, useState } from "react"
+import { getDicas } from "../services/api"
+import ConfirmModal from "../components/admin/ConfirmModal"
+import { deleteDica } from "../services/api"
+import { useNavigate } from "react-router-dom"
+
 export default function Dicas() {
 
-  const dicas = [
-    {
-      id: 1,
-      titulo: "Como pilotar com segurança na chuva",
-      categoria: "Pilotagem"
-    },
-    {
-      id: 2,
-      titulo: "Manutenção básica antes de viajar",
-      categoria: "Manutenção"
-    }
-  ]
+  const [modalOpen, setModalOpen] = useState(false)
+const [selectedId, setSelectedId] = useState<string | null>(null)
+const navigate = useNavigate()
+
+ const [dicas, setDicas] = useState<any[]>([])
+
+
+ const handleDelete = async () => {
+  if (!selectedId) return
+
+  try {
+    await deleteDica(selectedId)
+
+    // remove da lista (sem reload)
+    setDicas(prev => prev.filter(d => d.id !== selectedId))
+
+    setModalOpen(false)
+
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+useEffect(() => {
+  getDicas().then(setDicas)
+}, [])
 
   return (
     <AdminLayout>
@@ -54,13 +74,22 @@ export default function Dicas() {
 
               <div className="adminTable__actions">
 
-                <button className="iconBtn">
-                  <FiEdit />
-                </button>
+               <button
+  className="iconBtn"
+  onClick={() => navigate(`/dicas/editar/${dica.id}`)}
+>
+  <FiEdit />
+</button>
 
-                <button className="iconBtn danger">
-                  <FiTrash />
-                </button>
+               <button
+  className="iconBtn danger"
+  onClick={() => {
+    setSelectedId(dica.id)
+    setModalOpen(true)
+  }}
+>
+  <FiTrash />
+</button>
 
               </div>
 
@@ -70,6 +99,14 @@ export default function Dicas() {
 
         </div>
 
+
+<ConfirmModal
+  open={modalOpen}
+  title="Excluir dica"
+  message="Tem certeza que deseja excluir esta dica? Essa ação não pode ser desfeita."
+  onCancel={() => setModalOpen(false)}
+  onConfirm={handleDelete}
+/>
       </main>
 
     </AdminLayout>

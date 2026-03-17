@@ -19,6 +19,9 @@ import NovaNoticia from "./pages/NovaNoticia"
 import EditarNoticia from "./pages/EditarNoticia"
 
 import NovaDica from "./pages/NovaDica"
+import EditarDica from "./pages/EditarDica"
+
+
 import NovoEvento from "./pages/NovoEvento"
 import NovoParceiro from "./pages/NovoParceiro"
 import NovaImagem from "./pages/NovaImagem"
@@ -55,6 +58,7 @@ function App() {
 
         <Route path="/dicas" element={<Dicas />} />
         <Route path="/dicas/nova" element={<NovaDica />} />
+        <Route path="/dicas/editar/:id" element={<EditarDica />} />
 
 
         <Route path="/eventos" element={<Eventos />} />

@@ -2,12 +2,12 @@
   padding: 40px;
 }
 
-.adminPage__header {
+/* HEADER */
 
+.adminPage__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   margin-bottom: 30px;
 }
 
@@ -18,19 +18,16 @@
 /* LISTA */
 
 .eventsTable {
-
   display: flex;
   flex-direction: column;
-
   gap: 14px;
 }
 
+/* LINHA */
+
 .eventRow {
-
   display: grid;
-
   grid-template-columns: 90px 1fr 120px;
-
   align-items: center;
 
   padding: 18px;
@@ -38,53 +35,101 @@
   border-radius: 14px;
 
   background: rgba(255,255,255,0.03);
-
   border: 1px solid rgba(255,255,255,0.08);
 
   transition: 0.25s;
+
+  min-width: 0;
 }
 
 .eventRow:hover {
-
   border-color: rgba(255,122,0,0.6);
+  transform: translateY(-2px);
 }
 
-/* DATA */
+/* DATA BOX */
 
-.eventDate {
+.eventDateBox {
+  width: 70px;
+  height: 70px;
 
-  font-weight: 700;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 16px;
+
+  background: rgba(255,122,0,0.1);
+  border: 1px solid rgba(255,122,0,0.3);
 
   color: var(--color-primary);
+}
 
-  font-size: 0.9rem;
+/* DIA */
+
+.eventDay {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+/* MÊS */
+
+.eventMonth {
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  color: #fff;
 }
 
 /* INFO */
 
-.eventInfo h3 {
-
-  margin-bottom: 4px;
+.eventInfo {
+  min-width: 0;
 }
 
-.eventInfo p {
+.eventInfo h3 {
+  margin-bottom: 4px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.eventMeta {
+  display: flex;
+  align-items: center;
+  gap: 7px;
 
   font-size: 0.9rem;
-
   color: var(--color-text-secondary);
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* BOLINHA */
+
+.dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-primary);
+  display: inline-block;
 }
 
 /* AÇÕES */
 
 .adminTable__actions {
-
   display: flex;
-
   gap: 10px;
+  justify-content: flex-end;
 }
 
-.iconBtn {
+/* BOTÕES */
 
+.iconBtn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,14 +147,9 @@
 }
 
 .iconBtn:hover {
-
   background: rgba(255,122,0,0.2);
 }
 
 .iconBtn.danger:hover {
-
   background: rgba(255,50,50,0.3);
 }
-
-
-
