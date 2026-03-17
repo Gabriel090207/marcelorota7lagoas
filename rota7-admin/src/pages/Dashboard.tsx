@@ -1,6 +1,9 @@
 import AdminLayout from "../components/admin/AdminLayout"
 import "./Dashboard.css"
 
+
+import { useEffect, useState } from "react"
+
 import {
   FiFileText,
   FiTool,
@@ -9,7 +12,24 @@ import {
 } from "react-icons/fi"
 
 export default function Dashboard() {
-  return (
+
+  const [showToast, setShowToast] = useState(false)
+
+  useEffect(() => {
+  const login = localStorage.getItem("loginSucesso")
+
+  if (login) {
+    setShowToast(true)
+    localStorage.removeItem("loginSucesso")
+
+    setTimeout(() => {
+      setShowToast(false)
+    }, 3000)
+  }
+}, [])
+
+ return (
+  <>
     <AdminLayout>
 
       <main className="dashboard">
@@ -111,5 +131,13 @@ export default function Dashboard() {
       </main>
 
     </AdminLayout>
-  )
+
+{showToast && (
+  <div className="toast">
+    Login realizado com sucesso 
+  </div>
+)}
+
+</>
+)
 }

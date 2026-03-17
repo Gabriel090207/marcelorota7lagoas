@@ -90,3 +90,29 @@
 
   background: rgba(255,122,0,0.2);
 }
+
+
+/* MOBILE SIDEBAR */
+
+@media (max-width: 768px) {
+
+  .adminSidebar {
+    position: fixed;
+    top: 0;
+    left: -260px;
+
+    width: 120px;
+    height: 100%;
+
+    background: var(--color-background-secondary);
+
+    transition: 0.3s;
+
+    z-index: 1500;
+  }
+
+  .adminSidebar.open {
+    left: 0;
+  }
+
+}

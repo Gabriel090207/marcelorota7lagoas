@@ -1,5 +1,6 @@
 import AdminLayout from "../components/admin/AdminLayout"
 import "./Galeria.css"
+import { Link } from "react-router-dom"
 
 import { FiPlus, FiTrash } from "react-icons/fi"
 
@@ -33,10 +34,11 @@ export default function Galeria() {
             <p>Gerencie as fotos do portal</p>
           </div>
 
-          <button className="btn btn--primary">
-            <FiPlus />
-            Adicionar imagem
-          </button>
+          
+<Link to="/galeria/nova" className="btn btn--primary">
+  <FiPlus />
+  Adicionar imagem
+</Link>
 
         </div>
 

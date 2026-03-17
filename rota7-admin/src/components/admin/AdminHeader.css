@@ -25,6 +25,13 @@
   height: 56px;
 }
 
+/* RIGHT */
+
+.adminHeader__right {
+  display: flex;
+  align-items: center;
+}
+
 /* USER */
 
 .adminUser {
@@ -71,4 +78,79 @@
   border: 1px solid rgba(255,122,0,0.35);
 
   transition: 0.25s ease;
+}
+
+/* BOTÃO LOGOUT */
+
+.logoutBtn {
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  border-radius: 8px;
+
+  background: rgba(255,255,255,0.05);
+
+  color: var(--color-primary);
+
+  transition: 0.2s;
+
+  cursor: pointer;
+}
+
+.logoutBtn:hover {
+  background: rgba(255,122,0,0.2);
+}
+
+.logoutBtn svg {
+  font-size: 1.1rem;
+}
+
+
+/* MENU BUTTON */
+
+.menuBtn {
+  display: none;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 8px;
+
+  background: rgba(255,255,255,0.05);
+
+  color: var(--color-primary);
+
+  align-items: center;
+  justify-content: center;
+}
+
+.menuBtn svg {
+  font-size: 1.4rem;
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 768px) {
+
+  .menuBtn {
+    display: flex;
+  }
+
+  .logoDesktop {
+    display: none;
+  }
+
+  .adminUser__name {
+    display: none;
+  }
+
+  .adminHeader {
+  height: 80px;
+  }
+
 }
