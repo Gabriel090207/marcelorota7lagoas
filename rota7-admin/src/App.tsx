@@ -14,6 +14,8 @@ import SolicitacaoParceiro from "./pages/SolicitacaoParceiro"
 
 
 import Galeria from "./pages/Galeria"
+import Grupos from "./pages/Grupos"
+import Anuncios from "./pages/Anuncios"
 
 import NovaNoticia from "./pages/NovaNoticia"
 import EditarNoticia from "./pages/EditarNoticia"
@@ -73,6 +75,8 @@ function App() {
         <Route path="/parceiros/novo" element={<NovoParceiro />} />
 
         <Route path="/galeria" element={<Galeria />} />
+        <Route path="/grupos" element={<Grupos />} />
+<Route path="/anuncios" element={<Anuncios />} />
         <Route path="/galeria/nova" element={<PrivateRoute><NovaImagem /></PrivateRoute>} />
 
       </Routes>

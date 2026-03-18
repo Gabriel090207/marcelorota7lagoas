@@ -15,47 +15,31 @@ export default function Parceiros() {
   const [abaAtiva, setAbaAtiva] = useState<"parceiros" | "solicitacoes">("parceiros")
 
   const [parceiros, setParceiros] = useState<any[]>([])
-
-  // 🔥 MOCK TEMPORÁRIO (depois vem do backend)
-  const [solicitacoes] = useState([
-    {
-      id: "1",
-      empresa: "Oficina Duas Rodas",
-      categoria: "Oficina",
-      responsavel: "Carlos Henrique",
-      status: "Nova"
-    },
-    {
-      id: "2",
-      empresa: "Trilha Moto Peças",
-      categoria: "Peças",
-      responsavel: "Fernanda Souza",
-      status: "Pendente"
-    }
-  ])
+  const [solicitacoes, setSolicitacoes] = useState<any[]>([])
 
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
-  // 🔥 carregar parceiros reais
+  // 🔥 carregar parceiros
   useEffect(() => {
     getParceiros().then(setParceiros)
+  }, [])
+
+  // 🔥 carregar solicitações
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/solicitacoes`)
+      .then(res => res.json())
+      .then(setSolicitacoes)
   }, [])
 
   // 🔥 excluir parceiro
   const handleDelete = async () => {
     if (!selectedId) return
 
-    try {
-      await deleteParceiro(selectedId)
+    await deleteParceiro(selectedId)
 
-      setParceiros(prev => prev.filter(p => p.id !== selectedId))
-
-      setModalOpen(false)
-
-    } catch (error) {
-      console.error(error)
-    }
+    setParceiros(prev => prev.filter(p => p.id !== selectedId))
+    setModalOpen(false)
   }
 
   return (
@@ -63,9 +47,7 @@ export default function Parceiros() {
 
       <main className="adminPage">
 
-        {/* HEADER */}
         <div className="adminPage__header">
-
           <div>
             <h1>Parceiros</h1>
             <p>Gerencie os parceiros do portal</p>
@@ -75,7 +57,6 @@ export default function Parceiros() {
             <FiPlus />
             Novo parceiro
           </Link>
-
         </div>
 
         {/* ABAS */}
@@ -97,16 +78,11 @@ export default function Parceiros() {
 
         </div>
 
-        {/* 🔥 PARCEIROS */}
+        {/* ================= PARCEIROS ================= */}
         {abaAtiva === "parceiros" && (
           <div className="adminTable">
 
-            {parceiros.length === 0 && (
-              <p className="emptyState">Nenhum parceiro cadastrado</p>
-            )}
-
             {parceiros.map(parceiro => (
-
               <div key={parceiro.id} className="adminTable__row">
 
                 <div className="adminTable__title">
@@ -139,44 +115,40 @@ export default function Parceiros() {
                 </div>
 
               </div>
-
             ))}
 
           </div>
         )}
 
-        {/* 🔥 SOLICITAÇÕES (PRONTO PRA BACKEND) */}
+        {/* ================= SOLICITAÇÕES ================= */}
         {abaAtiva === "solicitacoes" && (
           <div className="adminTable">
 
-            {solicitacoes.length === 0 && (
-              <p className="emptyState">Nenhuma solicitação</p>
-            )}
-
-            {solicitacoes.map(solicitacao => (
+            {solicitacoes.map(s => (
 
               <div
-                key={solicitacao.id}
+                key={s.id}
                 className="adminTable__row adminTable__row--solicitacao"
               >
 
                 <div className="adminTable__title">
-                  {solicitacao.empresa}
+                  {s.tipo === "empresa" ? s.nome : s.titulo}
                 </div>
 
                 <div className="adminTable__category">
-                  {solicitacao.categoria}
+                  {s.categoria}
                 </div>
 
                 <div className="adminTable__status">
-                  {solicitacao.status}
+                  {s.tipo === "empresa" ? s.email : s.preco}
                 </div>
 
                 <div className="adminTable__actions">
 
+                  {/* 👁️ VER DETALHE */}
                   <button
                     className="iconBtn"
-                    onClick={() => navigate(`/parceiros/solicitacoes/${solicitacao.id}`)}
+                    onClick={() => navigate(`/solicitacoes/${s.id}`)}
                   >
                     <FiEye />
                   </button>
@@ -190,11 +162,11 @@ export default function Parceiros() {
           </div>
         )}
 
-        {/* 🔥 MODAL */}
+        {/* MODAL */}
         <ConfirmModal
           open={modalOpen}
           title="Excluir parceiro"
-          message="Tem certeza que deseja excluir este parceiro? Essa ação não pode ser desfeita."
+          message="Tem certeza que deseja excluir?"
           onCancel={() => setModalOpen(false)}
           onConfirm={handleDelete}
         />

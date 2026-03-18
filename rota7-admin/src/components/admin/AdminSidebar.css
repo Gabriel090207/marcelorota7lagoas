@@ -6,7 +6,9 @@
   left: 0;
 
   width: 110px;
-  height: calc(100vh - 70px);
+ height: calc(100vh - 90px);
+overflow-y: auto;
+overflow-x: hidden;
 
   background: #141414; /* mais escuro que header */
 
@@ -15,12 +17,26 @@
   display: flex;
   justify-content: center;
 
-  padding-top: 30px;
+  padding-top: 20px;
+
+
+
+
+/* esconder scrollbar */
+scrollbar-width: none; /* Firefox */
+-ms-overflow-style: none; /* IE/Edge antigo */
+}
+
+.adminSidebar::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
 
 /* NAV */
 
 .adminSidebar__nav {
+  min-height: 100%;
+ padding-bottom: 30px;
 
   display: flex;
   flex-direction: column;
@@ -46,11 +62,15 @@
   transition: 0.25s ease;
 }
 
+.sidebarItem:last-child {
+  margin-bottom: 30px;
+}
+
 /* ICON */
 
 .sidebarIcon {
 
-  font-size: 38px;
+  font-size: 35px;
 
   color: var(--color-text-secondary);
 

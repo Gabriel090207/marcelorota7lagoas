@@ -134,3 +134,14 @@
   font-weight: 600;
   color: #ffd166;
 }
+
+.adminTable__row--solicitacao {
+  grid-template-columns: 1fr 160px 160px 120px;
+}
+
+.adminTable__status {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+

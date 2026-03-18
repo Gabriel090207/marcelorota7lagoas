@@ -1,17 +1,40 @@
 import "./AnunciarEmpresa.css"
 
 import { useState } from "react"
-import { FiArrowLeft, FiCheckCircle, FiAlertCircle, FiX } from "react-icons/fi"
+import { useNavigate } from "react-router-dom"
+
+import {
+  FiArrowLeft,
+  FiCheckCircle,
+  FiAlertCircle,
+  FiX
+} from "react-icons/fi"
+
+import { uploadImage } from "../services/storage"
 
 type ToastType = "success" | "error"
 
+// 📞 máscara telefone
+const formatPhone = (value: string) => {
+  value = value.replace(/\D/g, "")
+
+  if (value.length <= 10) {
+    return value.replace(/(\d{2})(\d{4})(\d{0,4})/, "($1) $2-$3")
+  }
+
+  return value.replace(/(\d{2})(\d{5})(\d{0,4})/, "($1) $2-$3")
+}
+
 export default function AnunciarEmpresa() {
+
+  const navigate = useNavigate()
 
   const [nome, setNome] = useState("")
   const [categoria, setCategoria] = useState("")
   const [telefone, setTelefone] = useState("")
   const [email, setEmail] = useState("")
   const [descricao, setDescricao] = useState("")
+  const [file, setFile] = useState<File | null>(null)
 
   const [loading, setLoading] = useState(false)
 
@@ -39,22 +62,37 @@ export default function AnunciarEmpresa() {
 
       setLoading(true)
 
-      // 🔥 aqui depois vamos mandar pro backend
-      console.log({
-        nome,
-        categoria,
-        telefone,
-        email,
-        descricao
+      let imageUrl = ""
+
+      if (file) {
+        imageUrl = await uploadImage(file)
+      }
+
+      await fetch(`${import.meta.env.VITE_API_URL}/solicitacoes`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          tipo: "empresa",
+          nome,
+          categoria,
+          telefone,
+          email,
+          descricao,
+          imagem: imageUrl
+        })
       })
 
       showToast("success", "Solicitação enviada com sucesso!")
 
+      // limpar
       setNome("")
       setCategoria("")
       setTelefone("")
       setEmail("")
       setDescricao("")
+      setFile(null)
 
     } catch (error) {
       console.error(error)
@@ -92,7 +130,13 @@ export default function AnunciarEmpresa() {
       {/* VOLTAR */}
       <div
         className="novaNoticia__back"
-        onClick={() => window.history.back()}
+        onClick={() => {
+          if (window.history.length > 1) {
+            navigate(-1)
+          } else {
+            navigate("/classificados")
+          }
+        }}
       >
         <FiArrowLeft size={18} />
         <span>Voltar</span>
@@ -107,6 +151,7 @@ export default function AnunciarEmpresa() {
       {/* FORM */}
       <div className="form">
 
+        {/* NOME */}
         <input
           type="text"
           placeholder="Nome da empresa"
@@ -115,6 +160,7 @@ export default function AnunciarEmpresa() {
           onChange={(e) => setNome(e.target.value)}
         />
 
+        {/* CATEGORIA + TELEFONE */}
         <div className="formRow">
 
           <div className="field">
@@ -143,12 +189,13 @@ export default function AnunciarEmpresa() {
               placeholder="(31) 99999-9999"
               className="input"
               value={telefone}
-              onChange={(e) => setTelefone(e.target.value)}
+              onChange={(e) => setTelefone(formatPhone(e.target.value))}
             />
           </div>
 
         </div>
 
+        {/* EMAIL */}
         <input
           type="email"
           placeholder="Email"
@@ -157,6 +204,24 @@ export default function AnunciarEmpresa() {
           onChange={(e) => setEmail(e.target.value)}
         />
 
+        {/* IMAGEM */}
+        <div className="field">
+          <label>Imagem</label>
+
+          <label className="uploadBox">
+            <input
+              type="file"
+              onChange={(e) => {
+                if (e.target.files && e.target.files[0]) {
+                  setFile(e.target.files[0])
+                }
+              }}
+            />
+            <span>{file ? file.name : "Selecionar imagem"}</span>
+          </label>
+        </div>
+
+        {/* DESCRIÇÃO */}
         <div className="field">
           <label>Descrição</label>
 
@@ -168,6 +233,7 @@ export default function AnunciarEmpresa() {
           />
         </div>
 
+        {/* BOTÃO */}
         <button
           className="publishBtn"
           onClick={handleSubmit}

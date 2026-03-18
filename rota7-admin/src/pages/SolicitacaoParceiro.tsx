@@ -1,19 +1,40 @@
-import { useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 import AdminLayout from "../components/admin/AdminLayout"
 import "./SolicitacaoParceiro.css"
 
 export default function SolicitacaoParceiro() {
 
   const { id } = useParams()
+  const navigate = useNavigate()
 
-  // MOCK (depois vem do backend)
-  const solicitacao = {
-    id,
-    empresa: "Oficina Duas Rodas",
-    categoria: "Oficina",
-    responsavel: "Carlos Henrique",
-    telefone: "(31) 99999-9999",
-    descricao: "Oficina especializada em motos trail e big trail, atendimento para grupos."
+  const [data, setData] = useState<any>(null)
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_API_URL}/solicitacoes`)
+      .then(res => res.json())
+      .then(lista => {
+       const found = lista.find((i: any) => String(i.id) === String(id))
+        setData(found)
+      })
+  }, [id])
+
+  if (!data) return <p>Carregando...</p>
+
+  const aprovar = async () => {
+    await fetch(`${import.meta.env.VITE_API_URL}/solicitacoes/aprovar/${id}`, {
+      method: "POST"
+    })
+
+    navigate("/parceiros")
+  }
+
+  const rejeitar = async () => {
+    await fetch(`${import.meta.env.VITE_API_URL}/solicitacoes/${id}`, {
+      method: "DELETE"
+    })
+
+    navigate("/parceiros")
   }
 
   return (
@@ -21,44 +42,74 @@ export default function SolicitacaoParceiro() {
 
       <main className="solicitacaoPage">
 
-        <h1>Solicitação de Parceiro</h1>
+        <h1>
+          {data.tipo === "empresa"
+            ? "Solicitação de Parceiro"
+            : "Solicitação de Produto"}
+        </h1>
 
         <div className="card">
 
           <div className="field">
-            <span>Empresa</span>
-            <strong>{solicitacao.empresa}</strong>
+            <span>{data.tipo === "empresa" ? "Empresa" : "Produto"}</span>
+            <strong>{data.nome || data.titulo}</strong>
           </div>
 
           <div className="field">
             <span>Categoria</span>
-            <strong>{solicitacao.categoria}</strong>
+            <strong>{data.categoria}</strong>
           </div>
 
-          <div className="field">
-            <span>Responsável</span>
-            <strong>{solicitacao.responsavel}</strong>
-          </div>
+          {data.tipo === "empresa" && (
+            <>
+              <div className="field">
+                <span>Email</span>
+                <strong>{data.email}</strong>
+              </div>
 
-          <div className="field">
-            <span>Telefone</span>
-            <strong>{solicitacao.telefone}</strong>
-          </div>
+              <div className="field">
+                <span>Telefone</span>
+                <strong>{data.telefone}</strong>
+              </div>
+            </>
+          )}
+
+          {data.tipo === "produto" && (
+            <>
+              <div className="field">
+                <span>Preço</span>
+                <strong>{data.preco}</strong>
+              </div>
+
+              {data.km && (
+                <div className="field">
+                  <span>KM</span>
+                  <strong>{data.km}</strong>
+                </div>
+              )}
+            </>
+          )}
 
           <div className="field">
             <span>Descrição</span>
-            <p>{solicitacao.descricao}</p>
+            <p>{data.descricao}</p>
           </div>
+
+          {data.imagem && (
+            <div className="preview">
+              <img src={data.imagem} />
+            </div>
+          )}
 
         </div>
 
         <div className="actions">
 
-          <button className="btn approve">
-            Aprovar parceiro
+          <button className="btn approve" onClick={aprovar}>
+            Aprovar
           </button>
 
-          <button className="btn reject">
+          <button className="btn reject" onClick={rejeitar}>
             Rejeitar
           </button>
 

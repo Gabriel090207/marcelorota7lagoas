@@ -4,6 +4,7 @@ from app.routes import noticias
 from app.routes import dicas
 from app.routes import eventos
 from app.routes import parceiros
+from app.routes import solicitacoes
 
 
 app = FastAPI()
@@ -20,6 +21,7 @@ app.include_router(noticias.router)
 app.include_router(dicas.router)
 app.include_router(eventos.router)
 app.include_router(parceiros.router)
+app.include_router(solicitacoes.router)
 
 @app.get("/")
 def home():
