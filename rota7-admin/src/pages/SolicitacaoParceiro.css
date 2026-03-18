@@ -76,3 +76,48 @@
   background: rgba(255,122,0,0.2);
   border-color: rgba(255,122,0,0.6);
 }
+
+
+.preview {
+  margin-top: 10px;
+
+  display: flex;
+  justify-content: flex-start; /* 🔥 esquerda */
+}
+
+.preview img {
+  max-width: 110px;   /* 🔥 controla tamanho */
+  width: 100%;
+
+  border-radius: 12px;
+
+  object-fit: cover;
+}
+
+
+/* HEADER COM BOTÃO VOLTAR */
+
+.solicitacaoHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+
+.solicitacao__back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  cursor: pointer;
+  color: var(--color-primary);
+
+  margin-bottom: 20px;
+
+  transition: 0.2s;
+}
+
+.solicitacao__back:hover {
+  color: var(--color-text-secondary);
+}

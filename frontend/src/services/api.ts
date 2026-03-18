@@ -60,3 +60,23 @@ export const getGrupos = async () => {
   const res = await fetch(`${API_URL}/grupos`)
   return res.json()
 }
+
+
+ // =======================
+// GALERIA
+// =======================
+
+export const getImagens = async () => {
+  const res = await fetch(`${API_URL}/galeria`)
+  return res.json()
+}
+
+
+// =======================
+// ANÚNCIOS
+// =======================
+
+export const getAnuncios = async () => {
+  const res = await fetch(`${API_URL}/anuncios`)
+  return res.json()
+}

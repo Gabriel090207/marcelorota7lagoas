@@ -2,7 +2,7 @@ import AdminLayout from "../components/admin/AdminLayout"
 import "./Galeria.css"
 import { Link } from "react-router-dom"
 
-import { FiPlus, FiTrash } from "react-icons/fi"
+import { FiPlus, FiTrash, FiX } from "react-icons/fi"
 
 import { useEffect, useState } from "react"
 import { getImagens, deleteImagem } from "../services/api"
@@ -10,6 +10,7 @@ import { getImagens, deleteImagem } from "../services/api"
 export default function Galeria() {
 
   const [imagens, setImagens] = useState<any[]>([])
+  const [selectedImg, setSelectedImg] = useState<any | null>(null)
 
   useEffect(() => {
     getImagens().then(setImagens)
@@ -56,7 +57,11 @@ export default function Galeria() {
 
             imagens.map(img => (
 
-              <div key={img.id} className="galleryCard">
+              <div
+                key={img.id}
+                className="galleryCard"
+                onClick={() => setSelectedImg(img)}
+              >
 
                 {/* IMAGEM */}
                 <img src={img.url} alt="" />
@@ -72,7 +77,10 @@ export default function Galeria() {
                   {/* DELETE */}
                   <button
                     className="iconBtn danger"
-                    onClick={() => handleDelete(img.id)}
+                    onClick={(e) => {
+                      e.stopPropagation() // 🔥 evita abrir modal
+                      handleDelete(img.id)
+                    }}
                   >
                     <FiTrash />
                   </button>
@@ -87,8 +95,37 @@ export default function Galeria() {
 
         </div>
 
+        {/* MODAL */}
+        {selectedImg && (
+          <div className="galeriaModal">
+
+            {/* OVERLAY */}
+            <div
+              className="galeriaOverlay"
+              onClick={() => setSelectedImg(null)}
+            />
+
+            {/* BOTÃO FECHAR */}
+            <button
+              className="galeriaClose"
+              onClick={() => setSelectedImg(null)}
+            >
+              <FiX size={22} />
+            </button>
+
+            {/* IMAGEM */}
+            <div className="galeriaModalContent">
+              <img src={selectedImg.url} alt="" />
+            </div>
+
+          </div>
+        )}
+
       </main>
 
     </AdminLayout>
   )
 }
+
+
+

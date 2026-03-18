@@ -42,24 +42,30 @@ def listar_solicitacoes():
 def aprovar_solicitacao(id: str):
 
     doc_ref = db.collection("solicitacoes").document(id)
-    data = doc_ref.get().to_dict()
+    doc = doc_ref.get()
 
-    if not data:
+    if not doc.exists:
         return {"erro": "Solicitação não encontrada"}
 
-    # 🔥 se for parceiro
+    data = doc.to_dict()
+
+    # 🔥 remove campos desnecessários
+    data.pop("status", None)
+
+    # 🔥 EMPRESA → PARCEIRO
     if data.get("tipo") == "empresa":
         db.collection("parceiros").add(data)
 
-    # 🔥 se for produto
-    if data.get("tipo") == "produto":
-        db.collection("produtos").add(data)
+    # 🔥 PRODUTO → ANÚNCIO
+    elif data.get("tipo") == "produto":
+        db.collection("anuncios").add(data)
 
+    # 🔥 remove solicitação
     doc_ref.delete()
 
     return {"msg": "Aprovado com sucesso"}
 
-
+    
 # =========================
 # REJEITAR
 # =========================
@@ -69,3 +75,17 @@ def rejeitar_solicitacao(id: str):
     db.collection("solicitacoes").document(id).delete()
 
     return {"msg": "Solicitação removida"}
+
+
+
+@router.get("/{id}")
+def buscar_solicitacao(id: str):
+    doc = db.collection("solicitacoes").document(id).get()
+
+    if not doc.exists:
+        return {"erro": "Solicitação não encontrada"}
+
+    data = doc.to_dict()
+    data["id"] = doc.id
+
+    return data

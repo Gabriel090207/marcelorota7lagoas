@@ -3,6 +3,9 @@ import "./AnunciarProduto.css"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
+
+import { uploadImage } from "../services/storage"
+
 import {
   FiArrowLeft,
   FiCheckCircle,
@@ -31,6 +34,9 @@ const formatPhone = (value: string) => {
 }
 
 export default function AnunciarProduto() {
+
+
+  const [file, setFile] = useState<File | null>(null)
 
   const navigate = useNavigate()
 
@@ -67,21 +73,26 @@ export default function AnunciarProduto() {
 
       setLoading(true)
 
-      await fetch(`${import.meta.env.VITE_API_URL}/solicitacoes`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          tipo: "produto",
-          titulo,
-          categoria,
-          preco,
-          telefone,
-          descricao,
-          km
-        })
-      })
+      let imageUrl = ""
+
+if (file) {
+  imageUrl = await uploadImage(file)
+}
+
+await fetch(`${import.meta.env.VITE_API_URL}/solicitacoes`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    tipo: "produto",
+    titulo,
+    categoria,
+    preco,
+    telefone,
+    descricao,
+    km,
+    imagem: imageUrl
+  })
+})
 
       showToast("success", "Produto enviado para análise!")
 
@@ -91,6 +102,7 @@ export default function AnunciarProduto() {
       setTelefone("")
       setDescricao("")
       setKm("")
+      setFile(null)
 
     } catch (error) {
       console.error(error)
@@ -181,6 +193,37 @@ export default function AnunciarProduto() {
           value={telefone}
           onChange={(e) => setTelefone(formatPhone(e.target.value))}
         />
+
+
+        <div className="field">
+  <label>Imagem</label>
+
+  <label className="uploadBox">
+    <input
+      type="file"
+      accept="image/*"
+      onChange={(e) => {
+        if (e.target.files && e.target.files[0]) {
+          setFile(e.target.files[0])
+        }
+      }}
+    />
+    <span>{file ? "Trocar imagem" : "Selecionar imagem"}</span>
+  </label>
+
+  {file && (
+    <div className="previewBox">
+      <img src={URL.createObjectURL(file)} />
+
+      <button
+        className="removeImage"
+        onClick={() => setFile(null)}
+      >
+        <FiX />
+      </button>
+    </div>
+  )}
+</div>
 
         <textarea
           className="textarea"

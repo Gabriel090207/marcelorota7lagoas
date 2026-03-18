@@ -2,12 +2,12 @@
   padding: 40px;
 }
 
-.adminPage__header {
+/* ================= HEADER ================= */
 
+.adminPage__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
   margin-bottom: 30px;
 }
 
@@ -15,6 +15,7 @@
   color: var(--color-text-secondary);
 }
 
+/* ================= TABS ================= */
 
 .adminTabs {
   display: flex;
@@ -34,7 +35,7 @@
 
 .adminTab:hover {
   border-color: rgba(255,122,0,0.5);
-  background: rgba(255, 123, 0, 0.08);
+  background: rgba(255,123,0,0.08);
 }
 
 .adminTab.active {
@@ -43,63 +44,79 @@
   border-color: var(--color-primary);
 }
 
-/* tabela */
+/* ================= TABLE ================= */
 
 .adminTable {
-
   display: flex;
   flex-direction: column;
-
   gap: 10px;
 }
 
+/* 🔥 BASE (PARCEIROS - 3 colunas) */
+
 .adminTable__row {
   display: grid;
-
-  grid-template-columns: 1fr 160px 120px;
-
-  display: grid;
-
-  grid-template-columns: 1fr 160px 120px;
-
+  grid-template-columns: 2fr 1fr auto; /* 🔥 3 colunas */
   align-items: center;
+  gap: 20px;
 
   padding: 18px;
-
   border-radius: 14px;
 
   background: rgba(255,255,255,0.03);
-
   border: 1px solid rgba(255,255,255,0.08);
 
   transition: 0.25s;
 }
 
 .adminTable__row:hover {
-
+  transform: translateY(-2px);
   border-color: rgba(255,122,0,0.6);
 }
 
+/* 🔥 SOLICITAÇÕES (4 colunas) */
+
 .adminTable__row--solicitacao {
-  grid-template-columns: 1fr 160px 120px 80px;
+  grid-template-columns: 2fr 1fr 1.5fr auto;
+}
+
+/* ================= TEXTO ================= */
+
+.adminTable__title {
+  font-weight: 600;
 }
 
 .adminTable__category {
-
   font-size: 0.85rem;
-
   color: var(--color-primary);
 }
 
+.adminTable__status {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+/* 🔥 NÃO QUEBRA LINHA */
+
+.adminTable__title,
+.adminTable__category,
+.adminTable__status {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ================= ACTIONS ================= */
+
 .adminTable__actions {
-
   display: flex;
-
+  justify-content: flex-end;
   gap: 10px;
 }
 
-.iconBtn {
+/* ================= BOTÕES ================= */
 
+.iconBtn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -112,36 +129,15 @@
   background: rgba(255,255,255,0.05);
 
   cursor: pointer;
-
   transition: 0.2s;
 }
 
 .iconBtn:hover {
-
   background: rgba(255,122,0,0.2);
 }
 
 .iconBtn.danger:hover {
-
-   border-color: rgba(255,122,0,0.5);
-   color: #ff7a00;
-  background: rgba(255, 123, 0, 0.08);
+  border-color: rgba(255,122,0,0.5);
+  color: #ff7a00;
+  background: rgba(255,123,0,0.08);
 }
-
-
-.adminTable__status {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: #ffd166;
-}
-
-.adminTable__row--solicitacao {
-  grid-template-columns: 1fr 160px 160px 120px;
-}
-
-.adminTable__status {
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--color-text-secondary);
-}
-

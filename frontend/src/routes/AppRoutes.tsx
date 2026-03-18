@@ -17,6 +17,7 @@ import EventoDetalhe from "../pages/EventoDetalhe"
 
 import ParceirosPublic from "../pages/ParceirosPublic"
 import QueroAnunciar from "../pages/QueroAnunciar"
+import ProdutosPublic from "../pages/ProdutosPublic"
 
 import AnunciarEmpresa from "../pages/AnunciarEmpresa"
 import AnunciarProduto from "../pages/AnunciarProduto"
@@ -38,6 +39,7 @@ export function AppRoutes() {
       <Route path="/dicas/:id" element={<DicaDetalhe />} />
       <Route path="/eventos/:id" element={<EventoDetalhe />} />
       <Route path="/classificados/parceiros" element={<ParceirosPublic />} />
+      <Route path="/classificados/produtos" element={<ProdutosPublic />} />
       <Route path="/quero-anunciar" element={<QueroAnunciar />} />
       <Route path="/anunciar/empresa" element={<AnunciarEmpresa />} />
       <Route path="/anunciar/produto" element={<AnunciarProduto />} />

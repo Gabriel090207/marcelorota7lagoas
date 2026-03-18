@@ -26,11 +26,14 @@ export default function Parceiros() {
   }, [])
 
   // 🔥 carregar solicitações
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/solicitacoes`)
-      .then(res => res.json())
-      .then(setSolicitacoes)
-  }, [])
+ useEffect(() => {
+  fetch(`${import.meta.env.VITE_API_URL}/solicitacoes`)
+    .then(res => res.json())
+    .then(data => {
+      const empresas = data.filter((item: any) => item.tipo === "empresa")
+      setSolicitacoes(empresas)
+    })
+}, [])
 
   // 🔥 excluir parceiro
   const handleDelete = async () => {
@@ -139,9 +142,7 @@ export default function Parceiros() {
                   {s.categoria}
                 </div>
 
-                <div className="adminTable__status">
-                  {s.tipo === "empresa" ? s.email : s.preco}
-                </div>
+              
 
                 <div className="adminTable__actions">
 

@@ -11,7 +11,7 @@ import Eventos from "./pages/Eventos"
 
 import Parceiros from "./pages/Parceiros"
 import SolicitacaoParceiro from "./pages/SolicitacaoParceiro"
-
+import SolicitacaoAnuncio from "./pages/SolicitacaoAnuncio"
 
 import Galeria from "./pages/Galeria"
 
@@ -78,7 +78,16 @@ function App() {
 
 
         <Route path="/parceiros" element={<Parceiros />} />
-        <Route path="/parceiros/solicitacoes/:id" element={<SolicitacaoParceiro />} />
+        <Route 
+  path="/solicitacoes/:id" 
+  element={
+    <PrivateRoute>
+      <SolicitacaoParceiro />
+    </PrivateRoute>
+  } 
+/>
+
+<Route path="/anuncios/solicitacoes/:id" element={<SolicitacaoAnuncio />} />
         <Route path="/parceiros/novo" element={<NovoParceiro />} />
 
         <Route path="/galeria" element={<Galeria />} />

@@ -1,24 +1,52 @@
 import './Classificados.css'
 
 import heroMercado from '../assets/images/hero-mercado.png'
-import moto from '../assets/images/moto.png'
-import hotel from '../assets/images/hotel.png'
-import capacete from '../assets/images/capacete.png'
-import oficinaImg from '../assets/images/oficina.png'
+
 
 import { FiSearch, FiStar } from 'react-icons/fi'
 import { SectionDivider } from '../components/SectionDivider/SectionDivider'
 
 import { useEffect, useState } from 'react'
 import { getParceiros } from '../services/api'
+import { getAnuncios } from '../services/api'
+
+import { Link } from "react-router-dom"
 
 export default function Classificados() {
 
   const [parceiros, setParceiros] = useState<any[]>([])
+  const [anuncios, setAnuncios] = useState<any[]>([])
 
+
+  
   useEffect(() => {
-    getParceiros().then(setParceiros)
-  }, [])
+  getParceiros().then(setParceiros)
+  getAnuncios().then(setAnuncios)
+}, [])
+
+const filtrarPorCategoria = (categorias: string[]) => {
+  return parceiros.filter((p: any) =>
+    categorias.some(cat =>
+      p.categoria?.toLowerCase().includes(cat)
+    )
+  )
+}
+
+const servicos = filtrarPorCategoria(["serviço", "oficina"])
+const hospedagens = filtrarPorCategoria(["hotel", "pousada"])
+
+
+
+
+const motos = anuncios.filter(
+  (item: any) =>
+    item.categoria?.toLowerCase().trim() === "moto"
+)
+
+const equipamentos = anuncios.filter(
+  (item: any) =>
+    item.categoria?.toLowerCase().trim() === "equipamento"
+)
 
   return (
     <main className="classifieds">
@@ -42,13 +70,12 @@ export default function Classificados() {
           </p>
 
           <div className="classifieds__heroActions">
-            <a
-              href="/quero-anunciar"
-              target="_blank"
-              className="btn btn--primary heroButton"
-            >
-              Quero anunciar
-            </a>
+            <Link
+  to="/quero-anunciar"
+  className="btn btn--primary heroButton"
+>
+  Quero anunciar
+</Link>
           </div>
         </div>
       </section>
@@ -95,7 +122,7 @@ export default function Classificados() {
 
           <div className="classifieds__featuredGrid">
 
-            {parceiros.slice(0, 6).map((p, index) => (
+            {parceiros.slice(0,3).map((p, index) => (
 
               <div
                 key={p.id}
@@ -153,22 +180,65 @@ export default function Classificados() {
           <div className="classifieds__sectionHeader">
             <div>
               <h2>Compra e Venda de Motos</h2>
-              <p>Em breve integrado</p>
+          
             </div>
 
-            <button className="btn btn--outline">
-              Ver todos
-            </button>
+           <Link
+  to="/classificados/produtos?categoria=moto"
+  className="btn btn--outline"
+>
+  Ver todos
+</Link>
           </div>
 
           <div className="motorcyclesGrid">
-            <div className="motorcycleCard">
-              <div className="motorcycleCard__image" style={{ backgroundImage: `url(${moto})` }} />
-              <div className="motorcycleCard__content">
-                <h3>Em breve</h3>
-              </div>
-            </div>
-          </div>
+
+  {motos.slice(0, 3).map((item: any) => (
+
+    <div key={item.id} className="motorcycleCard">
+
+      <div
+        className="motorcycleCard__image"
+        style={{
+          backgroundImage: `url(${item.imagem || ""})`
+        }}
+      />
+
+      <div className="motorcycleCard__content">
+
+        <h3>{item.titulo}</h3>
+
+        <span className="motorcyclePrice">
+          {item.preco}
+        </span>
+
+        {item.km && (
+          <span className="motorcycleInfo">
+            {item.km} km rodados
+          </span>
+        )}
+
+        {item.descricao && (
+          <span className="motorcycleInfo">
+            {item.descricao.slice(0, 80)}
+          </span>
+        )}
+
+        <a
+          href={`https://wa.me/55${item.telefone?.replace(/\D/g, "")}`}
+          target="_blank"
+          className="btn btn--primary"
+        >
+          Falar no WhatsApp
+        </a>
+
+      </div>
+
+    </div>
+
+  ))}
+
+</div>
 
         </div>
       </section>
@@ -182,22 +252,59 @@ export default function Classificados() {
           <div className="classifieds__sectionHeader">
             <div>
               <h2>Equipamentos</h2>
-              <p>Em breve</p>
+             
             </div>
 
-            <button className="btn btn--outline">
-              Ver todos
-            </button>
+           <Link
+  to="/classificados/produtos?categoria=equipamento"
+  className="btn btn--outline"
+>
+  Ver todos
+</Link>
           </div>
 
           <div className="gearGrid">
-            <div className="gearCard">
-              <div className="gearCard__image" style={{ backgroundImage: `url(${capacete})` }} />
-              <div className="gearCard__content">
-                <h3>Em breve</h3>
-              </div>
-            </div>
-          </div>
+
+  {equipamentos.slice(0, 3).map((item: any) => (
+
+    <div key={item.id} className="gearCard">
+
+      <div
+        className="gearCard__image"
+        style={{
+          backgroundImage: `url(${item.imagem || ""})`
+        }}
+      />
+
+      <div className="gearCard__content">
+
+        <h3>{item.titulo}</h3>
+
+        <span className="gearPrice">
+          {item.preco}
+        </span>
+
+        {item.descricao && (
+          <span>
+            {item.descricao.slice(0, 80)}
+          </span>
+        )}
+
+        <a
+          href={`https://wa.me/55${item.telefone?.replace(/\D/g, "")}`}
+          target="_blank"
+          className="btn btn--primary"
+        >
+          Falar no WhatsApp
+        </a>
+
+      </div>
+
+    </div>
+
+  ))}
+
+</div>
 
         </div>
       </section>
@@ -211,22 +318,59 @@ export default function Classificados() {
           <div className="classifieds__sectionHeader">
             <div>
               <h2>Serviços</h2>
-              <p>Em breve</p>
+             
             </div>
 
-            <button className="btn btn--outline">
-              Ver todos
-            </button>
+           <Link
+  to="/classificados/parceiros?categoria=servico"
+  className="btn btn--outline"
+>
+  Ver todos
+</Link>
           </div>
 
           <div className="servicesGrid">
-            <div className="serviceCard">
-              <div className="serviceCard__image" style={{ backgroundImage: `url(${oficinaImg})` }} />
-              <div className="serviceCard__content">
-                <h3>Em breve</h3>
-              </div>
-            </div>
-          </div>
+
+  {servicos.slice(0, 3).map((item: any) => (
+
+    <div key={item.id} className="gearCard">
+
+      <div
+        className="gearCard__image"
+        style={{
+          backgroundImage: `url(${item.imagem || ""})`
+        }}
+      />
+
+      <div className="gearCard__content">
+
+        <h3>{item.nome}</h3>
+
+<span>
+  {item.descricao?.slice(0, 100)}
+</span>
+
+        {item.descricao && (
+          <span>
+            {item.descricao.slice(0, 80)}
+          </span>
+        )}
+
+        <a
+          href={`https://wa.me/55${item.telefone?.replace(/\D/g, "")}`}
+          target="_blank"
+          className="btn btn--primary"
+        >
+          Falar no WhatsApp
+        </a>
+
+      </div>
+
+    </div>
+
+  ))}
+
+</div>
 
         </div>
       </section>
@@ -240,23 +384,53 @@ export default function Classificados() {
           <div className="classifieds__sectionHeader">
             <div>
               <h2>Hospedagem</h2>
-              <p>Em breve</p>
+              
             </div>
 
-            <button className="btn btn--outline">
-              Ver todos
-            </button>
+            <Link
+  to="/classificados/parceiros?categoria=hospedagem"
+  className="btn btn--outline"
+>
+  Ver todos
+</Link>
           </div>
 
-          <div className="lodgingGrid">
-            <div className="lodgingCard">
-              <div className="lodgingCard__image" style={{ backgroundImage: `url(${hotel})` }} />
-              <div className="lodgingCard__content">
-                <h3>Em breve</h3>
-              </div>
-            </div>
-          </div>
+         <div className="lodgingGrid">
 
+  {hospedagens.slice(0, 3).map((item: any) => (
+
+    <div key={item.id} className="lodgingCard">
+
+      <div
+        className="lodgingCard__image"
+        style={{
+          backgroundImage: `url(${item.imagem || ""})`
+        }}
+      />
+
+      <div className="lodgingCard__content">
+
+        <h3>{item.nome}</h3>
+
+        <span>
+          {item.descricao?.slice(0, 100)}
+        </span>
+
+        <a
+          href={`https://wa.me/55${item.telefone?.replace(/\D/g, "")}`}
+          target="_blank"
+          className="btn btn--primary"
+        >
+          Reservar / Contatar
+        </a>
+
+      </div>
+
+    </div>
+
+  ))}
+
+</div>
         </div>
       </section>
 

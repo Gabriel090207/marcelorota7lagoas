@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import AdminLayout from "../components/admin/AdminLayout"
 import "./SolicitacaoParceiro.css"
+import { FiArrowLeft } from "react-icons/fi"
 
 export default function SolicitacaoParceiro() {
 
@@ -11,15 +12,25 @@ export default function SolicitacaoParceiro() {
   const [data, setData] = useState<any>(null)
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/solicitacoes`)
-      .then(res => res.json())
-      .then(lista => {
-       const found = lista.find((i: any) => String(i.id) === String(id))
-        setData(found)
-      })
+    fetch(`${import.meta.env.VITE_API_URL}/solicitacoes/${id}`)
+  .then(res => res.json())
+  .then(data => {
+    setData(data)
+  })
+  .catch(err => console.error(err))
   }, [id])
 
-  if (!data) return <p>Carregando...</p>
+  if (!data) {
+  return (
+    <AdminLayout>
+      <main className="solicitacaoPage">
+
+       
+        <p>Carregando...</p>
+      </main>
+    </AdminLayout>
+  )
+}
 
   const aprovar = async () => {
     await fetch(`${import.meta.env.VITE_API_URL}/solicitacoes/aprovar/${id}`, {
@@ -41,6 +52,16 @@ export default function SolicitacaoParceiro() {
     <AdminLayout>
 
       <main className="solicitacaoPage">
+
+         {/* 🔙 VOLTAR */}
+<div
+  className="solicitacao__back"
+  onClick={() => navigate(-1)}
+>
+  <FiArrowLeft size={18} />
+  <span>Voltar</span>
+</div>
+
 
         <h1>
           {data.tipo === "empresa"

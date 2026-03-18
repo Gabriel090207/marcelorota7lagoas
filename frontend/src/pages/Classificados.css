@@ -146,7 +146,7 @@
 
 .classifieds__featuredGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
   gap: 25px;
 }
 
@@ -275,7 +275,7 @@
 
 .motorcyclesGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
   gap: 25px;
 }
 
@@ -340,7 +340,7 @@
 
 .gearGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 25px;
 }
 
@@ -390,7 +390,7 @@
 
 .servicesGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
   gap: 25px;
 }
 
@@ -439,7 +439,7 @@
 
 .lodgingGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
   gap: 30px;
 }
 
@@ -654,3 +654,29 @@
   max-width: 600px;
 }
 
+
+
+
+/* ================= RESPONSIVIDADE GRIDS ================= */
+
+/* tablet */
+@media (max-width: 1024px) {
+  .classifieds__featuredGrid,
+  .motorcyclesGrid,
+  .gearGrid,
+  .servicesGrid,
+  .lodgingGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* mobile */
+@media (max-width: 600px) {
+  .classifieds__featuredGrid,
+  .motorcyclesGrid,
+  .gearGrid,
+  .servicesGrid,
+  .lodgingGrid {
+    grid-template-columns: 1fr;
+  }
+}

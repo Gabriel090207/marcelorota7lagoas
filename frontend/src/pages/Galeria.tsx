@@ -1,15 +1,33 @@
 import './Galeria.css'
+import { useEffect, useState } from "react"
+import { getImagens } from "../services/api"
+
+import { FiX } from "react-icons/fi"
 
 export default function Galeria() {
+
+  const [imagens, setImagens] = useState<any[]>([])
+  const [filtro, setFiltro] = useState("Todos")
+  const [selectedImg, setSelectedImg] = useState<any | null>(null)
+
+  useEffect(() => {
+    getImagens().then(setImagens)
+  }, [])
+
+  const imagensFiltradas =
+    filtro === "Todos"
+      ? imagens
+      : imagens.filter(img => img.categoria === filtro)
+
+
+
   return (
     <main className="galeria">
 
       {/* HEADER */}
       <section className="galeria__header">
         <div className="galeria__headerInner">
-          <span className="galeria__label">
-            GALERIA
-          </span>
+          <span className="galeria__label">GALERIA</span>
 
           <h1>
             Registros do motociclismo em Sete Lagoas e região.
@@ -25,11 +43,17 @@ export default function Galeria() {
       {/* FILTROS */}
       <section className="galeria__filters">
         <div className="galeria__filtersInner">
-          <button className="galeriaFilter active">Todos</button>
-          <button className="galeriaFilter">Passeios</button>
-          <button className="galeriaFilter">Trilhas</button>
-          <button className="galeriaFilter">Eventos</button>
-          <button className="galeriaFilter">Grupos</button>
+
+          {["Todos", "Passeios", "Trilhas", "Eventos", "Grupos"].map(cat => (
+            <button
+              key={cat}
+              className={`galeriaFilter ${filtro === cat ? "active" : ""}`}
+              onClick={() => setFiltro(cat)}
+            >
+              {cat}
+            </button>
+          ))}
+
         </div>
       </section>
 
@@ -39,17 +63,57 @@ export default function Galeria() {
 
           <div className="galeriaGrid">
 
-            <div className="galeriaItem" />
-            <div className="galeriaItem" />
-            <div className="galeriaItem" />
-            <div className="galeriaItem" />
-            <div className="galeriaItem" />
-            <div className="galeriaItem" />
+            {imagensFiltradas.length === 0 ? (
+              <p style={{ opacity: 0.6 }}>
+                Nenhuma imagem encontrada
+              </p>
+            ) : (
+
+              imagensFiltradas.map(img => (
+
+                <div
+                  key={img.id}
+                  className="galeriaItem"
+                  onClick={() => setSelectedImg(img)}
+                >
+                  <img src={img.url} alt="" />
+                </div>
+
+              ))
+
+            )}
 
           </div>
 
         </div>
       </section>
+
+      {/* MODAL */}
+      {selectedImg && (
+        <div className="galeriaModal">
+
+          {/* OVERLAY */}
+          <div
+            className="galeriaOverlay"
+            onClick={() => setSelectedImg(null)}
+          />
+
+          {/* BOTÃO FECHAR */}
+          <button
+            className="galeriaClose"
+            onClick={() => setSelectedImg(null)}
+          >
+            <FiX size={22} />
+          </button>
+
+         
+          {/* IMAGEM */}
+          <div className="galeriaModalContent">
+            <img src={selectedImg.url} alt="" />
+          </div>
+
+        </div>
+      )}
 
     </main>
   )

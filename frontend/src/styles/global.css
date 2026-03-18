@@ -21,6 +21,11 @@
   box-sizing: border-box;
 }
 
+
+html, body {
+  overflow-x: hidden;
+}
+
 html, body, #root {
   width: 100%;
   height: 100%;

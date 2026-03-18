@@ -33,11 +33,31 @@
 }
 
 /* GRID */
-
 .parceirosGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
+}
+
+/* tablet */
+@media (max-width: 1024px) {
+  .parceirosGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* tablet pequeno */
+@media (max-width: 768px) {
+  .parceirosGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* mobile */
+@media (max-width: 480px) {
+  .parceirosGrid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* CARD */
