@@ -164,7 +164,7 @@
 }
 
 .featuredCard__image {
-  height: 180px;
+  height: 300px;
   background-size: cover;
   background-position: center;
 }
@@ -639,3 +639,18 @@
   }
 
 }
+
+
+/* BOTÃO VER TODOS */
+
+.classifieds__sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.classifieds__sectionHeader > div {
+  max-width: 600px;
+}
+

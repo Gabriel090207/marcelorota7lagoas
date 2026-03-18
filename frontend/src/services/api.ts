@@ -35,3 +35,18 @@ export async function getEventos() {
   const res = await fetch(`${import.meta.env.VITE_API_URL}/eventos`)
   return res.json()
 }
+
+
+// =======================
+// PARCEIROS
+// =======================
+
+export const getParceiros = async () => {
+  const res = await fetch(`${API_URL}/parceiros`)
+  return res.json()
+}
+
+export const getParceiroById = async (id: string) => {
+  const res = await fetch(`${API_URL}/parceiros/${id}`)
+  return res.json()
+}

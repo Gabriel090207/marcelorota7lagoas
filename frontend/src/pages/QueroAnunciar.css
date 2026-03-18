@@ -1,0 +1,85 @@
+.queroAnunciar {
+  padding: 140px 24px 90px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+
+.queroAnunciar__header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.queroAnunciar__header h1 {
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+}
+
+.queroAnunciar__header p {
+  color: var(--color-text-secondary);
+}
+
+/* CARDS */
+
+.queroAnunciar__options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.anuncioCard {
+  padding: 30px;
+
+  border-radius: 16px;
+
+  border: 1px solid var(--color-border);
+
+  background: var(--color-background-secondary);
+
+  cursor: pointer;
+
+  transition: 0.25s;
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.anuncioCard:hover {
+  transform: translateY(-5px);
+  border-color: var(--color-primary);
+}
+
+/* ICON */
+
+.anuncioCard__icon {
+  color: var(--color-primary);
+}
+
+/* TEXTO */
+
+.anuncioCard h3 {
+  font-size: 1.2rem;
+}
+
+.anuncioCard p {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+/* CTA */
+
+.anuncioCard__cta {
+  margin-top: auto;
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+  .queroAnunciar__options {
+    grid-template-columns: 1fr;
+  }
+}

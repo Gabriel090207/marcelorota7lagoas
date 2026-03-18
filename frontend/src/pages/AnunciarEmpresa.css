@@ -1,0 +1,275 @@
+/* PAGE */
+
+.anunciarEmpresa {
+  padding: 140px 24px 60px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+
+.anunciarEmpresa__header {
+  margin-bottom: 30px;
+}
+
+.anunciarEmpresa__header h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.anunciarEmpresa__header p {
+  color: var(--color-text-secondary);
+}
+
+/* VOLTAR */
+
+.novaNoticia__back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  cursor: pointer;
+  color: var(--color-primary);
+
+  margin-bottom: 20px;
+
+  transition: 0.2s;
+}
+
+.novaNoticia__back:hover {
+  color: var(--color-text-secondary);
+}
+
+/* FORM */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* FIELD */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+/* GRID */
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* INPUT */
+
+.input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  color: #fff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: 0.2s;
+}
+
+.input:focus {
+  border-color: rgba(255,122,0,0.6);
+}
+
+/* SELECT */
+
+.selectInput {
+  width: 100%;
+  padding: 14px 42px 14px 16px;
+
+  border-radius: 10px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background-color: rgba(255,255,255,0.03);
+
+  color: #fff;
+
+  font-size: 0.95rem;
+
+  outline: none;
+
+  cursor: pointer;
+
+  appearance: none;
+
+  transition: 0.2s;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff7a00' viewBox='0 0 20 20'%3E%3Cpath d='M5 7l5 5 5-5z'/%3E%3C/svg%3E");
+
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+}
+
+.selectInput:focus {
+  border-color: rgba(255,122,0,0.6);
+}
+
+/* TEXTAREA */
+
+.textarea {
+  width: 100%;
+  min-height: 120px;
+
+  padding: 14px 16px;
+
+  border-radius: 10px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(255,255,255,0.03);
+
+  color: #fff;
+
+  font-size: 0.95rem;
+
+  resize: vertical;
+
+  outline: none;
+
+  transition: 0.2s;
+}
+
+.textarea:focus {
+  border-color: rgba(255,122,0,0.6);
+}
+
+/* BOTÃO */
+
+.publishBtn {
+  margin-top: 10px;
+
+  padding: 14px;
+
+  border-radius: 10px;
+
+  border: none;
+
+  background: var(--color-primary);
+
+  color: #000;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.publishBtn:hover {
+  opacity: 0.9;
+}
+
+.publishBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* TOAST */
+
+.adminToast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-24px);
+
+  z-index: 9999;
+
+  min-width: 320px;
+  max-width: 420px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 14px 16px;
+  border-radius: 14px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(12, 12, 12, 0.96);
+
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s ease;
+}
+
+.adminToast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.adminToast--success {
+  border-color: rgba(255, 140, 0, 0.45);
+}
+
+.adminToast--error {
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+.adminToast__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adminToast--success .adminToast__icon {
+  color: var(--color-primary);
+}
+
+.adminToast--error .adminToast__icon {
+  color: #ef4444;
+}
+
+.adminToast__content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.adminToast__content strong {
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.adminToast__content span {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.adminToast__close {
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+}
+
+.adminToast__close:hover {
+  color: var(--color-primary);
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 768px) {
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+}

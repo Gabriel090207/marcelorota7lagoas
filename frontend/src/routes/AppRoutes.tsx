@@ -15,6 +15,12 @@ import DicaDetalhe from "../pages/DicaDetalhe"
 import EventoDetalhe from "../pages/EventoDetalhe"
 
 
+import ParceirosPublic from "../pages/ParceirosPublic"
+import QueroAnunciar from "../pages/QueroAnunciar"
+
+import AnunciarEmpresa from "../pages/AnunciarEmpresa"
+import AnunciarProduto from "../pages/AnunciarProduto"
+
 export function AppRoutes() {
   return (
     <Routes>
@@ -31,6 +37,10 @@ export function AppRoutes() {
       <Route path="/noticia/:id" element={<NoticiaDetalhe />} />
       <Route path="/dicas/:id" element={<DicaDetalhe />} />
       <Route path="/eventos/:id" element={<EventoDetalhe />} />
+      <Route path="/classificados/parceiros" element={<ParceirosPublic />} />
+      <Route path="/quero-anunciar" element={<QueroAnunciar />} />
+      <Route path="/anunciar/empresa" element={<AnunciarEmpresa />} />
+      <Route path="/anunciar/produto" element={<AnunciarProduto />} />
 
 
 
