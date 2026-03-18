@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import noticias, dicas, eventos, parceiros, solicitacoes, grupos, anuncios
+from app.routes import noticias, dicas, eventos, parceiros, solicitacoes, grupos, anuncios, galeria
 app = FastAPI()
 
 app.add_middleware(
@@ -18,6 +18,7 @@ app.include_router(parceiros.router)
 app.include_router(solicitacoes.router)
 app.include_router(grupos.router)
 app.include_router(anuncios.router)
+app.include_router(galeria.router)
 
 
 @app.get("/")

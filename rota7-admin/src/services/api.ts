@@ -258,3 +258,34 @@ export async function deleteAnuncio(id: string) {
 
   return res.json()
 }
+
+
+
+// =======================
+// GALERIA
+// =======================
+
+export async function createImagem(data: any) {
+  const res = await fetch(`${API_URL}/galeria`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+
+  return res.json()
+}
+
+export async function getImagens() {
+  const res = await fetch(`${API_URL}/galeria`)
+  return res.json()
+}
+
+export async function deleteImagem(id: string) {
+  const res = await fetch(`${API_URL}/galeria/${id}`, {
+    method: "DELETE"
+  })
+
+  return res.json()
+}

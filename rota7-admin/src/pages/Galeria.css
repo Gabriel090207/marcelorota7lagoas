@@ -117,3 +117,30 @@
 }
 
 
+.galleryOverlay {
+  position: absolute;
+  inset: 0;
+
+  background: rgba(0,0,0,0.6);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  padding: 10px;
+
+  opacity: 0;
+  transition: 0.3s;
+}
+
+.galleryCard:hover .galleryOverlay {
+  opacity: 1;
+}
+
+.galleryCategory {
+  background: var(--color-primary);
+  color: #000;
+  font-size: 0.7rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+}

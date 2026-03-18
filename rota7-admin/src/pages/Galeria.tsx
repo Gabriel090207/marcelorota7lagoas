@@ -4,25 +4,30 @@ import { Link } from "react-router-dom"
 
 import { FiPlus, FiTrash } from "react-icons/fi"
 
+import { useEffect, useState } from "react"
+import { getImagens, deleteImagem } from "../services/api"
+
 export default function Galeria() {
 
-  const imagens = [
-    {
-      id: 1,
-      url: "https://images.unsplash.com/photo-1558981403-c5f9899a28bc"
-    },
-    {
-      id: 2,
-      url: "https://images.unsplash.com/photo-1518655048521-f130df041f66"
-    },
-    {
-      id: 3,
-      url: "https://images.unsplash.com/photo-1549921296-3a6b9b0b6c90"
+  const [imagens, setImagens] = useState<any[]>([])
+
+  useEffect(() => {
+    getImagens().then(setImagens)
+  }, [])
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteImagem(id)
+
+      // remove da tela sem reload
+      setImagens(prev => prev.filter(img => img.id !== id))
+
+    } catch (error) {
+      console.error(error)
     }
-  ]
+  }
 
   return (
-
     <AdminLayout>
 
       <main className="adminPage">
@@ -34,39 +39,56 @@ export default function Galeria() {
             <p>Gerencie as fotos do portal</p>
           </div>
 
-          
-<Link to="/galeria/nova" className="btn btn--primary">
-  <FiPlus />
-  Adicionar imagem
-</Link>
+          <Link to="/galeria/nova" className="btn btn--primary">
+            <FiPlus />
+            Adicionar imagem
+          </Link>
 
         </div>
 
         <div className="galleryGrid">
 
-          {imagens.map(img => (
+          {imagens.length === 0 ? (
+            <p style={{ opacity: 0.6 }}>
+              Nenhuma imagem cadastrada
+            </p>
+          ) : (
 
-            <div key={img.id} className="galleryCard">
+            imagens.map(img => (
 
-              <img src={img.url} alt="" />
+              <div key={img.id} className="galleryCard">
 
-              <div className="galleryOverlay">
+                {/* IMAGEM */}
+                <img src={img.url} alt="" />
 
-                <button className="iconBtn danger">
-                  <FiTrash />
-                </button>
+                {/* OVERLAY */}
+                <div className="galleryOverlay">
+
+                  {/* CATEGORIA */}
+                  <span className="galleryCategory">
+                    {img.categoria}
+                  </span>
+
+                  {/* DELETE */}
+                  <button
+                    className="iconBtn danger"
+                    onClick={() => handleDelete(img.id)}
+                  >
+                    <FiTrash />
+                  </button>
+
+                </div>
 
               </div>
 
-            </div>
+            ))
 
-          ))}
+          )}
 
         </div>
 
       </main>
 
     </AdminLayout>
-
   )
 }
