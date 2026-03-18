@@ -1,11 +1,52 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import { getEventos } from '../services/api'
+
 import './Eventos.css'
 
 export default function Eventos() {
 
   const [currentDate, setCurrentDate] = useState(new Date())
+  const [eventos, setEventos] = useState<any[]>([])
+
+  useEffect(() => {
+    getEventos().then(setEventos)
+  }, [])
+
+  // 🔥 PARSE CORRETO (SEM BUG)
+ const parseEventoDate = (dataStr: string) => {
+  if (!dataStr) return null
+
+  // ✅ NOVO FORMATO (ISO)
+  if (dataStr.includes("T")) {
+    const d = new Date(dataStr)
+    return isNaN(d.getTime()) ? null : d
+  }
+
+  // ✅ FORMATO ANTIGO
+  try {
+    const [datePart, timePart] = dataStr.split(" ")
+
+    if (!datePart) return null
+
+    const [day, month, year] = datePart.split("/")
+    const [hour = "00", minute = "00"] = (timePart || "").split(":")
+
+    const d = new Date(
+      Number(year),
+      Number(month) - 1,
+      Number(day),
+      Number(hour),
+      Number(minute)
+    )
+
+    return isNaN(d.getTime()) ? null : d
+
+  } catch {
+    return null
+  }
+}
 
   const monthNames = [
     'Janeiro','Fevereiro','Março','Abril','Maio','Junho',
@@ -27,7 +68,6 @@ export default function Eventos() {
   const year = currentDate.getFullYear()
   const month = currentDate.getMonth()
 
-  // Semana começa na segunda
   let firstDay = new Date(year, month, 1).getDay()
   firstDay = firstDay === 0 ? 6 : firstDay - 1
 
@@ -35,29 +75,26 @@ export default function Eventos() {
 
   const today = new Date()
 
-  // Eventos mock dinâmicos
-  const events = [
-    {
-      id: 1,
-      title: 'Encontro Rota 7 Lagoas',
-      date: new Date(today.getFullYear(), today.getMonth(), 12)
-    },
-    {
-      id: 2,
-      title: 'Passeio Serra do Espinhaço',
-      date: new Date(today.getFullYear(), today.getMonth(), 19)
-    },
-    {
-      id: 3,
-      title: 'Trilha Off-Road Regional',
-      date: new Date(today.getFullYear(), today.getMonth() + 1, 2)
-    },
-    {
-      id: 4,
-      title: 'Encontro Moto Clube SL',
-      date: new Date(today.getFullYear(), today.getMonth() + 1, 15)
-    }
-  ]
+  // 🔥 FORMATA EVENTOS COM DATA CORRETA
+  const eventosFormatados = eventos
+    .map(e => ({
+      ...e,
+      date: parseEventoDate(e.data)
+    }))
+    .filter(e => e.date) // remove inválidos
+
+  // 🔥 ORDENA
+  const eventosOrdenados = [...eventosFormatados].sort(
+  (a, b) => a.date.getTime() - b.date.getTime()
+)
+
+  // 🔥 PRÓXIMO EVENTO
+  const proximoEvento = eventosOrdenados.find(e => e.date >= today)
+
+  // 🔥 LISTA (3 próximos, sem repetir o destaque)
+  const proximosEventos = eventosOrdenados
+    .filter(e => e.date >= today)
+    .slice(1, 4)
 
   const calendarDays: (number | null)[] = []
 
@@ -72,58 +109,77 @@ export default function Eventos() {
   return (
     <main className="eventos">
 
-      {/* EVENTO DESTAQUE */}
-      <section className="eventos__featured">
-        <div className="eventos__featuredInner">
+      {/* 🔥 EVENTO DESTAQUE */}
+      {proximoEvento && (
+        <section className="eventos__featured">
+          <div className="eventos__featuredInner">
 
-          <div className="featured__info">
-            <span className="featured__label">Evento em destaque</span>
-            <h2>Encontro Rota 7 Lagoas</h2>
-            <p>
-              Um dos maiores encontros motociclísticos da região,
-              com bandas ao vivo, praça de alimentação e exposição de motos.
-            </p>
+            <div className="featured__info">
+              <span className="featured__label">Próximo evento</span>
 
-            <div className="featured__meta">
-              <span>12 OUT</span>
-              <span>•</span>
-              <span>Praça Central</span>
+              <h2>{proximoEvento.titulo}</h2>
+
+              <p>{proximoEvento.descricao}</p>
+
+              <div className="featured__meta">
+                <span>
+                  {proximoEvento.date.toLocaleDateString("pt-BR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                  })}
+                </span>
+                <span>•</span>
+                <span>{proximoEvento.local}</span>
+              </div>
+
+              <Link
+                to={`/eventos/${proximoEvento.id}`}
+                className="btn btn--primary"
+              >
+                Ver detalhes
+              </Link>
             </div>
 
-            <Link to="#" className="btn btn--primary">
-              Ver detalhes
-            </Link>
+            <div
+              className="featured__image"
+              style={{ backgroundImage: `url(${proximoEvento.imagem})` }}
+            />
           </div>
+        </section>
+      )}
 
-          <div className="featured__image" />
-        </div>
-      </section>
-
-      {/* LISTA DE EVENTOS */}
+      {/* 🔥 LISTA */}
       <section className="eventos__list">
         <div className="eventos__listInner">
           <h3>Próximos eventos</h3>
 
           <div className="eventos__grid">
-            <article className="eventItem">
-              <h4>Passeio Serra do Espinhaço</h4>
-              <p>19 OUT • Saída 07:00</p>
-            </article>
+            {proximosEventos.map(evento => (
 
-            <article className="eventItem">
-              <h4>Trilha Off-Road Regional</h4>
-              <p>02 NOV • Terra</p>
-            </article>
+              <Link
+                key={evento.id}
+                to={`/eventos/${evento.id}`}
+                className="eventItem"
+              >
+                <h4>{evento.titulo}</h4>
 
-            <article className="eventItem">
-              <h4>Encontro Moto Clube SL</h4>
-              <p>15 NOV • Centro</p>
-            </article>
+                <p>
+                  {evento.date.toLocaleDateString("pt-BR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric"
+                  })} • {evento.local}
+                </p>
+
+              </Link>
+
+            ))}
           </div>
         </div>
       </section>
 
-      {/* CALENDÁRIO */}
+      {/* 🔥 CALENDÁRIO */}
       <section className="eventos__calendar">
         <div className="eventos__calendarInner">
 
@@ -153,7 +209,7 @@ export default function Eventos() {
                 return <div key={index} className="calendar__day empty" />
               }
 
-              const dayEvents = events.filter(event =>
+              const dayEvents = eventosFormatados.filter(event =>
                 event.date.getFullYear() === year &&
                 event.date.getMonth() === month &&
                 event.date.getDate() === day
@@ -168,7 +224,7 @@ export default function Eventos() {
 
                   {dayEvents.map(event => (
                     <span key={event.id} className="calendar__event">
-                      {event.title}
+                      {event.titulo}
                     </span>
                   ))}
                 </div>
@@ -180,39 +236,36 @@ export default function Eventos() {
         </div>
       </section>
 
+      {/* CTA */}
+      <section className="eventos__cta">
+        <div className="eventos__ctaInner">
 
-      {/* CTA DIVULGAÇÃO */}
-<section className="eventos__cta">
-  <div className="eventos__ctaInner">
+          <div className="cta__content">
+            <span className="cta__label">Moto Clubes & Organizadores</span>
 
-    <div className="cta__content">
-      <span className="cta__label">Moto Clubes & Organizadores</span>
+            <h2>Quer divulgar seu evento na Rota 7?</h2>
 
-      <h2>Quer divulgar seu evento na Rota 7?</h2>
+            <p>
+              Envie as informações do seu encontro, passeio ou trilha.
+            </p>
 
-      <p>
-        Envie as informações do seu encontro, passeio ou trilha.
-        Alcance toda a comunidade motociclística de Sete Lagoas e região.
-      </p>
+            <div className="cta__actions">
+              <a
+                href="https://wa.me/5500000000000"
+                target="_blank"
+                className="btn btn--primary"
+              >
+                WhatsApp
+              </a>
 
-      <div className="cta__actions">
-        <a
-          href="https://wa.me/5500000000000"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn--primary"
-        >
-          Falar no WhatsApp
-        </a>
+              <Link to="/eventos/enviar" className="btn btn--outline">
+                Enviar evento
+              </Link>
+            </div>
+          </div>
 
-        <Link to="#" className="btn btn--outline">
-          Enviar evento
-        </Link>
-      </div>
-    </div>
-
-  </div>
-</section>
+        </div>
+      </section>
 
     </main>
   )

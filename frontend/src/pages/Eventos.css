@@ -478,3 +478,45 @@
   }
 
 }
+
+
+.eventItem {
+  padding: 20px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: 0.25s ease;
+
+  text-decoration: none; /* 🔥 IMPORTANTE */
+  color: inherit;        /* 🔥 REMOVE ROXO */
+  display: block;        /* 🔥 garante layout */
+}
+
+
+.eventItem:hover {
+  border-color: rgba(255,122,0,0.6);
+  transform: translateY(-4px);
+}
+
+
+.eventItem h4 {
+  margin-bottom: 8px;
+  color: var(--color-text);
+}
+
+.eventItem p {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+
+.featured__image {
+  height: 320px;
+  border-radius: 18px;
+
+  background-size: cover;      /* 🔥 ESSENCIAL */
+  background-position: center; /* 🔥 ESSENCIAL */
+  background-repeat: no-repeat;
+
+  background-color: #111; /* fallback */
+}

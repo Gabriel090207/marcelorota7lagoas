@@ -1,11 +1,10 @@
 import AdminLayout from "../components/admin/AdminLayout"
 import EventDatePicker from "../components/forms/EventDatePicker"
-
 import { uploadImage } from "../services/storage"
-import { createEvento } from "../services/api"
+import { getEventoById, updateEvento } from "../services/api"
 
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 
 import {
   FiArrowLeft,
@@ -18,8 +17,9 @@ import "./NovoEvento.css"
 
 type ToastType = "success" | "error"
 
-export default function NovoEvento() {
+export default function EditarEvento() {
 
+  const { id } = useParams()
   const navigate = useNavigate()
 
   const [titulo, setTitulo] = useState("")
@@ -28,60 +28,102 @@ export default function NovoEvento() {
   const [local, setLocal] = useState("")
   const [descricao, setDescricao] = useState("")
   const [file, setFile] = useState<File | null>(null)
+  const [imagemAtual, setImagemAtual] = useState("")
+
   const [loading, setLoading] = useState(false)
 
-  // 🔥 TOAST
   const [toastOpen, setToastOpen] = useState(false)
   const [toastType, setToastType] = useState<ToastType>("success")
   const [toastMessage, setToastMessage] = useState("")
+
+  // 🔥 PARSE UNIVERSAL
+  function parseEventoDate(dataStr: string) {
+    if (!dataStr) return new Date()
+
+    if (dataStr.includes("T")) {
+      return new Date(dataStr)
+    }
+
+    const [datePart, timePart] = dataStr.split(" ")
+    const [day, month, year] = datePart.split("/")
+    const [hour = "00", minute = "00"] = (timePart || "").split(":")
+
+    return new Date(
+      Number(year),
+      Number(month) - 1,
+      Number(day),
+      Number(hour),
+      Number(minute)
+    )
+  }
+
+  useEffect(() => {
+    if (!id) return
+
+    getEventoById(id).then((data) => {
+
+      setTitulo(data.titulo || "")
+      setLocal(data.local || "")
+      setDescricao(data.descricao || "")
+      setImagemAtual(data.imagem || "")
+
+      if (data.data) {
+        const date = parseEventoDate(data.data)
+
+        const dia = String(date.getDate()).padStart(2, "0")
+        const mes = String(date.getMonth() + 1).padStart(2, "0")
+        const ano = date.getFullYear()
+
+        setData(`${dia}/${mes}/${ano}`)
+
+        setHora(
+          `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`
+        )
+      }
+
+    })
+  }, [id])
 
   const showToast = (type: ToastType, message: string) => {
     setToastType(type)
     setToastMessage(message)
     setToastOpen(true)
 
-    setTimeout(() => {
-      setToastOpen(false)
-    }, 3000)
+    setTimeout(() => setToastOpen(false), 3000)
   }
 
   const handleSubmit = async () => {
+
+    if (!titulo || !data || !local) {
+      showToast("error", "Preencha os campos obrigatórios")
+      return
+    }
+
     try {
-
-      if (!titulo.trim() || !data || !local.trim()) {
-        showToast("error", "Preencha os campos obrigatórios.")
-        return
-      }
-
       setLoading(true)
 
-      let imageUrl = ""
+      let imageUrl = imagemAtual
 
       if (file) {
         imageUrl = await uploadImage(file)
       }
 
-      await createEvento({
+      const [dia, mes, ano] = data.split("/")
+      const isoDate = new Date(`${ano}-${mes}-${dia}T${hora}`)
+
+      await updateEvento(id!, {
         titulo,
-        data: `${data} ${hora}`,
         local,
         descricao,
-        imagem: imageUrl
+        imagem: imageUrl,
+        data: isoDate.toISOString()
       })
 
-      showToast("success", "Evento criado com sucesso!")
-
-      // 🔥 LIMPAR TUDO
-      setTitulo("")
-      setData("")
-      setHora("")
-      setLocal("")
-      setDescricao("")
-      setFile(null)
+      showToast("success", "Evento atualizado com sucesso!")
 
     } catch (error) {
       console.error(error)
-      showToast("error", "Erro ao criar evento.")
+      showToast("error", "Erro ao atualizar evento")
     } finally {
       setLoading(false)
     }
@@ -92,7 +134,6 @@ export default function NovoEvento() {
 
       <main className="novaNoticia">
 
-        {/* 🔥 TOAST */}
         <div className={`adminToast adminToast--${toastType} ${toastOpen ? "show" : ""}`}>
 
           <div className="adminToast__icon">
@@ -102,34 +143,27 @@ export default function NovoEvento() {
           </div>
 
           <div className="adminToast__content">
-            <strong>
-              {toastType === "success" ? "Sucesso" : "Atenção"}
-            </strong>
+            <strong>{toastType === "success" ? "Sucesso" : "Erro"}</strong>
             <span>{toastMessage}</span>
           </div>
 
-          <button
-            className="adminToast__close"
-            onClick={() => setToastOpen(false)}
-          >
+          <button className="adminToast__close" onClick={() => setToastOpen(false)}>
             <FiX size={18} />
           </button>
 
         </div>
 
-        {/* VOLTAR */}
         <div className="novaNoticia__back" onClick={() => navigate(-1)}>
           <FiArrowLeft />
           <span>Voltar</span>
         </div>
 
-        <h1>Novo evento</h1>
+        <h1>Editar evento</h1>
 
         <div className="form">
 
           <input
             type="text"
-            placeholder="Título do evento"
             className="input"
             value={titulo}
             onChange={(e) => setTitulo(e.target.value)}
@@ -137,10 +171,7 @@ export default function NovoEvento() {
 
           <div className="formRow">
 
-            <EventDatePicker
-              value={data}
-              onChange={setData}
-            />
+            <EventDatePicker value={data} onChange={setData} />
 
             <input
               type="time"
@@ -153,16 +184,14 @@ export default function NovoEvento() {
 
           <input
             type="text"
-            placeholder="Local do evento"
             className="input"
             value={local}
             onChange={(e) => setLocal(e.target.value)}
           />
 
-          {/* PREVIEW */}
-          {file && (
+          {imagemAtual && !file && (
             <div className="novaNoticia__preview">
-              <img src={URL.createObjectURL(file)} />
+              <img src={imagemAtual} />
             </div>
           )}
 
@@ -175,13 +204,12 @@ export default function NovoEvento() {
                 }
               }}
             />
-            <span>{file ? file.name : "Selecionar imagem"}</span>
+            <span>{file ? file.name : "Trocar imagem"}</span>
           </label>
 
           <textarea
             className="input"
             rows={6}
-            placeholder="Descrição do evento"
             value={descricao}
             onChange={(e) => setDescricao(e.target.value)}
           />
@@ -191,7 +219,7 @@ export default function NovoEvento() {
             onClick={handleSubmit}
             disabled={loading}
           >
-            {loading ? "Publicando..." : "Publicar evento"}
+            {loading ? "Salvando..." : "Salvar alterações"}
           </button>
 
         </div>

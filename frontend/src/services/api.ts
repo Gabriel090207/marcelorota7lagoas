@@ -28,3 +28,10 @@ export const getDicaById = async (id: string) => {
   const res = await fetch(`${API_URL}/dicas/${id}`)
   return res.json()
 }
+
+
+
+export async function getEventos() {
+  const res = await fetch(`${import.meta.env.VITE_API_URL}/eventos`)
+  return res.json()
+}

@@ -48,17 +48,21 @@ const CustomInput = forwardRef<HTMLInputElement, any>(
 
 export default function EventDatePicker({ value, onChange }: Props) {
 
-  // string → Date
+  // ✅ CORRIGIDO (SEM BUG DE TIMEZONE)
   const parseDate = (str: string) => {
     if (!str) return null
 
     const [day, month, year] = str.split("/")
     if (!day || !month || !year) return null
 
-    return new Date(`${year}-${month}-${day}`)
+    return new Date(
+      Number(year),
+      Number(month) - 1,
+      Number(day)
+    )
   }
 
-  // Date → string
+  // ✅ FORMAT CORRETO
   const formatDate = (date: Date | null) => {
     if (!date) return ""
 
@@ -70,14 +74,18 @@ export default function EventDatePicker({ value, onChange }: Props) {
   }
 
   return (
-  <DatePicker
-    selected={parseDate(value)}
-    onChange={(date: Date | null) => onChange(formatDate(date))}
-    dateFormat="dd/MM/yyyy"
-    customInput={<CustomInput />}
-    showPopperArrow={false}
-    popperPlacement="bottom-start"
-    portalId="root-portal" // 🔥 ISSO RESOLVE TUDO
-  />
-)
+    <DatePicker
+      selected={parseDate(value)}
+      onChange={(date: Date | null) => onChange(formatDate(date))}
+      dateFormat="dd/MM/yyyy"
+      customInput={<CustomInput />}
+
+      showPopperArrow={false}
+      popperPlacement="bottom-start"
+
+      // 🔥 IMPORTANTE (melhora comportamento)
+      portalId="root"
+      autoComplete="off"
+    />
+  )
 }

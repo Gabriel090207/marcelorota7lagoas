@@ -2,34 +2,96 @@ import AdminLayout from "../components/admin/AdminLayout"
 import "./Eventos.css"
 
 import { FiPlus, FiEdit, FiTrash } from "react-icons/fi"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+
+import { useEffect, useState } from "react"
+import { getEventos, deleteEvento } from "../services/api"
+
+import ConfirmModal from "../components/admin/ConfirmModal"
 
 export default function Eventos() {
 
-  const eventos = [
-    {
-      id: 1,
-      titulo: "Teste",
-      data: "03/03/2026 15:00",
-      local: "Rua teste 123"
-    }
-  ]
+  const navigate = useNavigate()
 
-  // 🔥 formatar data
+  const [eventos, setEventos] = useState<any[]>([])
+  const [modalOpen, setModalOpen] = useState(false)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+
+  // 🔥 FUNÇÃO UNIVERSAL DE DATA
+  function parseEventoDate(dataStr: string) {
+    if (!dataStr) return new Date(0)
+
+    if (dataStr.includes("T")) {
+      const d = new Date(dataStr)
+      return isNaN(d.getTime()) ? new Date(0) : d
+    }
+
+    try {
+      const [datePart, timePart] = dataStr.split(" ")
+      const [day, month, year] = datePart.split("/")
+      const [hour = "00", minute = "00"] = (timePart || "").split(":")
+
+      return new Date(
+        Number(year),
+        Number(month) - 1,
+        Number(day),
+        Number(hour),
+        Number(minute)
+      )
+    } catch {
+      return new Date(0)
+    }
+  }
+
+  useEffect(() => {
+    getEventos().then((data) => {
+
+      const ordenados = [...data].sort((a: any, b: any) => {
+        const dateA = parseEventoDate(a.data).getTime()
+        const dateB = parseEventoDate(b.data).getTime()
+
+        return dateA - dateB
+      })
+
+      setEventos(ordenados)
+    })
+  }, [])
+
+  const handleDelete = async () => {
+    if (!selectedId) return
+
+    try {
+      await deleteEvento(selectedId)
+
+      setEventos(prev => prev.filter(e => e.id !== selectedId))
+      setModalOpen(false)
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  // 🔥 FORMATAR DATA
   const formatarData = (dataStr: string) => {
-    const [data, hora] = dataStr.split(" ")
-    const [dia, mes] = data.split("/")
+
+    const date = parseEventoDate(dataStr)
+
+    if (isNaN(date.getTime())) {
+      return { dia: "--", mes: "---", hora: "--:--" }
+    }
+
+    const dia = String(date.getDate()).padStart(2, "0")
 
     const meses = [
       "JAN","FEV","MAR","ABR","MAI","JUN",
       "JUL","AGO","SET","OUT","NOV","DEZ"
     ]
 
-    return {
-      dia,
-      mes: meses[Number(mes) - 1],
-      hora
-    }
+    const mes = meses[date.getMonth()]
+
+    const hora = `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`
+
+    return { dia, mes, hora }
   }
 
   return (
@@ -51,54 +113,59 @@ export default function Eventos() {
 
         </div>
 
-        <div className="eventsTable">
+        <div className="eventsList">
 
           {eventos.map(evento => {
 
             const { dia, mes, hora } = formatarData(evento.data)
 
             return (
+              <div key={evento.id} className="eventItem">
 
-              <div key={evento.id} className="eventRow">
-
-                {/* DATA */}
-                <div className="eventDateBox">
+                <div className="eventDate">
                   <span className="eventDay">{dia}</span>
                   <span className="eventMonth">{mes}</span>
                 </div>
 
-                {/* INFO */}
                 <div className="eventInfo">
-
                   <h3>{evento.titulo}</h3>
-
-                  <p className="eventMeta">
-                    {evento.local}
-                    <span className="dot" />
-                    {hora}
-                  </p>
-
+                  <p>{evento.local} • {hora}</p>
                 </div>
 
-                {/* AÇÕES */}
                 <div className="adminTable__actions">
 
-                  <button className="iconBtn">
+                  <button
+                    className="iconBtn"
+                    onClick={() => navigate(`/eventos/editar/${evento.id}`)}
+                  >
                     <FiEdit />
                   </button>
 
-                  <button className="iconBtn danger">
+                  <button
+                    className="iconBtn danger"
+                    onClick={() => {
+                      setSelectedId(evento.id)
+                      setModalOpen(true)
+                    }}
+                  >
                     <FiTrash />
                   </button>
 
                 </div>
 
               </div>
-
             )
           })}
 
         </div>
+
+        <ConfirmModal
+          open={modalOpen}
+          title="Excluir evento"
+          message="Tem certeza que deseja excluir este evento?"
+          onCancel={() => setModalOpen(false)}
+          onConfirm={handleDelete}
+        />
 
       </main>
 

@@ -12,6 +12,7 @@ import Grupos from '../pages/Grupos'
 
 import NoticiaDetalhe from "../pages/NoticiaDetalhe"
 import DicaDetalhe from "../pages/DicaDetalhe"
+import EventoDetalhe from "../pages/EventoDetalhe"
 
 
 export function AppRoutes() {
@@ -29,6 +30,7 @@ export function AppRoutes() {
 
       <Route path="/noticia/:id" element={<NoticiaDetalhe />} />
       <Route path="/dicas/:id" element={<DicaDetalhe />} />
+      <Route path="/eventos/:id" element={<EventoDetalhe />} />
 
 
 

@@ -17,18 +17,20 @@
 
 /* LISTA */
 
-.eventsTable {
+.eventsList {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
 }
 
-/* LINHA */
+/* ITEM */
 
-.eventRow {
-  display: grid;
-  grid-template-columns: 90px 1fr 120px;
+.eventItem {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
 
   padding: 18px;
 
@@ -37,56 +39,53 @@
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
 
-  transition: 0.25s;
+  transition: 0.25s ease;
+}
 
+.eventItem:hover {
+  border-color: rgba(255,122,0,0.6);
+}
+
+/* BLOCO ESQUERDA */
+
+.eventItem > .eventDate {
+  flex-shrink: 0;
+}
+
+.eventItem > .eventInfo {
+  flex: 1;
   min-width: 0;
 }
 
-.eventRow:hover {
-  border-color: rgba(255,122,0,0.6);
-  transform: translateY(-2px);
-}
+/* DATA */
 
-/* DATA BOX */
-
-.eventDateBox {
-  width: 70px;
-  height: 70px;
-
+.eventDate {
+  width: 60px;
+  height: 60px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
-  border-radius: 16px;
+  border-radius: 14px;
 
-  background: rgba(255,122,0,0.1);
+  background: rgba(255,122,0,0.15);
   border: 1px solid rgba(255,122,0,0.3);
+}
 
+.eventDay {
+  font-weight: 800;
+  font-size: 18px;
   color: var(--color-primary);
 }
 
-/* DIA */
-
-.eventDay {
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-/* MÊS */
-
 .eventMonth {
-  font-size: 0.75rem;
+  font-size: 11px;
   letter-spacing: 1px;
-  color: #fff;
 }
 
 /* INFO */
-
-.eventInfo {
-  min-width: 0;
-}
 
 .eventInfo h3 {
   margin-bottom: 4px;
@@ -96,27 +95,13 @@
   text-overflow: ellipsis;
 }
 
-.eventMeta {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-
-  font-size: 0.9rem;
+.eventInfo p {
   color: var(--color-text-secondary);
+  font-size: 0.9rem;
 
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-/* BOLINHA */
-
-.dot {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: var(--color-primary);
-  display: inline-block;
 }
 
 /* AÇÕES */
@@ -124,7 +109,6 @@
 .adminTable__actions {
   display: flex;
   gap: 10px;
-  justify-content: flex-end;
 }
 
 /* BOTÕES */
