@@ -7,6 +7,8 @@ import { Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import ConfirmModal from "../components/admin/ConfirmModal"
 
+import { getGrupos, deleteGrupo } from "../services/api"
+
 export default function Grupos() {
 
   const navigate = useNavigate()
@@ -16,28 +18,33 @@ export default function Grupos() {
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
   const handleDelete = async () => {
-    if (!selectedId) return
+  if (!selectedId) return
+
+  try {
+    await deleteGrupo(selectedId)
 
     setGrupos(prev => prev.filter(grupo => grupo.id !== selectedId))
     setModalOpen(false)
+
+  } catch (error) {
+    console.error(error)
   }
+}
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/grupos`)
-      .then(res => res.json())
-      .then(data => {
-        // garante que sempre seja array
-        if (Array.isArray(data)) {
-          setGrupos(data)
-        } else {
-          setGrupos([])
-        }
-      })
-      .catch(err => {
-        console.error(err)
+  getGrupos()
+    .then(data => {
+      if (Array.isArray(data)) {
+        setGrupos(data)
+      } else {
         setGrupos([])
-      })
-  }, [])
+      }
+    })
+    .catch(err => {
+      console.error(err)
+      setGrupos([])
+    })
+}, [])
 
   return (
     <AdminLayout>

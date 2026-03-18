@@ -50,3 +50,13 @@ export const getParceiroById = async (id: string) => {
   const res = await fetch(`${API_URL}/parceiros/${id}`)
   return res.json()
 }
+
+
+// =======================
+// GRUPOS
+// =======================
+
+export const getGrupos = async () => {
+  const res = await fetch(`${API_URL}/grupos`)
+  return res.json()
+}

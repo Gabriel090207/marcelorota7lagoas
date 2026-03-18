@@ -1,12 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routes import noticias
-from app.routes import dicas
-from app.routes import eventos
-from app.routes import parceiros
-from app.routes import solicitacoes
-
-
+from app.routes import noticias, dicas, eventos, parceiros, solicitacoes, grupos, anuncios
 app = FastAPI()
 
 app.add_middleware(
@@ -22,6 +16,9 @@ app.include_router(dicas.router)
 app.include_router(eventos.router)
 app.include_router(parceiros.router)
 app.include_router(solicitacoes.router)
+app.include_router(grupos.router)
+app.include_router(anuncios.router)
+
 
 @app.get("/")
 def home():

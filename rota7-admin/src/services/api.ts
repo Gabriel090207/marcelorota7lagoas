@@ -175,3 +175,86 @@ export async function deleteParceiro(id: string) {
 
   return res.json()
 }
+
+
+
+// GRUPOS
+
+export async function getGrupos() {
+  const res = await fetch(`${API_URL}/grupos`)
+  return res.json()
+}
+
+export async function getGrupoById(id: string) {
+  const res = await fetch(`${API_URL}/grupos/${id}`)
+  return res.json()
+}
+
+export async function createGrupo(data: any) {
+  const res = await fetch(`${API_URL}/grupos`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  })
+
+  return res.json()
+}
+
+export async function updateGrupo(id: string, data: any) {
+  const res = await fetch(`${API_URL}/grupos/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  })
+
+  return res.json()
+}
+
+export async function deleteGrupo(id: string) {
+  const res = await fetch(`${API_URL}/grupos/${id}`, {
+    method: "DELETE"
+  })
+
+  return res.json()
+}
+
+
+// ANÚNCIOS
+
+export async function getAnuncios() {
+  const res = await fetch(`${API_URL}/anuncios`)
+  return res.json()
+}
+
+export async function getAnuncioById(id: string) {
+  const res = await fetch(`${API_URL}/anuncios/${id}`)
+  return res.json()
+}
+
+export async function createAnuncio(data: any) {
+  const res = await fetch(`${API_URL}/anuncios`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  })
+
+  return res.json()
+}
+
+export async function updateAnuncio(id: string, data: any) {
+  const res = await fetch(`${API_URL}/anuncios/${id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  })
+
+  return res.json()
+}
+
+export async function deleteAnuncio(id: string) {
+  const res = await fetch(`${API_URL}/anuncios/${id}`, {
+    method: "DELETE"
+  })
+
+  return res.json()
+}

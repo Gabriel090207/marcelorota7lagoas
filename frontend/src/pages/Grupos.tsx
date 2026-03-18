@@ -1,8 +1,22 @@
-import { FiUsers, FiSearch } from 'react-icons/fi'
-import { Link } from 'react-router-dom'
-import './Grupos.css'
+import { FiUsers, FiSearch } from "react-icons/fi"
+import { useEffect, useState } from "react"
+import { getGrupos } from "../services/api"
+import "./Grupos.css"
 
 export default function Grupos() {
+
+  const [grupos, setGrupos] = useState<any[]>([])
+
+  useEffect(() => {
+    getGrupos().then((data) => {
+      if (Array.isArray(data)) {
+        setGrupos(data)
+      } else {
+        setGrupos([])
+      }
+    })
+  }, [])
+
   return (
     <main className="grupos">
 
@@ -23,7 +37,7 @@ export default function Grupos() {
         </div>
       </section>
 
-      {/* FILTROS */}
+      {/* FILTROS (visual por enquanto) */}
       <section className="grupos__filters">
         <div className="grupos__filtersInner">
           <button className="grupoFilter active">Todos</button>
@@ -34,7 +48,7 @@ export default function Grupos() {
         </div>
       </section>
 
-      {/* BUSCA */}
+      {/* BUSCA (visual por enquanto) */}
       <section className="grupos__search">
         <div className="grupos__searchInner">
           <div className="searchInputWrapper">
@@ -53,50 +67,50 @@ export default function Grupos() {
 
           <div className="gruposGrid">
 
-            <article className="grupoCard">
-              <div className="grupoCard__image" />
-              <div className="grupoCard__content">
-                <h3>Os Viajantes</h3>
-                <span>Fundado em 2012 • Turismo & Estrada</span>
-                <p>
-                  Grupo focado em viagens de longa distância
-                  e integração entre motociclistas.
-                </p>
-                <Link to="#" className="btn btn--outline">
-          Entrar no Grupo
-                </Link>
-              </div>
-            </article>
+            {grupos.length === 0 ? (
+              <p style={{ opacity: 0.6 }}>
+                Nenhum grupo encontrado
+              </p>
+            ) : (
+              grupos.map((grupo) => (
 
-            <article className="grupoCard">
-              <div className="grupoCard__image" />
-              <div className="grupoCard__content">
-                <h3>Bravões Moto Clube</h3>
-                <span>Big Trail • Aventuras Off-road</span>
-                <p>
-                  Grupo especializado em trilhas e desafios
-                  na região do Espinhaço.
-                </p>
-                <Link to="#" className="btn btn--outline">
-                 Entrar no Grupo
-                </Link>
-              </div>
-            </article>
+                <article key={grupo.id} className="grupoCard">
 
-            <article className="grupoCard">
-              <div className="grupoCard__image" />
-              <div className="grupoCard__content">
-                <h3>Easy Rider SL</h3>
-                <span>Custom • Encontros regionais</span>
-                <p>
-                  Comunidade apaixonada por motos custom
-                  e encontros tradicionais.
-                </p>
-                <Link to="#" className="btn btn--outline">
-                  Entrar no Grupo
-                </Link>
-              </div>
-            </article>
+                  {/* IMAGEM */}
+                  <div
+                    className="grupoCard__image"
+                    style={{
+                      backgroundImage: `url(${grupo.imagem || ""})`,
+                      backgroundSize: "cover",
+                      backgroundPosition: "center"
+                    }}
+                  />
+
+                  {/* CONTEÚDO */}
+                  <div className="grupoCard__content">
+
+                    <h3>{grupo.nome}</h3>
+
+                    <span>{grupo.tipo}</span>
+
+                    <p>
+  {grupo.descricao || "Grupo da comunidade motociclística da região."}
+</p>
+                    <a
+                      href={grupo.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn--outline"
+                    >
+                      Entrar no Grupo
+                    </a>
+
+                  </div>
+
+                </article>
+
+              ))
+            )}
 
           </div>
 
@@ -112,7 +126,7 @@ export default function Grupos() {
           <h2>Seu grupo ainda não está no Rota 7?</h2>
 
           <p>
-            Cadastre seu moto clube e venhar ajudar a fortalecer ainda mais
+            Cadastre seu moto clube e venha ajudar a fortalecer ainda mais
             a comunidade motociclista da região.
           </p>
 

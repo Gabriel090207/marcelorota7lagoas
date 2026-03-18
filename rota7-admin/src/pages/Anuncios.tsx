@@ -7,6 +7,8 @@ import { Link, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import ConfirmModal from "../components/admin/ConfirmModal"
 
+import { getAnuncios, deleteAnuncio } from "../services/api"
+
 export default function Anuncios() {
 
   const navigate = useNavigate()
@@ -15,29 +17,34 @@ export default function Anuncios() {
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
-  const handleDelete = async () => {
-    if (!selectedId) return
+ const handleDelete = async () => {
+  if (!selectedId) return
+
+  try {
+    await deleteAnuncio(selectedId)
 
     setAnuncios(prev => prev.filter(anuncio => anuncio.id !== selectedId))
     setModalOpen(false)
+
+  } catch (error) {
+    console.error(error)
   }
+}
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/anuncios`)
-      .then(res => res.json())
-      .then(data => {
-        // evita crash igual dos grupos
-        if (Array.isArray(data)) {
-          setAnuncios(data)
-        } else {
-          setAnuncios([])
-        }
-      })
-      .catch(err => {
-        console.error(err)
+  getAnuncios()
+    .then(data => {
+      if (Array.isArray(data)) {
+        setAnuncios(data)
+      } else {
         setAnuncios([])
-      })
-  }, [])
+      }
+    })
+    .catch(err => {
+      console.error(err)
+      setAnuncios([])
+    })
+}, [])
 
   return (
     <AdminLayout>
