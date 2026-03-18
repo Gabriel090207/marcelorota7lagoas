@@ -7,7 +7,9 @@ import {
   FiTool,
   FiCalendar,
   FiUsers,
-  FiImage
+  FiImage,
+  FiLayers,
+  FiTag
 } from "react-icons/fi"
 
 export default function AdminSidebar({ menuOpen, closeMenu }: any) {
@@ -16,36 +18,100 @@ export default function AdminSidebar({ menuOpen, closeMenu }: any) {
 
       <nav className="adminSidebar__nav">
 
-        <NavLink to="/admin" className="sidebarItem" onClick={closeMenu}>
+        <NavLink
+          to="/admin"
+          className={({ isActive }) =>
+            `sidebarItem ${isActive ? "active" : ""}`
+          }
+          onClick={closeMenu}
+        >
           <FiGrid className="sidebarIcon" />
           <span>Dashboard</span>
         </NavLink>
 
-        <NavLink to="/noticias" className="sidebarItem" onClick={closeMenu}>
+        <NavLink
+          to="/noticias"
+          className={({ isActive }) =>
+            `sidebarItem ${isActive ? "active" : ""}`
+          }
+          onClick={closeMenu}
+        >
           <FiFileText className="sidebarIcon" />
           <span>Notícias</span>
         </NavLink>
 
-        <NavLink to="/dicas" className="sidebarItem" onClick={closeMenu}>
+        <NavLink
+          to="/dicas"
+          className={({ isActive }) =>
+            `sidebarItem ${isActive ? "active" : ""}`
+          }
+          onClick={closeMenu}
+        >
           <FiTool className="sidebarIcon" />
           <span>Dicas</span>
         </NavLink>
 
-        <NavLink to="/eventos" className="sidebarItem" onClick={closeMenu}>
+        <NavLink
+          to="/eventos"
+          className={({ isActive }) =>
+            `sidebarItem ${isActive ? "active" : ""}`
+          }
+          onClick={closeMenu}
+        >
           <FiCalendar className="sidebarIcon" />
           <span>Eventos</span>
         </NavLink>
 
-        <NavLink to="/parceiros" className="sidebarItem" onClick={closeMenu}>
+         <NavLink
+          to="/grupos"
+          className={({ isActive }) =>
+            `sidebarItem ${isActive ? "active" : ""}`
+          }
+          onClick={closeMenu}
+        >
+          <FiLayers className="sidebarIcon" />
+          <span>Grupos</span>
+        </NavLink>
+
+
+        <NavLink
+          to="/parceiros"
+          className={({ isActive }) =>
+            `sidebarItem ${isActive ? "active" : ""}`
+          }
+          onClick={closeMenu}
+        >
           <FiUsers className="sidebarIcon" />
           <span>Parceiros</span>
         </NavLink>
 
-        <NavLink to="/galeria" className="sidebarItem" onClick={closeMenu}>
+         <NavLink
+          to="/anuncios"
+          className={({ isActive }) =>
+            `sidebarItem ${isActive ? "active" : ""}`
+          }
+          onClick={closeMenu}
+        >
+          <FiTag className="sidebarIcon" />
+          <span>Anúncios</span>
+        </NavLink>
+
+
+        <NavLink
+          to="/galeria"
+          className={({ isActive }) =>
+            `sidebarItem ${isActive ? "active" : ""}`
+          }
+          onClick={closeMenu}
+        >
           <FiImage className="sidebarIcon" />
           <span>Galeria</span>
         </NavLink>
 
+        {/* 🔥 NOVOS */}
+
+       
+       
       </nav>
 
     </aside>

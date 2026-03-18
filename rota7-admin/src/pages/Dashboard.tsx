@@ -1,7 +1,6 @@
 import AdminLayout from "../components/admin/AdminLayout"
 import "./Dashboard.css"
 
-
 import { useEffect, useState } from "react"
 
 import {
@@ -11,133 +10,206 @@ import {
   FiImage,
 } from "react-icons/fi"
 
+import {
+  getNoticias,
+  getDicas,
+  getEventos
+} from "../services/api"
+
 export default function Dashboard() {
 
   const [showToast, setShowToast] = useState(false)
 
+  const [noticias, setNoticias] = useState<any[]>([])
+  const [dicas, setDicas] = useState<any[]>([])
+  const [eventos, setEventos] = useState<any[]>([])
+
   useEffect(() => {
-  const login = localStorage.getItem("loginSucesso")
+    const login = localStorage.getItem("loginSucesso")
 
-  if (login) {
-    setShowToast(true)
-    localStorage.removeItem("loginSucesso")
+    if (login) {
+      setShowToast(true)
+      localStorage.removeItem("loginSucesso")
 
-    setTimeout(() => {
-      setShowToast(false)
-    }, 3000)
+      setTimeout(() => {
+        setShowToast(false)
+      }, 3000)
+    }
+  }, [])
+
+  // 🔥 PARSE UNIVERSAL
+  const parseEventoDate = (dataStr: string) => {
+    if (!dataStr) return null
+
+    if (dataStr.includes("T")) {
+      const d = new Date(dataStr)
+      return isNaN(d.getTime()) ? null : d
+    }
+
+    try {
+      const [datePart, timePart] = dataStr.split(" ")
+      const [day, month, year] = datePart.split("/")
+      const [hour = "00", minute = "00"] = (timePart || "").split(":")
+
+      const d = new Date(
+        Number(year),
+        Number(month) - 1,
+        Number(day),
+        Number(hour),
+        Number(minute)
+      )
+
+      return isNaN(d.getTime()) ? null : d
+    } catch {
+      return null
+    }
   }
-}, [])
 
- return (
-  <>
-    <AdminLayout>
+  useEffect(() => {
 
-      <main className="dashboard">
+    Promise.all([
+      getNoticias(),
+      getDicas(),
+      getEventos()
+    ]).then(([noticiasData, dicasData, eventosData]) => {
 
-        <div className="dashboard__header">
-          <h1>Painel Administrativo</h1>
-          <p>Resumo do portal Rota 7 Lagoas</p>
+      setNoticias(noticiasData || [])
+      setDicas(dicasData || [])
+
+      const eventosFormatados = eventosData
+        .map((e: any) => ({
+          ...e,
+          date: parseEventoDate(e.data)
+        }))
+        .filter((e: any) => e.date)
+
+      const ordenados = [...eventosFormatados].sort(
+        (a, b) => a.date.getTime() - b.date.getTime()
+      )
+
+      const proximos = ordenados
+        .filter(e => e.date >= new Date())
+        .slice(0, 3)
+
+      setEventos(proximos)
+    })
+
+  }, [])
+
+  // 🔥 FORMATAR DATA
+  const formatarData = (date: Date) => {
+
+    const dia = String(date.getDate()).padStart(2, "0")
+
+    const meses = [
+      "JAN","FEV","MAR","ABR","MAI","JUN",
+      "JUL","AGO","SET","OUT","NOV","DEZ"
+    ]
+
+    const mes = meses[date.getMonth()]
+
+    const hora = `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`
+
+    return { dia, mes, hora }
+  }
+
+  return (
+    <>
+      <AdminLayout>
+
+        <main className="dashboard">
+
+          <div className="dashboard__header">
+            <h1>Painel Administrativo</h1>
+            <p>Resumo do portal Rota 7 Lagoas</p>
+          </div>
+
+          {/* STATS */}
+
+          <div className="dashboard__stats">
+
+            <div className="statCard">
+              <FiFileText className="statIcon"/>
+              <div>
+                <h3>Notícias</h3>
+                <span>{noticias.length} publicadas</span>
+              </div>
+            </div>
+
+            <div className="statCard">
+              <FiTool className="statIcon"/>
+              <div>
+                <h3>Dicas</h3>
+                <span>{dicas.length} artigos</span>
+              </div>
+            </div>
+
+            <div className="statCard">
+              <FiUsers className="statIcon"/>
+              <div>
+                <h3>Parceiros</h3>
+                <span>-</span>
+              </div>
+            </div>
+
+            <div className="statCard">
+              <FiImage className="statIcon"/>
+              <div>
+                <h3>Galeria</h3>
+                <span>-</span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* EVENTOS */}
+
+          <div className="dashboard__events">
+
+            <div className="dashboard__sectionHeader">
+              <h2>Próximos eventos</h2>
+            </div>
+
+            <div className="eventsList">
+
+              {eventos.map(evento => {
+
+                const { dia, mes, hora } = formatarData(evento.date)
+
+                return (
+                  <div key={evento.id} className="eventItem">
+
+                    {/* DATA */}
+                    <div className="eventDate">
+                      <span className="eventDay">{dia}</span>
+                      <span className="eventMonth">{mes}</span>
+                    </div>
+
+                    {/* INFO */}
+                    <div className="eventInfo">
+                      <h3>{evento.titulo}</h3>
+                      <p>
+                        {hora} • {evento.local}
+                      </p>
+                    </div>
+
+                  </div>
+                )
+              })}
+
+            </div>
+
+          </div>
+
+        </main>
+
+      </AdminLayout>
+
+      {showToast && (
+        <div className="toast">
+          Login realizado com sucesso
         </div>
-
-        {/* CARDS DE MÉTRICAS */}
-
-        <div className="dashboard__stats">
-
-          <div className="statCard">
-            <FiFileText className="statIcon"/>
-            <div>
-              <h3>Notícias</h3>
-              <span>24 publicadas</span>
-            </div>
-          </div>
-
-          <div className="statCard">
-            <FiTool className="statIcon"/>
-            <div>
-              <h3>Dicas</h3>
-              <span>12 artigos</span>
-            </div>
-          </div>
-
-          <div className="statCard">
-            <FiUsers className="statIcon"/>
-            <div>
-              <h3>Parceiros</h3>
-              <span>8 cadastrados</span>
-            </div>
-          </div>
-
-          <div className="statCard">
-            <FiImage className="statIcon"/>
-            <div>
-              <h3>Galeria</h3>
-              <span>156 fotos</span>
-            </div>
-          </div>
-
-        </div>
-
-
-        {/* EVENTOS */}
-
-        <div className="dashboard__events">
-
-          <div className="dashboard__sectionHeader">
-            <h2>Próximos eventos</h2>
-          </div>
-
-          <div className="eventsList">
-
-            <div className="eventItem">
-              <div className="eventDate">
-                <span className="eventDay">12</span>
-                <span className="eventMonth">OUT</span>
-              </div>
-
-              <div className="eventInfo">
-                <h3>Encontro Rota 7 Lagoas</h3>
-                <p>Praça Central • Sete Lagoas</p>
-              </div>
-            </div>
-
-            <div className="eventItem">
-              <div className="eventDate">
-                <span className="eventDay">19</span>
-                <span className="eventMonth">OUT</span>
-              </div>
-
-              <div className="eventInfo">
-                <h3>Passeio Serra do Espinhaço</h3>
-                <p>Saída 07:00 • Posto X</p>
-              </div>
-            </div>
-
-            <div className="eventItem">
-              <div className="eventDate">
-                <span className="eventDay">02</span>
-                <span className="eventMonth">NOV</span>
-              </div>
-
-              <div className="eventInfo">
-                <h3>Trilha Off-road Regional</h3>
-                <p>Região do Espinhaço</p>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-      </main>
-
-    </AdminLayout>
-
-{showToast && (
-  <div className="toast">
-    Login realizado com sucesso 
-  </div>
-)}
-
-</>
-)
+      )}
+    </>
+  )
 }

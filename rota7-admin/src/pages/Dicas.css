@@ -90,3 +90,67 @@
 
   background: rgba(255,50,50,0.3);
 }
+
+
+
+/* ================= RESPONSIVIDADE ================= */
+
+/* Tablet */
+@media (max-width: 1024px) {
+
+  .adminPage {
+    padding: 0px;
+  }
+
+  .adminTable__row {
+    grid-template-columns: 1fr 140px 100px;
+    padding: 14px;
+  }
+
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+
+  .adminPage__header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .adminPage__header a {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .adminTable__row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .adminTable__category {
+    font-size: 0.75rem;
+  }
+
+  .adminTable__actions {
+    justify-content: flex-end;
+  }
+
+}
+
+/* Mobile pequeno */
+@media (max-width: 480px) {
+
+  .adminPage {
+    padding: 15px;
+  }
+
+  .adminPage__header h1 {
+    font-size: 1.4rem;
+  }
+
+  .adminPage__header p {
+    font-size: 0.85rem;
+  }
+
+}

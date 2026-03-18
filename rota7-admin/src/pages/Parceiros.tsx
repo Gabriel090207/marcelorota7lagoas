@@ -1,51 +1,69 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import AdminLayout from "../components/admin/AdminLayout"
 import "./Parceiros.css"
 
 import { FiPlus, FiEdit, FiTrash, FiEye } from "react-icons/fi"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+
+import { getParceiros, deleteParceiro } from "../services/api"
+import ConfirmModal from "../components/admin/ConfirmModal"
 
 export default function Parceiros() {
 
-    const [abaAtiva, setAbaAtiva] = useState<"parceiros" | "solicitacoes">("parceiros")
+  const navigate = useNavigate()
 
-  const parceiros = [
-    {
-      id: 1,
-      nome: "Moto Center 7L",
-      categoria: "Oficina"
-    },
-    {
-      id: 2,
-      nome: "Capacetes BH",
-      categoria: "Equipamentos"
-    }
-  ]
+  const [abaAtiva, setAbaAtiva] = useState<"parceiros" | "solicitacoes">("parceiros")
 
+  const [parceiros, setParceiros] = useState<any[]>([])
 
-    const solicitacoes = [
+  // 🔥 MOCK TEMPORÁRIO (depois vem do backend)
+  const [solicitacoes] = useState([
     {
-      id: 1,
+      id: "1",
       empresa: "Oficina Duas Rodas",
       categoria: "Oficina",
       responsavel: "Carlos Henrique",
       status: "Nova"
     },
     {
-      id: 2,
-      empresa: "Loja Trilha Moto Peças",
+      id: "2",
+      empresa: "Trilha Moto Peças",
       categoria: "Peças",
       responsavel: "Fernanda Souza",
       status: "Pendente"
     }
-  ]
+  ])
+
+  const [modalOpen, setModalOpen] = useState(false)
+  const [selectedId, setSelectedId] = useState<string | null>(null)
+
+  // 🔥 carregar parceiros reais
+  useEffect(() => {
+    getParceiros().then(setParceiros)
+  }, [])
+
+  // 🔥 excluir parceiro
+  const handleDelete = async () => {
+    if (!selectedId) return
+
+    try {
+      await deleteParceiro(selectedId)
+
+      setParceiros(prev => prev.filter(p => p.id !== selectedId))
+
+      setModalOpen(false)
+
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
-
     <AdminLayout>
 
       <main className="adminPage">
 
+        {/* HEADER */}
         <div className="adminPage__header">
 
           <div>
@@ -60,7 +78,8 @@ export default function Parceiros() {
 
         </div>
 
-               <div className="adminTabs">
+        {/* ABAS */}
+        <div className="adminTabs">
 
           <button
             className={`adminTab ${abaAtiva === "parceiros" ? "active" : ""}`}
@@ -78,8 +97,13 @@ export default function Parceiros() {
 
         </div>
 
+        {/* 🔥 PARCEIROS */}
         {abaAtiva === "parceiros" && (
           <div className="adminTable">
+
+            {parceiros.length === 0 && (
+              <p className="emptyState">Nenhum parceiro cadastrado</p>
+            )}
 
             {parceiros.map(parceiro => (
 
@@ -95,11 +119,20 @@ export default function Parceiros() {
 
                 <div className="adminTable__actions">
 
-                  <button className="iconBtn">
+                  <button
+                    className="iconBtn"
+                    onClick={() => navigate(`/parceiros/editar/${parceiro.id}`)}
+                  >
                     <FiEdit />
                   </button>
 
-                  <button className="iconBtn danger">
+                  <button
+                    className="iconBtn danger"
+                    onClick={() => {
+                      setSelectedId(parceiro.id)
+                      setModalOpen(true)
+                    }}
+                  >
                     <FiTrash />
                   </button>
 
@@ -112,12 +145,20 @@ export default function Parceiros() {
           </div>
         )}
 
+        {/* 🔥 SOLICITAÇÕES (PRONTO PRA BACKEND) */}
         {abaAtiva === "solicitacoes" && (
           <div className="adminTable">
 
+            {solicitacoes.length === 0 && (
+              <p className="emptyState">Nenhuma solicitação</p>
+            )}
+
             {solicitacoes.map(solicitacao => (
 
-              <div key={solicitacao.id} className="adminTable__row adminTable__row--solicitacao">
+              <div
+                key={solicitacao.id}
+                className="adminTable__row adminTable__row--solicitacao"
+              >
 
                 <div className="adminTable__title">
                   {solicitacao.empresa}
@@ -132,12 +173,14 @@ export default function Parceiros() {
                 </div>
 
                 <div className="adminTable__actions">
-                  <Link
-                    to={`/parceiros/solicitacoes/${solicitacao.id}`}
+
+                  <button
                     className="iconBtn"
+                    onClick={() => navigate(`/parceiros/solicitacoes/${solicitacao.id}`)}
                   >
                     <FiEye />
-                  </Link>
+                  </button>
+
                 </div>
 
               </div>
@@ -146,10 +189,18 @@ export default function Parceiros() {
 
           </div>
         )}
-        
+
+        {/* 🔥 MODAL */}
+        <ConfirmModal
+          open={modalOpen}
+          title="Excluir parceiro"
+          message="Tem certeza que deseja excluir este parceiro? Essa ação não pode ser desfeita."
+          onCancel={() => setModalOpen(false)}
+          onConfirm={handleDelete}
+        />
+
       </main>
 
     </AdminLayout>
-
   )
 }
