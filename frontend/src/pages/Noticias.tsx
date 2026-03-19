@@ -8,17 +8,37 @@ import { useNavigate } from 'react-router-dom'
 export default function Noticias() {
 
   const [noticias, setNoticias] = useState<any[]>([])
+
+  const [busca, setBusca] = useState("")
+const [categoria, setCategoria] = useState("Todas")
+
   const navigate = useNavigate()
 
   useEffect(() => {
     getNoticias().then(setNoticias)
   }, [])
 
+  const noticiasFiltradas = noticias.filter((n) => {
+
+  const texto = busca.toLowerCase()
+
+  const matchBusca =
+    n.titulo?.toLowerCase().includes(texto) ||
+    n.conteudo?.toLowerCase().includes(texto) ||
+    n.categoria?.toLowerCase().includes(texto)
+
+  const matchCategoria =
+    categoria === "Todas" ||
+    n.categoria === categoria
+
+  return matchBusca && matchCategoria
+})
+
   return (
     <main className="newsPage">
 
       {/* HERO (usa primeira notícia) */}
-      {noticias.length > 0 && (
+     {categoria === "Todas" && busca === "" && noticiasFiltradas.length > 0 && ( 
         <section className="newsPage__hero">
           <div
             className="newsHeroImage"
@@ -28,10 +48,10 @@ export default function Noticias() {
           >
             <div className="newsHeroOverlay">
 
-              <h1>{noticias[0].titulo}</h1>
+              <h1>{noticiasFiltradas[0].titulo}</h1>
 
               <p>
-                {noticias[0].conteudo?.replace(/<[^>]+>/g, "").slice(0, 120)}...
+                {noticiasFiltradas[0].conteudo?.replace(/<[^>]+>/g, "").slice(0, 120)}...
               </p>
 
               <button
@@ -49,12 +69,15 @@ export default function Noticias() {
       {/* CATEGORIAS */}
       <section className="newsPage__categories">
         <div className="newsPage__categoriesInner">
-          <button className="newsCategoryFilter active">Todas</button>
-          <button className="newsCategoryFilter">Mercado</button>
-          <button className="newsCategoryFilter">Região</button>
-          <button className="newsCategoryFilter">Eventos</button>
-          <button className="newsCategoryFilter">Dicas</button>
-          <button className="newsCategoryFilter">Moto Clubes</button>
+         {["Todas", "Mercado", "Região", "Eventos", "Dicas", "Moto Clubes"].map(cat => (
+  <button
+    key={cat}
+    className={`newsCategoryFilter ${categoria === cat ? "active" : ""}`}
+    onClick={() => setCategoria(cat)}
+  >
+    {cat}
+  </button>
+))}
         </div>
       </section>
 
@@ -64,9 +87,11 @@ export default function Noticias() {
           <div className="searchInputWrapper">
             <FiSearch size={18} className="searchIcon" />
             <input
-              type="text"
-              placeholder="Buscar notícias, mercado, eventos..."
-            />
+  type="text"
+  placeholder="Buscar notícias, mercado, eventos..."
+  value={busca}
+  onChange={(e) => setBusca(e.target.value)}
+/>
           </div>
         </div>
       </section>
@@ -75,13 +100,16 @@ export default function Noticias() {
       <section className="newsPage__list">
 
         <div className="newsPage__sectionHeader">
-          <h2>Mais notícias</h2>
+          <h2>Mais notíciaes</h2>
           <p>Confira as últimas novidades do portal Rota 7 Lagoas.</p>
         </div>
 
         <div className="newsPage__grid">
 
-          {noticias.map((noticia) => (
+         {(categoria === "Todas" && busca === ""
+  ? noticiasFiltradas.slice(1)
+  : noticiasFiltradas
+).map((noticia) => (
 
             <article key={noticia.id} className="newsCard">
 

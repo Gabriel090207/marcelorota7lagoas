@@ -136,9 +136,15 @@ await fetch(`${import.meta.env.VITE_API_URL}/solicitacoes`, {
 
       {/* VOLTAR */}
       <div
-        className="novaNoticia__back"
-        onClick={() => navigate("/classificados")}
-      >
+  className="novaNoticia__back"
+  onClick={() => {
+    if (window.history.length > 1) {
+      navigate(-1)
+    } else {
+      navigate("/quero-anunciar")
+    }
+  }}
+>
         <FiArrowLeft size={18} />
         <span>Voltar</span>
       </div>

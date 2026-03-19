@@ -6,6 +6,8 @@ import "./NovoParceiro.css"
 
 import { getParceiros, updateParceiro } from "../services/api"
 
+import { FiArrowLeft } from "react-icons/fi"
+
 export default function EditarParceiro() {
 
   const { id } = useParams()
@@ -68,6 +70,20 @@ export default function EditarParceiro() {
     <AdminLayout>
 
       <main className="novoParceiro">
+
+        <div
+  className="novaNoticia__back"
+  onClick={() => {
+    if (window.history.length > 1) {
+      navigate(-1)
+    } else {
+      navigate("/parceiros")
+    }
+  }}
+>
+  <FiArrowLeft size={18} />
+  <span>Voltar</span>
+</div>
 
         <div className="novoParceiro__header">
           <h1>Editar parceiro</h1>

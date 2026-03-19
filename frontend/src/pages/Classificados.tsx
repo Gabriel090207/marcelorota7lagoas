@@ -350,12 +350,7 @@ const equipamentos = anuncios.filter(
   {item.descricao?.slice(0, 100)}
 </span>
 
-        {item.descricao && (
-          <span>
-            {item.descricao.slice(0, 80)}
-          </span>
-        )}
-
+       
         <a
           href={`https://wa.me/55${item.telefone?.replace(/\D/g, "")}`}
           target="_blank"
@@ -421,7 +416,7 @@ const equipamentos = anuncios.filter(
           target="_blank"
           className="btn btn--primary"
         >
-          Reservar / Contatar
+          Falar no WhatsApp
         </a>
 
       </div>

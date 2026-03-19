@@ -9,6 +9,8 @@ export default function Dicas() {
 
   const [dicas, setDicas] = useState<any[]>([])
   const [busca, setBusca] = useState("")
+  const [categoria, setCategoria] = useState("Todas")
+
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -21,11 +23,27 @@ export default function Dicas() {
     return <div style={{ padding: 40 }}>Carregando dicas...</div>
   }
 
-  const destaque = dicas[0]
+  const dicasFiltradas = dicas.filter((d) => {
 
-  const dicasFiltradas = dicas.filter((d) =>
-    d.titulo.toLowerCase().includes(busca.toLowerCase())
-  )
+  const texto = busca.toLowerCase()
+
+  const matchBusca =
+    d.titulo?.toLowerCase().includes(texto) ||
+    d.conteudo?.toLowerCase().includes(texto)
+
+  const matchCategoria =
+    categoria === "Todas" ||
+    d.categoria === categoria
+
+  return matchBusca && matchCategoria
+})
+
+  // 🔥 DESTAQUE + GRID
+  const destaque = categoria === "Todas" ? dicasFiltradas[0] : null
+  const outrasDicas =
+    categoria === "Todas"
+      ? dicasFiltradas.slice(1)
+      : dicasFiltradas
 
   return (
     <main className="dicas">
@@ -87,6 +105,23 @@ export default function Dicas() {
         </section>
       )}
 
+      {/* CATEGORIAS */}
+      <section className="dicas__categories">
+        <div className="dicas__categoriesInner">
+
+          {["Todas", "Pilotagem", "Segurança", "Manutenção"].map((cat) => (
+            <button
+              key={cat}
+              className={`dicasCategoryFilter ${categoria === cat ? "active" : ""}`}
+              onClick={() => setCategoria(cat)}
+            >
+              {cat}
+            </button>
+          ))}
+
+        </div>
+      </section>
+
       {/* BUSCA */}
       <section className="dicas__search">
         <div className="dicas__searchInner">
@@ -108,8 +143,7 @@ export default function Dicas() {
 
           <div className="dicasGrid">
 
-            {dicasFiltradas.slice(1).map((dica) => (
-
+            {outrasDicas.map((dica) => (
               <article key={dica.id} className="dicaCard">
 
                 <div
@@ -145,7 +179,6 @@ export default function Dicas() {
                 </div>
 
               </article>
-
             ))}
 
           </div>

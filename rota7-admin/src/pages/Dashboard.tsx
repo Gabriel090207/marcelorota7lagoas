@@ -13,7 +13,9 @@ import {
 import {
   getNoticias,
   getDicas,
-  getEventos
+  getEventos,
+  getParceiros,
+  getImagens
 } from "../services/api"
 
 export default function Dashboard() {
@@ -23,6 +25,8 @@ export default function Dashboard() {
   const [noticias, setNoticias] = useState<any[]>([])
   const [dicas, setDicas] = useState<any[]>([])
   const [eventos, setEventos] = useState<any[]>([])
+  const [parceiros, setParceiros] = useState<any[]>([])
+  const [galeria, setGaleria] = useState<any[]>([])
 
   useEffect(() => {
     const login = localStorage.getItem("loginSucesso")
@@ -68,13 +72,18 @@ export default function Dashboard() {
   useEffect(() => {
 
     Promise.all([
-      getNoticias(),
-      getDicas(),
-      getEventos()
-    ]).then(([noticiasData, dicasData, eventosData]) => {
+  getNoticias(),
+  getDicas(),
+  getEventos(),
+  getParceiros(),
+  getImagens()
+]).then(([noticiasData, dicasData, eventosData, parceirosData, imagensData]) => {
+
 
       setNoticias(noticiasData || [])
       setDicas(dicasData || [])
+      setParceiros(parceirosData || [])
+setGaleria(imagensData || [])
 
       const eventosFormatados = eventosData
         .map((e: any) => ({
@@ -148,15 +157,15 @@ export default function Dashboard() {
               <FiUsers className="statIcon"/>
               <div>
                 <h3>Parceiros</h3>
-                <span>-</span>
+<span>{parceiros.length} cadastrados</span>
               </div>
             </div>
 
             <div className="statCard">
               <FiImage className="statIcon"/>
               <div>
-                <h3>Galeria</h3>
-                <span>-</span>
+               <h3>Galeria</h3>
+<span>{galeria.length} imagens</span>
               </div>
             </div>
 

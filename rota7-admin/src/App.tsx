@@ -12,6 +12,7 @@ import Eventos from "./pages/Eventos"
 import Parceiros from "./pages/Parceiros"
 import SolicitacaoParceiro from "./pages/SolicitacaoParceiro"
 import SolicitacaoAnuncio from "./pages/SolicitacaoAnuncio"
+import EditarParceiro from "./pages/EditarParceiro"
 
 import Galeria from "./pages/Galeria"
 
@@ -86,6 +87,7 @@ function App() {
     </PrivateRoute>
   } 
 />
+<Route path="/parceiros/editar/:id" element={<EditarParceiro />} />
 
 <Route path="/anuncios/solicitacoes/:id" element={<SolicitacaoAnuncio />} />
         <Route path="/parceiros/novo" element={<NovoParceiro />} />
