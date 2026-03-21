@@ -9,13 +9,85 @@ import {
 } from 'react-icons/fi'
 import './Home.css'
 import news1 from '../assets/images/news/news-1.jpg'
-import news2 from '../assets/images/news/news-2.jpg'
-import news3 from '../assets/images/news/news-3.jpg'
+
+import { getParceiros } from "../services/api"
 
 import { SectionDivider } from '../components/SectionDivider/SectionDivider'
 
+import { useEffect, useState } from "react"
+import { getNoticias, getEventos, getGrupos, getImagens } from "../services/api"
 
 export default function Home() {
+
+
+  const [noticias, setNoticias] = useState<any[]>([])
+const [eventos, setEventos] = useState<any[]>([])
+const [grupos, setGrupos] = useState<any[]>([])
+const [imagens, setImagens] = useState<any[]>([])
+
+
+useEffect(() => {
+  getNoticias().then(data => setNoticias(data || []))
+  getEventos().then(data => setEventos(data || []))
+  getGrupos().then(data => setGrupos(data || []))
+  getImagens().then(data => setImagens(data || []))
+}, [])
+
+const parseEventoDate = (dataStr: string) => {
+  if (!dataStr) return null
+
+  if (dataStr.includes("T")) {
+    const d = new Date(dataStr)
+    return isNaN(d.getTime()) ? null : d
+  }
+
+  try {
+    const [datePart, timePart] = dataStr.split(" ")
+    if (!datePart) return null
+
+    const [day, month, year] = datePart.split("/")
+    const [hour = "00", minute = "00"] = (timePart || "").split(":")
+
+    const d = new Date(
+      Number(year),
+      Number(month) - 1,
+      Number(day),
+      Number(hour),
+      Number(minute)
+    )
+
+    return isNaN(d.getTime()) ? null : d
+  } catch {
+    return null
+  }
+}
+
+const meses = [
+  "JAN", "FEV", "MAR", "ABR", "MAI", "JUN",
+  "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"
+]
+
+const hoje = new Date()
+
+const proximosEventos = eventos
+  .map((evento) => ({
+    ...evento,
+    date: parseEventoDate(evento.data)
+  }))
+  .filter((evento) => evento.date && evento.date >= hoje)
+  .sort((a, b) => a.date.getTime() - b.date.getTime())
+  .slice(0, 3)
+
+  const [parceiros, setParceiros] = useState<any[]>([])
+
+useEffect(() => {
+  getNoticias().then(data => setNoticias(data || []))
+  getEventos().then(data => setEventos(data || []))
+  getGrupos().then(data => setGrupos(data || []))
+  getImagens().then(data => setImagens(data || []))
+  getParceiros().then(data => setParceiros(data || [])) // 🔥 NOVO
+}, [])
+  
   return (
     <main className="home">
 
@@ -118,46 +190,42 @@ export default function Home() {
 
     <div className="home__clubsGrid">
 
-      <div className="clubCard">
-        <div className="clubCard__image" />
-        <div className="clubCard__content">
-          <h3>Os Viajantes</h3>
-          <span>Fundado em 2012 • Turismo e estrada</span>
-          <Link to="/grupos/os-viajantes">
-            Ver perfil
-          </Link>
-        </div>
-      </div>
+      {grupos.length === 0 ? (
+        <p style={{ opacity: 0.6 }}>
+          Nenhum grupo cadastrado
+        </p>
+      ) : (
+        grupos.slice(0, 3).map((grupo) => (
+          <div key={grupo.id} className="clubCard">
 
-      <div className="clubCard">
-        <div className="clubCard__image" />
-        <div className="clubCard__content">
-          <h3>Easy Rider SL</h3>
-          <span>Custom • Encontros regionais</span>
-          <Link to="/grupos/easy-rider">
-            Ver perfil
-          </Link>
-        </div>
-      </div>
+            <div
+              className="clubCard__image"
+              style={{
+                backgroundImage: `url(${grupo.imagem || ""})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center"
+              }}
+            />
 
-      <div className="clubCard">
-        <div className="clubCard__image" />
-        <div className="clubCard__content">
-          <h3>Bravões Moto Clube</h3>
-          <span>Big trail • Aventuras off-road</span>
-          <Link to="/grupos/bravoes">
-            Ver perfil
-          </Link>
-        </div>
-      </div>
+            <div className="clubCard__content">
+              <h3>{grupo.nome}</h3>
+              <span>{grupo.tipo || "Grupo"}</span>
+
+              <Link to="/grupos">
+                Ver grupo
+              </Link>
+            </div>
+
+          </div>
+        ))
+      )}
 
     </div>
 
   </div>
 </section>
 
-        <SectionDivider />
-
+<SectionDivider />
 
 {/* PRÓXIMOS EVENTOS */}
 <section className="home__events">
@@ -174,53 +242,43 @@ export default function Home() {
     </div>
 
     <div className="home__eventsGrid">
-      <article className="eventCard">
-        <div className="eventDate">
-          <span className="eventDay">12</span>
-          <span className="eventMonth">OUT</span>
-        </div>
 
-        <div className="eventInfo">
-          <h3>Encontro Rota 7 Lagoas</h3>
-          <p>Sete Lagoas • Praça central</p>
-          <div className="eventTags">
-            <span className="tag">Encontro</span>
-            <span className="tag">Cidade</span>
-          </div>
-        </div>
-      </article>
+      {proximosEventos.length === 0 ? (
+        <p style={{ opacity: 0.6 }}>
+          Nenhum evento próximo cadastrado
+        </p>
+      ) : (
+        proximosEventos.map((evento) => (
+          <article key={evento.id} className="eventCard">
 
-      <article className="eventCard">
-        <div className="eventDate">
-          <span className="eventDay">19</span>
-          <span className="eventMonth">OUT</span>
-        </div>
+            <div className="eventDate">
+              <span className="eventDay">
+                {String(evento.date.getDate()).padStart(2, "0")}
+              </span>
+              <span className="eventMonth">
+                {meses[evento.date.getMonth()]}
+              </span>
+            </div>
 
-        <div className="eventInfo">
-          <h3>Passeio Bate e Volta Serra</h3>
-          <p>Saída: Posto X • 07:00</p>
-          <div className="eventTags">
-            <span className="tag">Passeio</span>
-            <span className="tag">Estrada</span>
-          </div>
-        </div>
-      </article>
+            <div className="eventInfo">
+              <h3>{evento.titulo}</h3>
+              <p>{evento.local}</p>
 
-      <article className="eventCard">
-        <div className="eventDate">
-          <span className="eventDay">02</span>
-          <span className="eventMonth">NOV</span>
-        </div>
+              <div className="eventTags">
+                <span className="tag">
+                  {evento.date.toLocaleTimeString("pt-BR", {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                  })}
+                </span>
+                <span className="tag">Evento</span>
+              </div>
+            </div>
 
-        <div className="eventInfo">
-          <h3>Trilha Região do Espinhaço</h3>
-          <p>Concentração: 06:30 • Terra/Trilha</p>
-          <div className="eventTags">
-            <span className="tag">Trilha</span>
-            <span className="tag">Off-road</span>
-          </div>
-        </div>
-      </article>
+          </article>
+        ))
+      )}
+
     </div>
   </div>
 </section>
@@ -243,41 +301,34 @@ export default function Home() {
 
     <div className="home__newsGrid">
 
-      <article className="newsCard">
-        <div 
-  className="newsImage"
-  style={{ backgroundImage: `url(${news1})` }}
-/>
-        <div className="newsContent">
-          <span className="newsCategory">Mercado</span>
-          <h3>Novo lançamento big trail chega ao Brasil</h3>
-          <p>Modelo promete mais autonomia e tecnologia para viagens longas.</p>
-        </div>
-      </article>
+      {noticias.length === 0 ? (
+        <p style={{ opacity: 0.6 }}>
+          Nenhuma notícia cadastrada
+        </p>
+      ) : (
+        noticias.slice(0, 3).map((noticia) => (
+          <Link
+            key={noticia.id}
+            to={`/noticia/${noticia.id}`}
+            className="newsCard"
+          >
+            <div
+              className="newsImage"
+              style={{
+                backgroundImage: `url(${noticia.imagem || news1})`
+              }}
+            />
 
-      <article className="newsCard">
-        <div 
-  className="newsImage"
-  style={{ backgroundImage: `url(${news2})` }}
-/>
-        <div className="newsContent">
-          <span className="newsCategory">Região</span>
-          <h3>Encontro de moto clubes reúne centenas em Sete Lagoas</h3>
-          <p>Evento fortaleceu a cultura motociclística local.</p>
-        </div>
-      </article>
-
-      <article className="newsCard">
-        <div 
-  className="newsImage"
-  style={{ backgroundImage: `url(${news3})` }}
-/>
-        <div className="newsContent">
-          <span className="newsCategory">Dicas</span>
-          <h3>Como se preparar para uma viagem de moto segura</h3>
-          <p>Checklist essencial para evitar imprevistos na estrada.</p>
-        </div>
-      </article>
+            <div className="newsContent">
+              <span className="newsCategory">
+                {noticia.categoria || "Notícia"}
+              </span>
+              <h3>{noticia.titulo}</h3>
+              <p>{noticia.resumo || noticia.descricao || "Leia mais no portal."}</p>
+            </div>
+          </Link>
+        ))
+      )}
 
     </div>
 
@@ -318,51 +369,37 @@ export default function Home() {
 
     <div className="home__marketRight">
 
-      <div className="marketItem">
+  {parceiros.length === 0 ? (
+    <p style={{ opacity: 0.6 }}>
+      Nenhum parceiro cadastrado
+    </p>
+  ) : (
+    parceiros.slice(0, 4).map((parceiro) => (
+
+      <div key={parceiro.id} className="marketItem">
+
         <div>
-          <h4>Oficina Moto Forte</h4>
-          <span>Manutenção especializada</span>
+          <h4>{parceiro.nome}</h4>
+          <span>{parceiro.categoria || "Parceiro"}</span>
         </div>
-        <a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer">
+
+        <a
+          href={parceiro.whatsapp || "#"}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           WhatsApp
         </a>
+
       </div>
 
-      <div className="marketItem">
-        <div>
-          <h4>Biker Store SL</h4>
-          <span>Equipamentos e acessórios</span>
-        </div>
-        <a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer">
-          WhatsApp
-        </a>
-      </div>
+    ))
+  )}
 
-      <div className="marketItem">
-        <div>
-          <h4>Pneus Speed Moto</h4>
-          <span>Pneus e alinhamento</span>
-        </div>
-        <a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer">
-          WhatsApp
-        </a>
-      </div>
-
-      <div className="marketItem">
-        <div>
-          <h4>Hotel Biker Point</h4>
-          <span>Hospedagem biker friendly</span>
-        </div>
-        <a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer">
-          WhatsApp
-        </a>
-      </div>
-
-    </div>
+</div>
 
   </div>
 </section>
-
 
 {/* GALERIA */}
 <section className="home__gallery">
@@ -371,9 +408,9 @@ export default function Home() {
     <div className="home__galleryHeader">
       <div>
         <span className="galleryLabel">
-  <FiImage size={14} />
-  Momentos da Comunidade
-</span>
+          <FiImage size={14} />
+          Momentos da Comunidade
+        </span>
         <h2>Galeria Rota 7 Lagoas</h2>
         <p>
           Registros de encontros, passeios, trilhas e momentos
@@ -388,12 +425,23 @@ export default function Home() {
 
     <div className="home__galleryGrid">
 
-      <div className="galleryItem" />
-      <div className="galleryItem" />
-      <div className="galleryItem" />
-      <div className="galleryItem" />
-      <div className="galleryItem" />
-  
+      {imagens.length === 0 ? (
+        <p style={{ opacity: 0.6 }}>
+          Nenhuma imagem cadastrada
+        </p>
+      ) : (
+        imagens.slice(0, 5).map((img) => (
+          <div
+            key={img.id}
+            className="galleryItem"
+            style={{
+              backgroundImage: `url(${img.url || ""})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center"
+            }}
+          />
+        ))
+      )}
 
     </div>
 

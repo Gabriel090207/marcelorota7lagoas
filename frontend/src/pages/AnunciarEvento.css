@@ -1,0 +1,147 @@
+.anunciarEvento {
+  padding: 140px 24px 60px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.anunciarEvento__header {
+  margin-bottom: 30px;
+}
+
+.anunciarEvento__header h1 {
+  font-size: 2rem;
+}
+
+/* FORM */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* INPUT */
+
+.input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  color: #fff;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.input:focus {
+  border-color: rgba(255,122,0,0.6);
+}
+
+/* TEXTAREA */
+
+.textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* INPUT COM ÍCONE */
+
+.inputGroup {
+  position: relative;
+  width: 100%;
+}
+
+.inputGroup .input {
+  padding-left: 44px;
+}
+
+.inputGroup__icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-primary);
+  font-size: 18px;
+}
+
+/* UPLOAD */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: var(--color-text-secondary);
+}
+
+.uploadBox {
+  padding: 20px;
+  border: 2px dashed rgba(255,255,255,0.1);
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.uploadBox input {
+  display: none;
+}
+
+.previewBox {
+  position: relative;
+  margin-top: 10px;
+}
+
+.previewBox img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.removeImage {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 50%;
+  padding: 6px;
+}
+
+/* BOTÃO */
+
+.publishBtn {
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  background: var(--color-primary);
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.publishBtn:hover {
+  opacity: 0.9;
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 768px) {
+  .formRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* REMOVE ÍCONE NATIVO DO INPUT DATE E TIME */
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}

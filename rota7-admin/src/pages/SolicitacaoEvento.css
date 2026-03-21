@@ -1,0 +1,46 @@
+.backBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  color: var(--color-primary);
+}
+
+.solicitacaoBox {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.solicitacaoBox h2 {
+  margin-bottom: 10px;
+}
+
+.solicitacaoBox p {
+  margin-bottom: 8px;
+  color: var(--color-text-secondary);
+}
+
+.solicitacaoImagem {
+  width: 100%;
+  border-radius: 10px;
+  margin: 15px 0;
+}
+
+.descricao {
+  margin-top: 10px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn--danger {
+  background: #ef4444;
+  color: #fff;
+}

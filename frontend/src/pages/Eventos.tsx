@@ -259,8 +259,8 @@ export default function Eventos() {
               </a>
 
               <Link to="/eventos/enviar" className="btn btn--outline">
-                Enviar evento
-              </Link>
+  Enviar evento
+</Link>
             </div>
           </div>
 

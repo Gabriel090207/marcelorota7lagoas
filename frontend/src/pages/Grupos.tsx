@@ -3,6 +3,8 @@ import { useEffect, useState } from "react"
 import { getGrupos } from "../services/api"
 import "./Grupos.css"
 
+import { Link } from "react-router-dom"
+
 export default function Grupos() {
 
   const [grupos, setGrupos] = useState<any[]>([])
@@ -131,14 +133,12 @@ export default function Grupos() {
           </p>
 
           <div className="cta__actions">
-            <a
-              href="https://wa.me/5500000000000"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn--primary"
-            >
-              Cadastrar grupo
-            </a>
+           <Link
+  to="/grupos/enviar"
+  className="btn btn--primary"
+>
+  Cadastrar grupo
+</Link>
           </div>
 
         </div>

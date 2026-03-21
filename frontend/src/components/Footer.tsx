@@ -37,7 +37,7 @@ export function Footer() {
           <ul>
             <li><Link to="/grupos">Moto Clubes</Link></li>
             <li><Link to="/eventos">Enviar Evento</Link></li>
-            <li><Link to="/galeria">Enviar Fotos</Link></li>
+            <li><Link to="/galeria/enviar">Enviar Fotos</Link></li>
           </ul>
         </div>
 
