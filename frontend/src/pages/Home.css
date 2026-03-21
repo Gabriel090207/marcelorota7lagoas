@@ -1,4 +1,4 @@
-p.home {
+.home {
   width: 100%;
   padding-top: 80px;
 }
@@ -286,7 +286,7 @@ p.home {
 
 .home__eventsGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 18px;
 }
 
@@ -481,7 +481,7 @@ p.home {
 
 .home__newsGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
 
@@ -558,6 +558,14 @@ p.home {
 
   .home__newsGrid {
     gap: 18px;
+  }
+
+   .home__newsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .home__clubsGrid {
+    grid-template-columns: 1fr;
   }
 
   .newsImage {
@@ -936,7 +944,7 @@ p.home {
 
 .home__clubsGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   gap: 25px;
 }
 
@@ -1036,7 +1044,7 @@ p.home {
 
 .home__galleryGrid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(5, 1fr);
   gap: 15px;
 }
 
@@ -1073,9 +1081,11 @@ p.home {
 }
 
 
+/* 🔥 REMOVE ESTILO DE LINK NAS NEWS */
 .newsCard {
   text-decoration: none;
   color: inherit;
+  display: block;
 }
 
 .newsCard:visited {
@@ -1084,24 +1094,30 @@ p.home {
 
 .newsCard:hover {
   text-decoration: none;
+  color: inherit;
 }
 
 
 @media (max-width: 900px) {
-  .home__newsGrid,
   .home__clubsGrid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
 
+@media (max-width: 600px) {
+  .home__clubsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
   .home__galleryGrid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 600px) {
-  .home__newsGrid,
-  .home__clubsGrid,
   .home__galleryGrid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 }

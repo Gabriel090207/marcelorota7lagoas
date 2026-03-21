@@ -1,6 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes import noticias, dicas, eventos, parceiros, solicitacoes, grupos, anuncios, galeria
+
+
+from fastapi import FastAPI
+from app.services.email import send_test_email
+
+
 app = FastAPI()
 
 app.add_middleware(
@@ -24,3 +30,9 @@ app.include_router(galeria.router)
 @app.get("/")
 def home():
     return {"msg": "API Rota 7 Lagoas funcionando"}
+
+
+
+@app.get("/test-email")
+def test_email():
+    return send_test_email()
