@@ -6,8 +6,7 @@ import { useNavigate, useParams } from "react-router-dom"
 
 import {
   FiArrowLeft,
-  FiCheck,
-  FiTrash
+
 } from "react-icons/fi"
 
 import { createEvento } from "../services/api"
@@ -55,21 +54,19 @@ export default function SolicitacaoEvento() {
 
   // 🔥 RECUSAR
   const handleRecusar = async () => {
-    if (!confirm("Deseja realmente excluir esta solicitação?")) return
+  await fetch(`${import.meta.env.VITE_API_URL}/solicitacoes/${id}`, {
+    method: "DELETE"
+  })
 
-    await fetch(`${import.meta.env.VITE_API_URL}/solicitacoes/${id}`, {
-      method: "DELETE"
-    })
-
-    navigate("/eventos")
-  }
+  navigate("/eventos")
+}
 
   if (!data) return null
 
   return (
     <AdminLayout>
 
-      <main className="adminPage">
+      <main className="solicitacaoPage">
 
         {/* VOLTAR */}
         <div className="backBtn" onClick={() => navigate(-1)}>
@@ -88,9 +85,11 @@ export default function SolicitacaoEvento() {
           <p><strong>Responsável:</strong> {data.responsavel}</p>
           <p><strong>Contato:</strong> {data.contato}</p>
 
-          {data.imagem && (
-            <img src={data.imagem} className="solicitacaoImagem" />
-          )}
+         {data.imagem && (
+  <div className="preview">
+    <img src={data.imagem} className="solicitacaoImagem" />
+  </div>
+)}
 
           <p className="descricao">{data.descricao}</p>
 
@@ -100,21 +99,22 @@ export default function SolicitacaoEvento() {
         <div className="actions">
 
           <button
-            className="btn btn--primary"
+            className="btn approve"
             onClick={handleAprovar}
             disabled={loading}
           >
-            <FiCheck />
-            Aprovar evento
+           
+            Aprovar 
           </button>
 
           <button
-            className="btn btn--danger"
+            className="btn reject"
             onClick={handleRecusar}
           >
-            <FiTrash />
-            Recusar
+            
+            Rejeitar
           </button>
+
 
         </div>
 

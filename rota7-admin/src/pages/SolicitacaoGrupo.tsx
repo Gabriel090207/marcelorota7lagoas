@@ -60,7 +60,7 @@ export default function SolicitacaoGrupo() {
   return (
     <AdminLayout>
 
-      <main className="adminPage">
+      <main className="solicitacaoPage">
 
         <div className="novaNoticia__back" onClick={() => navigate(-1)}>
           <FiArrowLeft />

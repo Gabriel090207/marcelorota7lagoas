@@ -57,7 +57,7 @@ export default function SolicitacaoImagem() {
   return (
     <AdminLayout>
 
-      <main className="adminPage">
+      <main className="solicitacaoPage">
 
         <div className="novaNoticia__back" onClick={() => navigate(-1)}>
           <FiArrowLeft />
