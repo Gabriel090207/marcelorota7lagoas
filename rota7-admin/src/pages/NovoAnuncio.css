@@ -141,3 +141,7 @@ textarea.input {
     font-size: 1.6rem;
   }
 }
+
+textarea.input {
+  resize: none;
+}

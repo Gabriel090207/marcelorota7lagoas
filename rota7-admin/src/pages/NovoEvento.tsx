@@ -27,6 +27,7 @@ export default function NovoEvento() {
   const [hora, setHora] = useState("")
   const [local, setLocal] = useState("")
   const [descricao, setDescricao] = useState("")
+  const [tag, setTag] = useState("")
   const [file, setFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
 
@@ -62,12 +63,13 @@ export default function NovoEvento() {
       }
 
       await createEvento({
-        titulo,
-        data: `${data} ${hora}`,
-        local,
-        descricao,
-        imagem: imageUrl
-      })
+  titulo,
+  data: `${data} ${hora}`,
+  local,
+  descricao,
+  imagem: imageUrl,
+  tag
+})
 
       showToast("success", "Evento criado com sucesso!")
 
@@ -77,6 +79,7 @@ export default function NovoEvento() {
       setHora("")
       setLocal("")
       setDescricao("")
+      setTag("")
       setFile(null)
 
     } catch (error) {
@@ -158,6 +161,15 @@ export default function NovoEvento() {
             value={local}
             onChange={(e) => setLocal(e.target.value)}
           />
+
+
+          <input
+  type="text"
+  placeholder="Tag do evento (ex: Passeio, Trilha...)"
+  className="input"
+  value={tag}
+  onChange={(e) => setTag(e.target.value)}
+/>
 
           {/* PREVIEW */}
           {file && (

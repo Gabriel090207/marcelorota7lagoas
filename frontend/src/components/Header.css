@@ -20,11 +20,10 @@
   margin: 0 auto;
   padding: 14px 32px;
 
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: space-between;
 }
-
 /* ===== LOGO ===== */
 .header__left img {
   height: 60px;
@@ -35,13 +34,7 @@
 .header__nav {
   display: flex;
   gap: 30px;
-  justify-content: center; /* centraliza horizontalmente */
-  flex: 1; /* ocupa espaço entre logo e ações */
-}
-
-.header__nav {
-  /* ...o que já tem... */
-  transform: translateX(40px);
+  justify-content: center;
 }
 
 .header__nav a {
@@ -85,6 +78,7 @@
 .header__actions {
   display: flex;
   gap: 16px;
+  justify-content: flex-end;
 }
 
 /* ===== BOTÕES ===== */
@@ -242,11 +236,7 @@
   color: var(--color-primary);
 }
 
-.header__drawerDivider {
-  height: 1px;
-  background: rgba(255, 255, 255, 0.08);
-  margin: 18px 0;
-}
+
 
 .header__drawerLogin {
   width: 100%;
@@ -256,6 +246,12 @@
 /* ===== RESPONSIVO ===== */
 @media (max-width: 900px) {
 
+
+
+  .header__container {
+  display: flex;
+  justify-content: space-between;
+}
  
 
   .header__nav {

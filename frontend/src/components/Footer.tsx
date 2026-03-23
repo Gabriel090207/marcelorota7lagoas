@@ -46,8 +46,8 @@ export function Footer() {
           <h4>Comercial</h4>
           <ul>
             <li><Link to="/classificados">Classificados</Link></li>
-            <li><a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer">Anunciar no Portal</a></li>
-            <li><a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer">Seja Parceiro</a></li>
+             <li><Link to="/quero-anunciar">Anunciar no Portal</Link></li>
+            <li><Link to="/anunciar/empresa"> Seja Parceiro </Link></li>
           </ul>
         </div>
 

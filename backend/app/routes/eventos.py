@@ -10,6 +10,7 @@ class Evento(BaseModel):
     data: str
     local: str
     imagem: str = ""
+    tag: str = ""
 
 # LISTAR
 @router.get("/")

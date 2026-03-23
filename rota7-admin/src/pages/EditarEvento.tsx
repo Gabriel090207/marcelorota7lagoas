@@ -27,6 +27,7 @@ export default function EditarEvento() {
   const [hora, setHora] = useState("")
   const [local, setLocal] = useState("")
   const [descricao, setDescricao] = useState("")
+  const [tag, setTag] = useState("")
   const [file, setFile] = useState<File | null>(null)
   const [imagemAtual, setImagemAtual] = useState("")
 
@@ -65,6 +66,7 @@ export default function EditarEvento() {
       setTitulo(data.titulo || "")
       setLocal(data.local || "")
       setDescricao(data.descricao || "")
+      setTag(data.tag || "")
       setImagemAtual(data.imagem || "")
 
       if (data.data) {
@@ -112,12 +114,13 @@ export default function EditarEvento() {
       const isoDate = new Date(`${ano}-${mes}-${dia}T${hora}`)
 
       await updateEvento(id!, {
-        titulo,
-        local,
-        descricao,
-        imagem: imageUrl,
-        data: isoDate.toISOString()
-      })
+  titulo,
+  local,
+  descricao,
+  imagem: imageUrl,
+  data: isoDate.toISOString(),
+  tag
+})
 
       showToast("success", "Evento atualizado com sucesso!")
 
@@ -188,6 +191,14 @@ export default function EditarEvento() {
             value={local}
             onChange={(e) => setLocal(e.target.value)}
           />
+
+          <input
+  type="text"
+  className="input"
+  placeholder="Tag do evento (ex: Passeio, Trilha...)"
+  value={tag}
+  onChange={(e) => setTag(e.target.value)}
+/>
 
           {imagemAtual && !file && (
             <div className="novaNoticia__preview">

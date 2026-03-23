@@ -1,19 +1,12 @@
 import { useEffect, useState } from 'react'
-import { NavLink, useLocation } from 'react-router-dom'
-import { FiUser, FiX, FiMenu, FiShoppingCart } from 'react-icons/fi'
+import { NavLink} from 'react-router-dom'
+import { FiX, FiMenu } from 'react-icons/fi'
 import logo from '../assets/logo.png'
 import './Header.css'
 
-import { AuthModal } from './AuthModal/AuthModal'
-
 export function Header() {
+ 
 
-
-  const location = useLocation()
-  const isClassificados = location.pathname === '/classificados'
-
-
-  const [isAuthOpen, setIsAuthOpen] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   function openMenu() {
@@ -68,29 +61,12 @@ export function Header() {
               Classificados
             </NavLink>
             <NavLink to="/quem-somos" className={({ isActive }) => (isActive ? 'active' : '')}>
-  Quem Somos
-</NavLink>
+              Quem Somos
+            </NavLink>
           </nav>
 
           {/* Ações direita */}
           <div className="header__actions">
-
-
-            {isClassificados && (
-  <button className="header__cartBtn">
-    <FiShoppingCart size={18} />
-    Carrinho
-  </button>
-)}
-            {/* Botão Entrar (desktop) */}
-            <button
-              className="btn btn--primary header__loginBtn"
-              onClick={() => setIsAuthOpen(true)}
-            >
-              <FiUser size={18} />
-              Entrar
-            </button>
-
             {/* Botão menu (mobile) */}
             <button
               className="header__menuBtn"
@@ -127,37 +103,12 @@ export function Header() {
             <NavLink to="/eventos" onClick={closeMenu}>Agenda</NavLink>
             <NavLink to="/dicas" onClick={closeMenu}>Dicas</NavLink>
             <NavLink to="/classificados" onClick={closeMenu}>Classificados</NavLink>
-           <NavLink to="/quem-somos" onClick={closeMenu}>Quem Somos</NavLink>
+            <NavLink to="/quem-somos" onClick={closeMenu}>Quem Somos</NavLink>
           </nav>
 
           <div className="header__drawerDivider" />
-
-
-{isClassificados && (
-  <button className="header__drawerCart">
-    <FiShoppingCart size={18} />
-    Carrinho
-  </button>
-)}
-          {/* Botão Entrar (mobile) */}
-          <button
-            className="btn btn--primary header__drawerLogin"
-            onClick={() => {
-              closeMenu()
-              setIsAuthOpen(true)
-            }}
-          >
-            <FiUser size={18} />
-            Entrar
-          </button>
         </aside>
       </header>
-
-      {/* MODAL DE AUTENTICAÇÃO */}
-      <AuthModal
-        isOpen={isAuthOpen}
-        onClose={() => setIsAuthOpen(false)}
-      />
     </>
   )
 }

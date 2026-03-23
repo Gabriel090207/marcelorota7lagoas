@@ -6,7 +6,12 @@ import "./NovoParceiro.css"
 
 import { getParceiros, updateParceiro } from "../services/api"
 
-import { FiArrowLeft } from "react-icons/fi"
+import {
+  FiArrowLeft,
+  FiCheckCircle,
+  FiAlertCircle,
+  FiX
+} from "react-icons/fi"
 
 export default function EditarParceiro() {
 
@@ -20,7 +25,37 @@ export default function EditarParceiro() {
   const [descricao, setDescricao] = useState("")
   const [loading, setLoading] = useState(false)
 
-  // 🔥 carregar dados do parceiro
+  // 🔥 TOAST
+  const [toastOpen, setToastOpen] = useState(false)
+  const [toastType, setToastType] = useState<"success" | "error">("success")
+  const [toastMessage, setToastMessage] = useState("")
+
+  const showToast = (type: "success" | "error", message: string) => {
+    setToastType(type)
+    setToastMessage(message)
+    setToastOpen(true)
+
+    setTimeout(() => {
+      setToastOpen(false)
+    }, 3000)
+  }
+
+  // 🔥 MÁSCARA TELEFONE
+  const formatPhone = (value: string) => {
+    const numbers = value.replace(/\D/g, "")
+
+    if (numbers.length <= 10) {
+      return numbers
+        .replace(/(\d{2})(\d)/, "($1) $2")
+        .replace(/(\d{4})(\d)/, "$1-$2")
+    }
+
+    return numbers
+      .replace(/(\d{2})(\d)/, "($1) $2")
+      .replace(/(\d{5})(\d)/, "$1-$2")
+  }
+
+  // 🔥 carregar dados
   useEffect(() => {
     const fetchData = async () => {
       if (!id) return
@@ -40,9 +75,14 @@ export default function EditarParceiro() {
     fetchData()
   }, [id])
 
-  // 🔥 salvar edição
+  // 🔥 salvar
   const handleSubmit = async () => {
     if (!id) return
+
+    if (!nome || !categoria) {
+      showToast("error", "Preencha os campos obrigatórios")
+      return
+    }
 
     try {
       setLoading(true)
@@ -55,12 +95,13 @@ export default function EditarParceiro() {
         descricao
       })
 
-      alert("Parceiro atualizado com sucesso!")
-      navigate("/parceiros")
+      showToast("success", "Parceiro atualizado com sucesso!")
+
+     
 
     } catch (error) {
       console.error(error)
-      alert("Erro ao atualizar parceiro")
+      showToast("error", "Erro ao atualizar parceiro")
     } finally {
       setLoading(false)
     }
@@ -71,19 +112,45 @@ export default function EditarParceiro() {
 
       <main className="novoParceiro">
 
+        {/* 🔥 TOAST */}
+        <div className={`adminToast adminToast--${toastType} ${toastOpen ? "show" : ""}`}>
+
+          <div className="adminToast__icon">
+            {toastType === "success"
+              ? <FiCheckCircle size={18} />
+              : <FiAlertCircle size={18} />}
+          </div>
+
+          <div className="adminToast__content">
+            <strong>
+              {toastType === "success" ? "Sucesso" : "Erro"}
+            </strong>
+            <span>{toastMessage}</span>
+          </div>
+
+          <button
+            className="adminToast__close"
+            onClick={() => setToastOpen(false)}
+          >
+            <FiX size={18} />
+          </button>
+
+        </div>
+
+        {/* VOLTAR */}
         <div
-  className="novaNoticia__back"
-  onClick={() => {
-    if (window.history.length > 1) {
-      navigate(-1)
-    } else {
-      navigate("/parceiros")
-    }
-  }}
->
-  <FiArrowLeft size={18} />
-  <span>Voltar</span>
-</div>
+          className="novaNoticia__back"
+          onClick={() => {
+            if (window.history.length > 1) {
+              navigate(-1)
+            } else {
+              navigate("/parceiros")
+            }
+          }}
+        >
+          <FiArrowLeft size={18} />
+          <span>Voltar</span>
+        </div>
 
         <div className="novoParceiro__header">
           <h1>Editar parceiro</h1>
@@ -129,7 +196,7 @@ export default function EditarParceiro() {
                 placeholder="(31) 99999-9999"
                 className="input"
                 value={telefone}
-                onChange={(e) => setTelefone(e.target.value)}
+                onChange={(e) => setTelefone(formatPhone(e.target.value))}
               />
             </div>
 
@@ -146,7 +213,7 @@ export default function EditarParceiro() {
                 placeholder="(31) 99999-9999"
                 className="input"
                 value={whatsapp}
-                onChange={(e) => setWhatsapp(e.target.value)}
+                onChange={(e) => setWhatsapp(formatPhone(e.target.value))}
               />
             </div>
 

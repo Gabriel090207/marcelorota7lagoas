@@ -109,33 +109,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 
 /* TEXTAREA */
 
-.textarea {
 
-  width: 100%;
-
-  padding: 16px;
-
-  border-radius: 10px;
-
-  border: 1px solid rgba(255,255,255,0.08);
-
-  background: rgba(255,255,255,0.03);
-
-  color: #fff;
-
-  font-size: 0.95rem;
-
-  resize: none;
-
-  outline: none;
-
-  transition: 0.2s;
-}
-
-.textarea:focus {
-
-  border-color: rgba(255,122,0,0.6);
-}
 
 /* UPLOAD */
 
@@ -242,4 +216,8 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .timeInput {
 
   padding-left: 42px;
+}
+
+textarea.input {
+  resize: none;
 }

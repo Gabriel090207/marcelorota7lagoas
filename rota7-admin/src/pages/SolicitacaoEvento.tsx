@@ -32,12 +32,13 @@ export default function SolicitacaoEvento() {
       setLoading(true)
 
       await createEvento({
-        titulo: data.titulo,
-        data: data.data,
-        local: data.local,
-        descricao: data.descricao,
-        imagem: data.imagem
-      })
+  titulo: data.titulo,
+  data: data.data,
+  local: data.local,
+  descricao: data.descricao,
+  imagem: data.imagem,
+  tag: data.tag
+})
 
       await fetch(`${import.meta.env.VITE_API_URL}/solicitacoes/${id}`, {
         method: "DELETE"
@@ -82,6 +83,7 @@ export default function SolicitacaoEvento() {
 
           <p><strong>Data:</strong> {data.data}</p>
           <p><strong>Local:</strong> {data.local}</p>
+          <p><strong>Tag:</strong> {data.tag || "Não informada"}</p>
           <p><strong>Responsável:</strong> {data.responsavel}</p>
           <p><strong>Contato:</strong> {data.contato}</p>
 

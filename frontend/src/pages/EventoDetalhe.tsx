@@ -16,21 +16,33 @@ export default function EventoDetalhe() {
 
   // 🔥 parse correto
   const parseEventoDate = (dataStr: string) => {
-    if (!dataStr) return null
+  if (!dataStr) return null
 
+  if (dataStr.includes("T")) {
+    const d = new Date(dataStr)
+    return isNaN(d.getTime()) ? null : d
+  }
+
+  try {
     const [datePart, timePart] = dataStr.split(" ")
+    if (!datePart) return null
 
     const [day, month, year] = datePart.split("/")
     const [hour = "00", minute = "00"] = (timePart || "").split(":")
 
-    return new Date(
+    const d = new Date(
       Number(year),
       Number(month) - 1,
       Number(day),
       Number(hour),
       Number(minute)
     )
+
+    return isNaN(d.getTime()) ? null : d
+  } catch {
+    return null
   }
+}
 
   useEffect(() => {
     getEventos().then((data) => {

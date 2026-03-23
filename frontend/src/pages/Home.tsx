@@ -196,28 +196,44 @@ useEffect(() => {
         </p>
       ) : (
         grupos.slice(0, 3).map((grupo) => (
-          <div key={grupo.id} className="clubCard">
+  <article key={grupo.id} className="grupoCard">
 
-            <div
-              className="clubCard__image"
-              style={{
-                backgroundImage: `url(${grupo.imagem || ""})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center"
-              }}
-            />
+    <div
+      className="grupoCard__image"
+      style={{
+        backgroundImage: `url(${grupo.imagem || ""})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center"
+      }}
+    />
 
-            <div className="clubCard__content">
-              <h3>{grupo.nome}</h3>
-              <span>{grupo.tipo || "Grupo"}</span>
+    <div className="grupoCard__content">
 
-              <Link to="/grupos">
-                Ver grupo
-              </Link>
-            </div>
+      <h3>{grupo.nome}</h3>
 
-          </div>
-        ))
+      <span className="grupoTipo">
+        {grupo.tipo || "Grupo"}
+      </span>
+
+      <p>
+        {grupo.descricao
+          ?.replace(/<[^>]+>/g, "")
+          .slice(0, 100) || "Grupo da comunidade motociclística da região."}...
+      </p>
+
+      <a
+        href={grupo.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="btn btn--outline"
+      >
+        Entrar no Grupo
+      </a>
+
+    </div>
+
+  </article>
+))
       )}
 
     </div>
@@ -271,7 +287,9 @@ useEffect(() => {
                     minute: "2-digit"
                   })}
                 </span>
-                <span className="tag">Evento</span>
+                <span className="tag">
+  {evento.tag || "Evento"}
+</span>
               </div>
             </div>
 
@@ -307,27 +325,40 @@ useEffect(() => {
         </p>
       ) : (
         noticias.slice(0, 3).map((noticia) => (
-          <Link
-            key={noticia.id}
-            to={`/noticia/${noticia.id}`}
-            className="newsCard"
-          >
-            <div
-              className="newsImage"
-              style={{
-                backgroundImage: `url(${noticia.imagem || news1})`
-              }}
-            />
+  <article key={noticia.id} className="newsCard">
 
-            <div className="newsContent">
-              <span className="newsCategory">
-                {noticia.categoria || "Notícia"}
-              </span>
-              <h3>{noticia.titulo}</h3>
-              <p>{noticia.resumo || noticia.descricao || "Leia mais no portal."}</p>
-            </div>
-          </Link>
-        ))
+    <div
+      className="newsImage"
+      style={{
+        backgroundImage: `url(${noticia.imagem || news1})`
+      }}
+    />
+
+    <div className="newsContent">
+
+      <span className="newsCategory">
+        {noticia.categoria || "Notícia"}
+      </span>
+
+      <h3>{noticia.titulo}</h3>
+
+      <p>
+        {noticia.conteudo
+          ?.replace(/<[^>]+>/g, "")
+          .slice(0, 100)}...
+      </p>
+
+      <button
+        className="btn btn--outline newsReadMore"
+        onClick={() => window.location.href = `/noticia/${noticia.id}`}
+      >
+        Ler mais
+      </button>
+
+    </div>
+
+  </article>
+))
       )}
 
     </div>
@@ -384,12 +415,16 @@ useEffect(() => {
         </div>
 
         <a
-          href={parceiro.whatsapp || "#"}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          WhatsApp
-        </a>
+  href={
+    parceiro.whatsapp
+      ? `https://wa.me/${parceiro.whatsapp.replace(/\D/g, "")}`
+      : "#"
+  }
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  WhatsApp
+</a>
 
       </div>
 

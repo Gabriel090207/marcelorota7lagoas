@@ -27,6 +27,7 @@ export default function AnunciarEvento() {
   const [hora, setHora] = useState("")
   const [local, setLocal] = useState("")
   const [descricao, setDescricao] = useState("")
+  const [tag, setTag] = useState("")
   const [responsavel, setResponsavel] = useState("")
   const [contato, setContato] = useState("")
   const [file, setFile] = useState<File | null>(null)
@@ -65,15 +66,16 @@ export default function AnunciarEvento() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          tipo: "evento",
-          titulo,
-          data: `${data} ${hora}`,
-          local,
-          descricao,
-          responsavel,
-          contato,
-          imagem: imageUrl
-        })
+  tipo: "evento",
+  titulo,
+  data: `${data} ${hora}`,
+  local,
+  descricao,
+  responsavel,
+  contato,
+  imagem: imageUrl,
+  tag
+})
       })
 
       showToast("success", "Evento enviado para análise!")
@@ -83,6 +85,7 @@ export default function AnunciarEvento() {
       setHora("")
       setLocal("")
       setDescricao("")
+      setTag("")
       setResponsavel("")
       setContato("")
       setFile(null)
@@ -169,6 +172,14 @@ export default function AnunciarEvento() {
           value={local}
           onChange={(e) => setLocal(e.target.value)}
         />
+
+
+        <input
+  className="input"
+  placeholder="Tag do evento (ex: Passeio, Trilha...)"
+  value={tag}
+  onChange={(e) => setTag(e.target.value)}
+/>
 
         {/* RESPONSÁVEL */}
         <div className="inputGroup">
