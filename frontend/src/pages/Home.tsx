@@ -387,14 +387,12 @@ useEffect(() => {
           Ver classificados
         </Link>
 
-        <a
-          href="https://wa.me/5500000000000"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn--outline"
-        >
-          Quero anunciar
-        </a>
+        <Link
+  to="/quero-anunciar"
+  className="btn btn--outline"
+>
+  Quero anunciar
+</Link>
       </div>
     </div>
 
