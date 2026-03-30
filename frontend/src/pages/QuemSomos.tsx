@@ -116,7 +116,7 @@ export default function QuemSomos() {
   <div className="quemSomos__container">
 
     <span className="quemSomos__label">
-      Fundadores
+      Fundador
     </span>
 
     <h2>Quem está por trás da Rota 7</h2>
@@ -130,25 +130,22 @@ export default function QuemSomos() {
     <div className="foundersGrid">
 
       <div className="founderCard">
-        <div className="founderCard__image" />
-        <h3>Seu Nome Aqui</h3>
+        <div
+  className="founderCard__image"
+  style={{
+    backgroundImage: "url('/marceloperfil.png')",
+    backgroundSize: "cover",
+    backgroundPosition: "center"
+  }}
+/>
+        <h3>Marcelo Guimarães</h3>
         <span>Fundador & Idealizador</span>
         <p>
-          Motociclista apaixonado, empreendedor e entusiasta da cultura
-          biker regional. Idealizador do portal Rota 7 Lagoas com o objetivo
-          de conectar pessoas, eventos e negócios do setor.
+          Funcionário público, jornalista, editor da Revista COOPERANDO e portal TEMPO VERDE. Motociclista apaixonado e entusiasta da cultura biker regional. Idealizou o portal Rota 7 Lagoas com o objetivo de conectar pessoas, eventos e negócios do setor.
         </p>
       </div>
 
-      <div className="founderCard">
-        <div className="founderCard__image" />
-        <h3>Nome do Parceiro</h3>
-        <span>Co-Fundador</span>
-        <p>
-          Responsável pela estratégia, comunicação e expansão do projeto,
-          buscando fortalecer o motociclismo em Sete Lagoas e região.
-        </p>
-      </div>
+     
 
     </div>
 
@@ -171,13 +168,13 @@ export default function QuemSomos() {
 
       <div className="cta__actions">
         <a
-          href="https://wa.me/5500000000000"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn btn--primary"
-        >
-          Falar no WhatsApp
-        </a>
+  href="https://wa.me/553198785864"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="btn btn--primary"
+>
+  Falar no WhatsApp
+</a>
 
       
       </div>

@@ -83,19 +83,9 @@ const outrosBlogs = blogsFiltrados
             <h2>Marcelão</h2>
 
             <p>
-              Marcelão é um verdadeiro apaixonado pelo motociclismo raiz, daqueles que vivem a estrada
-              com intensidade, respeito e espírito de liberdade. Com anos de experiência sobre duas rodas,
-              já percorreu inúmeras rotas, participou de eventos, encontros e vivenciou de perto a cultura biker
-              em sua essência.
+             Marcelo Guimarães (Marcelão) é apaixonado pelo motociclismo. Com pouco tempo na estrada, procura viver as viagens com respeito e espírito de liberdade. Seu olhar vai além da moto: ele busca e traz histórias reais, aprendizados com as situações vividas, e reflexões. Para ele, motociclismo é um estilo de vida.
 
-              <br /><br />
-
-              Seu olhar vai além da moto: ele traz histórias reais, aprendizados da estrada,
-              situações vividas e reflexões que só quem realmente vive o motociclismo consegue compartilhar.
-
-              <br /><br />
-
-              Mais do que falar sobre motos, Marcelão compartilha um estilo de vida.
+            
             </p>
           </div>
 

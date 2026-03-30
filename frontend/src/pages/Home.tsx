@@ -95,8 +95,9 @@ useEffect(() => {
       <section className="home__hero">
         <div className="home__heroContent">
           <h1>
-            O portal oficial do motociclismo
-            <span> de Sete Lagoas</span>
+            Portal do motociclismo<br></br>
+
+            <span> de Sete Lagoas e Região</span>
           </h1>
 
           <p>
