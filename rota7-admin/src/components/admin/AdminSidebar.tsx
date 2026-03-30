@@ -9,7 +9,8 @@ import {
   FiUsers,
   FiImage,
   FiLayers,
-  FiTag
+  FiTag,
+  FiBookOpen
 } from "react-icons/fi"
 
 export default function AdminSidebar({ menuOpen, closeMenu }: any) {
@@ -39,6 +40,17 @@ export default function AdminSidebar({ menuOpen, closeMenu }: any) {
           <FiFileText className="sidebarIcon" />
           <span>Notícias</span>
         </NavLink>
+
+        <NavLink
+  to="/blogs"
+  className={({ isActive }) =>
+    `sidebarItem ${isActive ? "active" : ""}`
+  }
+  onClick={closeMenu}
+>
+  <FiBookOpen className="sidebarIcon" />
+  <span>Blog</span>
+</NavLink>
 
         <NavLink
           to="/dicas"

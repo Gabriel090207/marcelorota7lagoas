@@ -1,0 +1,296 @@
+.blogDetalhe {
+  padding: 60px 20px;
+  padding-top: 160px;
+}
+
+/* VOLTAR */
+
+.blogDetalhe__back {
+  max-width: 1200px;
+  margin: 0 auto 30px auto;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  cursor: pointer;
+  color: var(--color-primary);
+}
+
+.blogDetalhe__back:hover {
+  color: var(--color-text-secondary);
+}
+
+/* HERO */
+
+.blogDetalhe__hero {
+  height: 420px;
+  border-radius: 18px;
+
+  background-size: cover;
+  background-position: center;
+
+  position: relative;
+  overflow: hidden;
+
+  max-width: 1200px;
+  margin: 0 auto 50px auto;
+}
+
+.blogDetalhe__overlay {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  padding: 60px;
+
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.95) 0%,
+    rgba(0,0,0,0.6) 40%,
+    rgba(0,0,0,0.2) 70%,
+    rgba(0,0,0,0) 100%
+  );
+}
+
+.blogDetalhe__categoria {
+  color: var(--color-primary);
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.blogDetalhe__overlay h1 {
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+}
+
+.blogDetalhe__autor {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+/* CONTEÚDO */
+
+.blogDetalhe__content {
+  max-width: 1200px;
+  margin: 0 auto;
+
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--color-border);
+
+  border-radius: 18px;
+  padding: 40px;
+}
+
+/* TEXTO */
+
+.blogDetalhe__texto p {
+  margin-bottom: 22px;
+  line-height: 1.9;
+  text-indent: 24px;
+  text-align: justify;
+  font-size: 1.05rem;
+}
+
+.blogDetalhe__texto strong {
+  color: var(--color-primary);
+}
+
+.blogDetalhe__texto h2 {
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+.blogDetalhe__texto ul {
+  padding-left: 20px;
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 900px) {
+
+  .blogDetalhe__hero {
+    height: 300px;
+  }
+
+  .blogDetalhe__overlay {
+    padding: 30px;
+  }
+
+  .blogDetalhe__overlay h1 {
+    font-size: 1.6rem;
+  }
+
+  .blogDetalhe__content {
+    padding: 25px;
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .blogDetalhe {
+    padding-top: 120px;
+  }
+
+  .blogDetalhe__content {
+    padding: 20px;
+  }
+
+}
+
+
+/* ================= GALERIA ================= */
+
+.blogDetalhe__galeria {
+  max-width: 1200px;
+  margin: 60px auto 0 auto;
+  padding: 0 20px;
+}
+
+.blogDetalhe__galeria h3 {
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+}
+
+/* GRID */
+
+.blogDetalhe__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+/* ITEM */
+
+.blogDetalhe__item {
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+}
+
+.blogDetalhe__item img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: 0.3s;
+}
+
+.blogDetalhe__item:hover img {
+  transform: scale(1.05);
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 900px) {
+  .blogDetalhe__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .blogDetalhe__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .blogDetalhe__item img {
+    height: 180px;
+  }
+}
+
+
+/* ================= ZOOM (MODAL) ================= */
+
+.galeriaModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+}
+
+.galeriaOverlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  z-index: 1;
+}
+
+/* BOTÃO FECHAR */
+
+.galeriaClose {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+  border: none;
+
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  z-index: 3;
+  transition: 0.2s;
+}
+
+.galeriaClose:hover {
+  background: var(--color-primary);
+  color: #000;
+}
+
+/* IMAGEM CENTRALIZADA */
+
+.galeriaModalContent {
+  position: relative;
+  z-index: 2;
+
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 40px;
+}
+
+.galeriaModalContent img {
+  max-width: 90%;
+  max-height: 90%;
+
+  border-radius: 12px;
+
+  box-shadow: 0 0 40px rgba(0,0,0,0.6);
+}
+
+.galeriaModalContent img {
+  animation: zoomIn 0.25s ease;
+}
+
+@keyframes zoomIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}

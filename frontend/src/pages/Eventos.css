@@ -64,8 +64,8 @@
 
 .eventos__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
 }
 
 .eventItem {
@@ -299,6 +299,21 @@
 
 }
 
+@media (max-width: 768px) {
+
+  .eventos__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+@media (max-width: 500px) {
+
+  .eventos__grid {
+    grid-template-columns: 1fr;
+  }
+
+}
 
 /* ================= MOBILE ================= */
 @media (max-width: 600px) {
@@ -316,9 +331,7 @@
     padding: 40px 16px 80px 16px;
   }
 
-  .eventos__grid {
-    grid-template-columns: 1fr;
-  }
+ 
 
   .eventItem {
     padding: 16px;

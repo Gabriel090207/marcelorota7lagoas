@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom'
 import Home from '../pages/Home'
 import Eventos from '../pages/Eventos'
 import Noticias from '../pages/Noticias'
+import Blogs from '../pages/Blogs'
 import Classificados from '../pages/Classificados'
 import Dicas from '../pages/Dicas'
 import Galeria from '../pages/Galeria'
@@ -14,6 +15,7 @@ import Grupos from '../pages/Grupos'
 import NoticiaDetalhe from "../pages/NoticiaDetalhe"
 import DicaDetalhe from "../pages/DicaDetalhe"
 import EventoDetalhe from "../pages/EventoDetalhe"
+import BlogDetalhe from "../pages/BlogDetalhe"
 
 // ================= CLASSIFICADOS =================
 import ParceirosPublic from "../pages/ParceirosPublic"
@@ -37,6 +39,7 @@ export function AppRoutes() {
       {/* ================= PÁGINAS PRINCIPAIS ================= */}
       <Route path="/eventos" element={<Eventos />} />
       <Route path="/noticias" element={<Noticias />} />
+      <Route path="/blogs" element={<Blogs />} />
       <Route path="/classificados" element={<Classificados />} />
       <Route path="/dicas" element={<Dicas />} />
       <Route path="/galeria" element={<Galeria />} />
@@ -47,6 +50,7 @@ export function AppRoutes() {
       <Route path="/noticia/:id" element={<NoticiaDetalhe />} />
       <Route path="/dicas/:id" element={<DicaDetalhe />} />
       <Route path="/eventos/:id" element={<EventoDetalhe />} />
+      <Route path="/blog/:id" element={<BlogDetalhe />} />
 
       {/* ================= CLASSIFICADOS ================= */}
       <Route path="/classificados/parceiros" element={<ParceirosPublic />} />

@@ -51,6 +51,9 @@ export function Header() {
             <NavLink to="/noticias" className={({ isActive }) => (isActive ? 'active' : '')}>
               Notícias
             </NavLink>
+            <NavLink to="/blogs" className={({ isActive }) => (isActive ? 'active' : '')}>
+              Blog
+            </NavLink>
             <NavLink to="/eventos" className={({ isActive }) => (isActive ? 'active' : '')}>
               Agenda
             </NavLink>
@@ -100,6 +103,7 @@ export function Header() {
           <nav className="header__drawerNav">
             <NavLink to="/" onClick={closeMenu}>Início</NavLink>
             <NavLink to="/noticias" onClick={closeMenu}>Notícias</NavLink>
+            <NavLink to="/blogs" onClick={closeMenu}>Blog</NavLink>
             <NavLink to="/eventos" onClick={closeMenu}>Agenda</NavLink>
             <NavLink to="/dicas" onClick={closeMenu}>Dicas</NavLink>
             <NavLink to="/classificados" onClick={closeMenu}>Classificados</NavLink>

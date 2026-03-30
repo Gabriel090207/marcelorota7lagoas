@@ -19,6 +19,10 @@ import Eventos from "./pages/Eventos"
 import NovoEvento from "./pages/NovoEvento"
 import EditarEvento from "./pages/EditarEvento"
 
+import Blogs from "./pages/Blogs"
+import NovoBlog from "./pages/NovoBlog"
+import EditarBlog from "./pages/EditarBlog"
+
 // ================= CLASSIFICADOS =================
 import Parceiros from "./pages/Parceiros"
 import NovoParceiro from "./pages/NovoParceiro"
@@ -77,6 +81,11 @@ function App() {
         <Route path="/eventos" element={<PrivateRoute><Eventos /></PrivateRoute>} />
         <Route path="/eventos/novo" element={<PrivateRoute><NovoEvento /></PrivateRoute>} />
         <Route path="/eventos/editar/:id" element={<PrivateRoute><EditarEvento /></PrivateRoute>} />
+
+        {/* ================= BLOGS ================= */}
+        <Route path="/blogs" element={<PrivateRoute><Blogs /></PrivateRoute>} />
+        <Route path="/blogs/novo" element={<PrivateRoute><NovoBlog /></PrivateRoute>} />
+        <Route path="/blogs/editar/:id" element={<EditarBlog />} />
 
         {/* ================= PARCEIROS ================= */}
         <Route path="/parceiros" element={<PrivateRoute><Parceiros /></PrivateRoute>} />

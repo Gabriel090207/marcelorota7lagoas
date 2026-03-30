@@ -289,3 +289,49 @@ export async function deleteImagem(id: string) {
 
   return res.json()
 }
+
+
+
+// BLOGS
+
+export const getBlogs = async () => {
+  const res = await fetch(`${API_URL}/blogs`)
+  return res.json()
+}
+
+export const getBlogById = async (id: string) => {
+  const res = await fetch(`${API_URL}/blogs/${id}`)
+  return res.json()
+}
+
+export const createBlog = async (data: any) => {
+  const res = await fetch(`${API_URL}/blogs`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+
+  return res.json()
+}
+
+export const updateBlog = async (id: string, data: any) => {
+  const res = await fetch(`${API_URL}/blogs/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+
+  return res.json()
+}
+
+export const deleteBlog = async (id: string) => {
+  const res = await fetch(`${API_URL}/blogs/${id}`, {
+    method: "DELETE"
+  })
+
+  return res.json()
+}

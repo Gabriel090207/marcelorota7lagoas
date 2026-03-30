@@ -286,8 +286,8 @@
 
 .home__eventsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
 }
 
 .eventCard {
@@ -416,14 +416,24 @@
   }
 }
 
+
+@media (max-width: 900px) {
+  .home__eventsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .home__eventsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 600px) {
   .home__events {
     padding: 50px 18px;
   }
 
-  .home__eventsGrid {
-    grid-template-columns: 1fr;
-  }
 
   .eventCard {
     flex-direction: column;

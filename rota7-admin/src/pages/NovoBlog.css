@@ -1,0 +1,303 @@
+.novoBlog {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* HEADER */
+
+.novoBlog__header {
+  margin-bottom: 30px;
+}
+
+.novoBlog__header h1 {
+  font-size: 2rem;
+}
+
+/* FORM */
+
+.novoBlog__form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* CAMPOS */
+
+.novoBlog__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+/* INPUT */
+
+.novoBlog__input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  color: #fff;
+  font-size: 0.95rem;
+  outline: none;
+  transition: 0.2s;
+}
+
+.novoBlog__input:focus {
+  border-color: rgba(255,122,0,0.6);
+}
+
+/* GRID */
+
+.novoBlog__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* SELECT */
+
+.novoBlog__select {
+  width: 100%;
+  padding: 14px 42px 14px 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background-color: rgba(255,255,255,0.03);
+  color: #fff;
+  font-size: 0.95rem;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  transition: 0.2s;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23ff7a00' viewBox='0 0 20 20'%3E%3Cpath d='M5 7l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 16px;
+}
+
+.novoBlog__select:focus {
+  border-color: rgba(255,122,0,0.6);
+  box-shadow: 0 0 0 1px rgba(255,122,0,0.3);
+}
+
+.novoBlog__select option {
+  background: #111;
+  color: #fff;
+}
+
+/* UPLOAD */
+
+.novoBlog__upload {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  border-radius: 10px;
+  border: 1px dashed rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.02);
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.novoBlog__upload:hover {
+  border-color: rgba(255,122,0,0.6);
+  background: rgba(255,122,0,0.08);
+}
+
+.novoBlog__upload span {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.novoBlog__upload input {
+  display: none;
+}
+
+/* PREVIEW */
+
+.novoBlog__preview {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.novoBlog__preview img {
+  width: 100%;
+  max-width: 420px;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid var(--color-border);
+  display: block;
+}
+
+/* BOTÃO */
+
+.novoBlog__button {
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  background: var(--color-primary);
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.novoBlog__button:hover {
+  opacity: 0.9;
+}
+
+/* BACK */
+
+.novoBlog__back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--color-primary);
+  margin-bottom: 20px;
+  transition: var(--transition-default);
+}
+
+.novoBlog__back:hover {
+  color: var(--color-text-secondary);
+}
+
+/* TIPTAP */
+
+.ProseMirror {
+  outline: none;
+}
+
+.ProseMirror p {
+  margin-bottom: 16px;
+  line-height: 1.7;
+  text-indent: 24px;
+}
+
+/* TOAST */
+
+.adminToast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-24px);
+  z-index: 9999;
+  min-width: 320px;
+  max-width: 420px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--color-border);
+  background: rgba(12, 12, 12, 0.96);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s ease;
+}
+
+.adminToast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.adminToast--success {
+  border-color: rgba(255, 140, 0, 0.45);
+}
+
+.adminToast--error {
+  border-color: rgba(239, 68, 68, 0.35);
+}
+
+.adminToast__icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.adminToast--success .adminToast__icon {
+  color: var(--color-primary);
+}
+
+.adminToast--error .adminToast__icon {
+  color: #ef4444;
+}
+
+.adminToast__content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.adminToast__content strong {
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.adminToast__content span {
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: var(--color-text-secondary);
+}
+
+.adminToast__close {
+  background: transparent;
+  border: none;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-default);
+}
+
+.adminToast__close:hover {
+  color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+  .novoBlog__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .novoBlog {
+    padding: 24px 16px;
+  }
+
+  .adminToast {
+    top: 16px;
+    right: 16px;
+    left: 16px;
+    min-width: unset;
+    max-width: unset;
+  }
+}
+
+
+.novoBlog__galleryPreview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.novoBlog__galleryPreview img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+}

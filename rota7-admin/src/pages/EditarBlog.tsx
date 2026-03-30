@@ -1,22 +1,30 @@
 import AdminLayout from "../components/admin/AdminLayout"
 import RichTextEditor from "../components/editor/RichTextEditor"
 import { uploadImage } from "../services/storage"
-import { getNoticiaById, updateNoticia } from "../services/api"
-import "./NovaNoticia.css"
+import { getBlogById, updateBlog } from "../services/api"
+import "./NovoBlog.css"
 
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import { FiArrowLeft, FiCheckCircle, FiAlertCircle, FiX } from "react-icons/fi"
 
-import { categorias } from "../constants/categorias"
-
 type ToastType = "success" | "error"
 
-export default function EditarNoticia() {
+const categoriasBlog = [
+  "Experiências",
+  "Viagens",
+  "Eventos",
+  "Opiniões"
+]
+
+export default function EditarBlog() {
   const { id } = useParams()
   const navigate = useNavigate()
 
   const [file, setFile] = useState<File | null>(null)
+  const [imagensExtras, setImagensExtras] = useState<File[]>([])
+const [previewExtras, setPreviewExtras] = useState<string[]>([])
+const [imagensAtuais, setImagensAtuais] = useState<string[]>([])
   const [titulo, setTitulo] = useState("")
   const [categoria, setCategoria] = useState("")
   const [conteudo, setConteudo] = useState("")
@@ -24,7 +32,6 @@ export default function EditarNoticia() {
   const [previewImagem, setPreviewImagem] = useState("")
   const [loading, setLoading] = useState(false)
 
-  // 🔥 TOAST
   const [toastOpen, setToastOpen] = useState(false)
   const [toastType, setToastType] = useState<ToastType>("success")
   const [toastMessage, setToastMessage] = useState("")
@@ -44,16 +51,18 @@ export default function EditarNoticia() {
       if (!id) return
 
       try {
-        const data = await getNoticiaById(id)
+        const data = await getBlogById(id)
 
         setTitulo(data.titulo || "")
         setCategoria(data.categoria || "")
         setConteudo(data.conteudo || "")
         setImagemAtual(data.imagem || "")
         setPreviewImagem(data.imagem || "")
+        setImagensAtuais(data.imagens || [])
+setPreviewExtras(data.imagens || [])
       } catch (error) {
         console.error(error)
-        showToast("error", "Erro ao carregar notícia.")
+        showToast("error", "Erro ao carregar blog.")
       }
     }
 
@@ -67,6 +76,17 @@ export default function EditarNoticia() {
       setPreviewImagem(URL.createObjectURL(selectedFile))
     }
   }
+
+  const handleMultipleImages = (e: React.ChangeEvent<HTMLInputElement>) => {
+  if (!e.target.files) return
+
+  const filesArray = Array.from(e.target.files)
+
+  const previews = filesArray.map(file => URL.createObjectURL(file))
+
+  setImagensExtras(prev => [...prev, ...filesArray])
+  setPreviewExtras(prev => [...prev, ...previews])
+}
 
   const handleSubmit = async () => {
     try {
@@ -85,24 +105,34 @@ export default function EditarNoticia() {
         imageUrl = await uploadImage(file)
       }
 
-      await updateNoticia(id, {
-        titulo,
-        conteudo,
-        categoria,
-        imagem: imageUrl,
-        autor: "Admin"
-      })
+    let imagensUrls = imagensAtuais
 
-      // 🔥 mantém na página
+if (imagensExtras.length > 0) {
+  const novas = await Promise.all(
+    imagensExtras.map(img => uploadImage(img))
+  )
+
+  imagensUrls = [...imagensAtuais, ...novas]
+}
+
+await updateBlog(id, {
+  titulo,
+  conteudo,
+  categoria,
+  imagem: imageUrl,
+  imagens: imagensUrls,
+  autor: "Marcelão"
+})
       setImagemAtual(imageUrl)
-      setPreviewImagem(imageUrl)
-      setFile(null)
+setPreviewImagem(imageUrl)
+setFile(null)
 
-      showToast("success", "Notícia atualizada com sucesso!")
+      showToast("success", "Blog atualizado com sucesso!")
 
+    
     } catch (error) {
       console.error(error)
-      showToast("error", "Erro ao atualizar notícia.")
+      showToast("error", "Erro ao atualizar blog.")
     } finally {
       setLoading(false)
     }
@@ -110,9 +140,8 @@ export default function EditarNoticia() {
 
   return (
     <AdminLayout>
-      <main className="novaNoticia">
+      <main className="novoBlog">
 
-        {/* 🔥 TOAST PADRÃO */}
         <div
           className={`adminToast adminToast--${toastType} ${toastOpen ? "show" : ""}`}
         >
@@ -140,41 +169,38 @@ export default function EditarNoticia() {
           </button>
         </div>
 
-        {/* VOLTAR */}
-        <div className="novaNoticia__back" onClick={() => navigate(-1)}>
+        <div className="novoBlog__back" onClick={() => navigate(-1)}>
           <FiArrowLeft size={18} />
           <span>Voltar</span>
         </div>
 
-        {/* HEADER */}
-        <div className="novaNoticia__header">
-          <h1>Editar notícia</h1>
+        <div className="novoBlog__header">
+          <h1>Editar blog</h1>
         </div>
 
-        {/* FORM */}
-        <div className="form">
+        <div className="novoBlog__form">
 
           <input
             type="text"
-            placeholder="Título da notícia"
-            className="input"
+            placeholder="Título do blog"
+            className="novoBlog__input"
             value={titulo}
             onChange={(e) => setTitulo(e.target.value)}
           />
 
-          <div className="formRow">
+          <div className="novoBlog__row">
 
-            <div className="field">
+            <div className="novoBlog__field">
               <label>Categoria</label>
 
               <select
-                className="selectInput"
+                className="novoBlog__select"
                 value={categoria}
                 onChange={(e) => setCategoria(e.target.value)}
               >
                 <option value="">Selecione</option>
 
-                {categorias.map((cat) => (
+                {categoriasBlog.map((cat) => (
                   <option key={cat} value={cat}>
                     {cat}
                   </option>
@@ -182,10 +208,10 @@ export default function EditarNoticia() {
               </select>
             </div>
 
-            <div className="field">
+            <div className="novoBlog__field">
               <label>Imagem de capa</label>
 
-              <label className="uploadBox">
+              <label className="novoBlog__upload">
                 <input type="file" onChange={handleFileChange} />
                 <span>{file ? file.name : "Alterar imagem"}</span>
               </label>
@@ -194,20 +220,46 @@ export default function EditarNoticia() {
           </div>
 
           {previewImagem && (
-            <div className="novaNoticia__preview">
+            <div className="novoBlog__preview">
               <img src={previewImagem} alt="Preview da capa" />
             </div>
           )}
 
           <RichTextEditor
-            content={conteudo}
-            onChange={setConteudo}
-          />
+  content={conteudo}
+  onChange={setConteudo}
+/>
+
+<div className="novoBlog__field">
+  <label>Imagens do blog</label>
+
+  <label className="novoBlog__upload">
+    <input
+      type="file"
+      multiple
+      onChange={handleMultipleImages}
+    />
+    <span>
+      {previewExtras.length > 0
+        ? `${previewExtras.length} imagens`
+        : "Selecionar imagens"}
+    </span>
+  </label>
+</div>
+
+{previewExtras.length > 0 && (
+  <div className="novoBlog__galleryPreview">
+    {previewExtras.map((img, index) => (
+      <img key={index} src={img} />
+    ))}
+  </div>
+)}
 
           <button
-            className="publishBtn"
+            className="novoBlog__button"
             onClick={handleSubmit}
             disabled={loading}
+            type="button"
           >
             {loading ? "Salvando..." : "Salvar alterações"}
           </button>

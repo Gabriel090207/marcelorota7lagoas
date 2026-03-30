@@ -80,3 +80,18 @@ export const getAnuncios = async () => {
   const res = await fetch(`${API_URL}/anuncios`)
   return res.json()
 }
+
+
+// =======================
+// BLOGS
+// =======================
+
+export const getBlogs = async () => {
+  const res = await fetch(`${API_URL}/blogs`)
+  return res.json()
+}
+
+export const getBlogById = async (id: string) => {
+  const res = await fetch(`${API_URL}/blogs/${id}`)
+  return res.json()
+}
