@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
-import { FiInstagram, FiFacebook, FiMail } from 'react-icons/fi'
+import { FiInstagram, FiFacebook, FiMail} from 'react-icons/fi'
+import { FaWhatsapp } from 'react-icons/fa'
 import logo from '../assets/logo.png'
 import './Footer.css'
 
@@ -24,6 +25,7 @@ export function Footer() {
           <ul>
             <li><Link to="/">Início</Link></li>
             <li><Link to="/noticias">Notícias</Link></li>
+            <li><Link to="/blogs">Blog do Marcelão</Link></li>
             <li><Link to="/eventos">Agenda</Link></li>
             <li><Link to="/dicas">Dicas</Link></li>
             <li><Link to="/galeria">Galeria</Link></li>
@@ -57,18 +59,36 @@ export function Footer() {
 
           <div className="footer__contactItem">
             <FiMail size={16} />
-            <span>contato@rota7lagoas.com.br</span>
+            <span>rota7lagoas@gmail.com</span>
           </div>
 
           <div className="footer__socials">
-            <a href="#" target="_blank" rel="noopener noreferrer">
-              <FiInstagram size={18} />
-            </a>
 
-            <a href="#" target="_blank" rel="noopener noreferrer">
-              <FiFacebook size={18} />
-            </a>
-          </div>
+
+             <a 
+    href="https://wa.me/553198785864"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <FaWhatsapp size={18} />
+  </a>
+  
+  <a 
+    href="https://www.instagram.com/rota7lagoas"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <FiInstagram size={18} />
+  </a>
+
+  <a 
+    href="https://www.facebook.com/profile.php?id=61576123743306"
+    target="_blank"
+    rel="noopener noreferrer"
+  >
+    <FiFacebook size={18} />
+  </a>
+</div>
         </div>
 
       </div>
