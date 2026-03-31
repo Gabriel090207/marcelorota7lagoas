@@ -26,7 +26,7 @@
 }
 /* ===== LOGO ===== */
 .header__left img {
-  height: 60px;
+  height: 70px;
   cursor: pointer;
 }
 
@@ -275,7 +275,7 @@
   }
 
   .header__left img {
-    height: 52px;
+    height: 56px;
   }
 }
 

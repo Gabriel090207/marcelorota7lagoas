@@ -1,6 +1,19 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, BackgroundTasks
+from app.services.email_scheduler import schedule_news_email
 from app.models.noticia import Noticia
 from app.services.firebase import db
+
+
+class FakeUser:
+    def __init__(self, email):
+        self.email = email
+
+
+def get_all_subscribers():
+    return [
+        FakeUser("seuemail@gmail.com"),
+        # depois vamos puxar do banco
+    ]
 
 router = APIRouter(prefix="/noticias", tags=["Noticias"])
 
@@ -18,11 +31,52 @@ def listar_noticias():
     return lista
 
 @router.post("/")
-def criar_noticia(noticia: Noticia):
-    db.collection("noticias").add(noticia.dict())
+def criar_noticia(noticia: Noticia, background_tasks: BackgroundTasks):
+
+    doc_ref = db.collection("noticias").add(noticia.dict())
+
+    # 🔹 montar dados
+    title = noticia.titulo if hasattr(noticia, "titulo") else "Nova notícia"
+    description = noticia.descricao if hasattr(noticia, "descricao") else "Confira agora os detalhes"
+    url = f"https://www.rota7lagoas.com.br/noticia/{doc_ref[1].id}"
+
+    # 🔹 pegar inscritos (mock por enquanto)
+    users = get_all_subscribers()
+
+    # 🔥 agendar envio
+    background_tasks.add_task(
+        schedule_news_email,
+        title,
+        description,
+        url,
+        users
+    )
+
+    return {"msg": "Notícia criada com sucesso"}@router.post("/")
+def criar_noticia(noticia: Noticia, background_tasks: BackgroundTasks):
+
+    doc_ref = db.collection("noticias").add(noticia.dict())
+
+    # 🔹 montar dados
+    title = noticia.titulo if hasattr(noticia, "titulo") else "Nova notícia"
+    description = noticia.descricao if hasattr(noticia, "descricao") else "Confira agora os detalhes"
+    url = f"https://www.rota7lagoas.com.br/noticia/{doc_ref[1].id}"
+
+    # 🔹 pegar inscritos (mock por enquanto)
+    users = get_all_subscribers()
+
+    # 🔥 agendar envio
+    background_tasks.add_task(
+        schedule_news_email,
+        title,
+        description,
+        url,
+        users
+    )
+
     return {"msg": "Notícia criada com sucesso"}
 
-
+    
 @router.get("/{id}")
 def buscar_noticia(id: str):
     doc_ref = db.collection("noticias").document(id).get()
