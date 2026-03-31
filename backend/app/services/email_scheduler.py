@@ -13,7 +13,7 @@ async def schedule_news_email(title, description, url, users):
     # envia para todos
     for user in users:
         await send_email(
-            to="gabrielborela07@gmail.com",
+            to=user.email,
             subject="Nova notícia publicada",
             html=html
         )

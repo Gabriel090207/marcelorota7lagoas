@@ -32,8 +32,22 @@ app.include_router(blogs.router)
 def home():
     return {"msg": "API Rota 7 Lagoas funcionando"}
 
+from app.services.email_sender import send_email
+from app.services.email_templates.news_email import news_email_template
 
 
 @app.get("/test-email")
-def test_email():
-    return send_test_email()
+async def test_email():
+    html = news_email_template(
+        "Teste de notícia",
+        "Isso é um teste de envio 🚀",
+        "https://www.rota7lagoas.com.br"
+    )
+
+    await send_email(
+        to="gabrielborela07@gmail.com",
+        subject="Teste email",
+        html=html
+    )
+
+    return {"msg": "Email enviado"}
