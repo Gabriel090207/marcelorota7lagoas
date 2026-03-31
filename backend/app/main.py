@@ -4,7 +4,7 @@ from app.routes import noticias, dicas, eventos, parceiros, solicitacoes, grupos
 
 
 from fastapi import FastAPI
-from app.services.email import send_test_email
+
 
 
 app = FastAPI()
