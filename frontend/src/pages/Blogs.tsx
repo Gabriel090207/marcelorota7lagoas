@@ -5,6 +5,10 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { getBlogs } from "../services/api"
 
+import { SectionDivider } from '../components/SectionDivider/SectionDivider'
+
+
+
 export default function Blogs() {
 
   const [blogs, setBlogs] = useState<any[]>([])
@@ -61,38 +65,8 @@ const outrosBlogs = blogsFiltrados
         </div>
       </section>
 
-      {/* DESTAQUE (AUTOR) */}
-      <section className="blogs__featured">
-        <div className="blogs__featuredInner">
 
-          <div
-            className="featuredBlog__image"
-            style={{
-              backgroundImage: `url('/marcelo.jpg')`,
-              backgroundSize: "cover",
-              backgroundPosition: "center"
-            }}
-          />
-
-          <div className="featuredBlog__content">
-
-            <span className="blogCategoryTag">
-              SOBRE O AUTOR
-            </span>
-
-            <h2>Marcelão</h2>
-
-            <p>
-             Marcelo Guimarães (Marcelão) é apaixonado pelo motociclismo. Com pouco tempo na estrada, procura viver as viagens com respeito e espírito de liberdade. Seu olhar vai além da moto: ele busca e traz histórias reais, aprendizados com as situações vividas, e reflexões. Para ele, motociclismo é um estilo de vida.
-
-            
-            </p>
-          </div>
-
-        </div>
-      </section>
-
-      {/* CATEGORIAS */}
+        {/* CATEGORIAS */}
       <section className="blogs__categories">
         <div className="blogs__categoriesInner">
 
@@ -108,6 +82,7 @@ const outrosBlogs = blogsFiltrados
 
         </div>
       </section>
+
 
       {/* BUSCA */}
       <section className="blogs__search">
@@ -174,6 +149,44 @@ const outrosBlogs = blogsFiltrados
 
         </div>
       </section>
+
+         <SectionDivider />
+
+
+
+       {/* DESTAQUE (AUTOR) */}
+      <section className="blogs__featured">
+        <div className="blogs__featuredInner">
+
+          <div
+            className="featuredBlog__image"
+            style={{
+              backgroundImage: `url('/marcelo.jpg')`,
+              backgroundSize: "cover",
+              backgroundPosition: "center"
+            }}
+          />
+
+          <div className="featuredBlog__content">
+
+            <span className="blogCategoryTag">
+              SOBRE O AUTOR
+            </span>
+
+            <h2>Marcelão</h2>
+
+            <p>
+             Marcelo Guimarães (Marcelão) é apaixonado pelo motociclismo. Com pouco tempo na estrada, procura viver as viagens com respeito e espírito de liberdade. Seu olhar vai além da moto: ele busca e traz histórias reais, aprendizados com as situações vividas, e reflexões. Para ele, motociclismo é um estilo de vida.
+
+            
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+    
+     
 
     </main>
   )

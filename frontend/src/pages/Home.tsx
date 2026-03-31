@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
 import { 
-  FiCalendar, 
-  FiFileText, 
+  FiCalendar,  
   FiTool, 
   FiShoppingBag, 
   FiUsers,
-  FiImage
+  FiImage,
+  FiBookOpen
 } from 'react-icons/fi'
 import './Home.css'
 import news1 from '../assets/images/news/news-1.jpg'
@@ -24,14 +24,9 @@ export default function Home() {
 const [eventos, setEventos] = useState<any[]>([])
 const [grupos, setGrupos] = useState<any[]>([])
 const [imagens, setImagens] = useState<any[]>([])
+const [newsIndex, setNewsIndex] = useState(0)
 
 
-useEffect(() => {
-  getNoticias().then(data => setNoticias(data || []))
-  getEventos().then(data => setEventos(data || []))
-  getGrupos().then(data => setGrupos(data || []))
-  getImagens().then(data => setImagens(data || []))
-}, [])
 
 const parseEventoDate = (dataStr: string) => {
   if (!dataStr) return null
@@ -87,35 +82,85 @@ useEffect(() => {
   getImagens().then(data => setImagens(data || []))
   getParceiros().then(data => setParceiros(data || [])) // 🔥 NOVO
 }, [])
+
+useEffect(() => {
+  if (noticias.length <= 1) return
+
+  const interval = setInterval(() => {
+    setNewsIndex((prev) => (prev === Math.min(2, noticias.length - 1) ? 0 : prev + 1))
+  }, 5000)
+
+  return () => clearInterval(interval)
+}, [noticias])
   
   return (
     <main className="home">
 
-      {/* HERO */}
-      <section className="home__hero">
-        <div className="home__heroContent">
-          <h1>
-            Portal do motociclismo<br></br>
+     
+     {/* HERO NOTÍCIAS */}
+{noticias.length > 0 && (
+  <section className="homeNewsHero">
 
-            <span> de Sete Lagoas e Região</span>
-          </h1>
+    <div className="homeNewsHero__slider">
+      {noticias.slice(0, 3).map((noticia, index) => (
+        <div
+          key={noticia.id}
+          className={`homeNewsHero__slide ${index === newsIndex ? "active" : ""}`}
+          style={{
+            backgroundImage: `url(${noticia.imagem || news1})`
+          }}
+        >
+          <div className="homeNewsHero__overlay">
+            <div className="homeNewsHero__content">
 
-          <p>
-            Notícias, agenda de eventos, classificados e a cultura biker reunida em um só lugar.
-          </p>
+              <span className="homeNewsHero__category">
+                {noticia.categoria || "Notícia"}
+              </span>
 
-          <div className="home__heroButtons">
-            <Link to="/eventos" className="btn btn--primary">
-              Ver Agenda
-            </Link>
+              <h1>{noticia.titulo}</h1>
 
-            <Link to="/noticias" className="btn btn--outline">
-              Últimas Notícias
-            </Link>
+              <p>
+                {noticia.conteudo
+                  ?.replace(/<[^>]+>/g, "")
+                  .slice(0, 140)}...
+              </p>
+
+              <div className="homeNewsHero__actions">
+
+  <button
+    className="btn btn--primary"
+    onClick={() => window.location.href = `/noticia/${noticia.id}`}
+  >
+    Ler matéria completa
+  </button>
+
+  <button
+    className="btn btn--outline"
+    onClick={() => window.location.href = `/noticias`}
+  >
+    Ver notícias
+  </button>
+
+</div>
+
+            </div>
           </div>
         </div>
-      </section>
+      ))}
+    </div>
 
+    <div className="homeNewsHero__dots">
+      {noticias.slice(0, 3).map((_, index) => (
+        <button
+          key={index}
+          className={index === newsIndex ? "active" : ""}
+          onClick={() => setNewsIndex(index)}
+        />
+      ))}
+    </div>
+
+  </section>
+)}
 
 
 
@@ -124,7 +169,7 @@ useEffect(() => {
   <div className="home__shortcutsInner">
     <div className="home__shortcutsHeader">
       <h2>Acesso rápido</h2>
-      <p>Explore o portal: eventos, notícias, dicas e o mercado motociclístico da região.</p>
+      <p>Explore o portal: eventos, blog, dicas e o mercado motociclístico da região.</p>
     </div>
 
     <div className="home__shortcutsContainer">
@@ -137,13 +182,13 @@ useEffect(() => {
         <p>Encontros, passeios e trilhas da região.</p>
       </Link>
 
-      <Link to="/noticias" className="shortcutCard">
-        <div className="shortcutIcon">
-          <FiFileText size={20} />
-        </div>
-        <h3>Notícias</h3>
-        <p>Lançamentos, mercado e novidades locais.</p>
-      </Link>
+     <Link to="/blogs" className="shortcutCard">
+  <div className="shortcutIcon">
+    <FiBookOpen size={20} />
+  </div>
+  <h3>Blog</h3>
+  <p>Experiências, histórias e vivências no mundo das motos.</p>
+</Link>
 
       <Link to="/dicas" className="shortcutCard">
         <div className="shortcutIcon">
@@ -302,70 +347,6 @@ useEffect(() => {
   </div>
 </section>
 
-
-{/* ÚLTIMAS NOTÍCIAS */}
-<section className="home__news">
-  <div className="home__newsInner">
-
-    <div className="home__newsHeader">
-      <div>
-        <h2>Últimas notícias</h2>
-        <p>Fique por dentro do que acontece no mundo das motos e na região.</p>
-      </div>
-
-      <Link to="/noticias" className="btn btn--outline">
-        Ver todas
-      </Link>
-    </div>
-
-    <div className="home__newsGrid">
-
-      {noticias.length === 0 ? (
-        <p style={{ opacity: 0.6 }}>
-          Nenhuma notícia cadastrada
-        </p>
-      ) : (
-        noticias.slice(0, 3).map((noticia) => (
-  <article key={noticia.id} className="newsCard">
-
-    <div
-      className="newsImage"
-      style={{
-        backgroundImage: `url(${noticia.imagem || news1})`
-      }}
-    />
-
-    <div className="newsContent">
-
-      <span className="newsCategory">
-        {noticia.categoria || "Notícia"}
-      </span>
-
-      <h3>{noticia.titulo}</h3>
-
-      <p>
-        {noticia.conteudo
-          ?.replace(/<[^>]+>/g, "")
-          .slice(0, 100)}...
-      </p>
-
-      <button
-        className="btn btn--outline newsReadMore"
-        onClick={() => window.location.href = `/noticia/${noticia.id}`}
-      >
-        Ler mais
-      </button>
-
-    </div>
-
-  </article>
-))
-      )}
-
-    </div>
-
-  </div>
-</section>
 
 
 {/* MERCADO & PARCEIROS */}
