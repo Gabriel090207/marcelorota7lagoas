@@ -9,14 +9,16 @@ class FakeUser:
         self.email = email
 
 
+
 def get_all_subscribers():
-    return [
-        FakeUser("seuemail@gmail.com"),
-        # depois vamos puxar do banco
-    ]
+    docs = db.collection("newsletter").stream()
 
-router = APIRouter(prefix="/noticias", tags=["Noticias"])
+    class User:
+        def __init__(self, email):
+            self.email = email
 
+    return [User(doc.to_dict().get("email")) for doc in docs]
+    
 @router.get("/")
 def listar_noticias():
     noticias_ref = db.collection("noticias").stream()
@@ -76,7 +78,7 @@ def criar_noticia(noticia: Noticia, background_tasks: BackgroundTasks):
 
     return {"msg": "Notícia criada com sucesso"}
 
-    
+
 @router.get("/{id}")
 def buscar_noticia(id: str):
     doc_ref = db.collection("noticias").document(id).get()

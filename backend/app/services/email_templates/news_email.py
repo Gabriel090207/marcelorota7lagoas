@@ -4,16 +4,21 @@ from .base_email import base_email_template
 def news_email_template(title, description, url):
     content = f"""
     
+    <!-- TÍTULO PRINCIPAL -->
     <h2 style="
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       text-align: center;
-      font-size: 22px;
+      font-size: 24px;
+      color: #ffffff;
+      font-weight: bold;
     ">
       🚨 {title}
     </h2>
 
+    <!-- DESCRIÇÃO -->
     <p style="
       color: #cccccc;
+      font-size: 15px;
       line-height: 1.6;
       text-align: center;
       max-width: 480px;
@@ -22,25 +27,29 @@ def news_email_template(title, description, url):
       {description}
     </p>
 
+    <!-- TEXTO DE CURIOSIDADE -->
     <p style="
       color: #aaaaaa;
       margin-top: 15px;
       text-align: center;
       font-style: italic;
+      font-size: 14px;
     ">
       Continue lendo para descobrir todos os detalhes 👇
     </p>
 
+    <!-- BOTÃO -->
     <div style="text-align: center;">
       <a href="{url}" style="
         display: inline-block;
-        margin-top: 20px;
-        padding: 14px 24px;
+        margin-top: 22px;
+        padding: 14px 26px;
         background-color: #ff7a00;
         color: #000;
         text-decoration: none;
         border-radius: 8px;
         font-weight: bold;
+        font-size: 15px;
       ">
         Ler notícia completa
       </a>
@@ -48,4 +57,5 @@ def news_email_template(title, description, url):
 
     """
 
-    return base_email_template("Nova notícia publicada", content)
+    # 🔥 IMPORTANTE: título vazio pra não duplicar
+    return base_email_template("", content)

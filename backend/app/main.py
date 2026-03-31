@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes import noticias, dicas, eventos, parceiros, solicitacoes, grupos, anuncios, galeria, blogs
-
+from app.routes import newsletter
 
 from fastapi import FastAPI
 
@@ -16,6 +16,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+app.include_router(newsletter.router)
+
 
 app.include_router(noticias.router)
 app.include_router(dicas.router)

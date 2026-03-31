@@ -27,6 +27,9 @@ const [imagens, setImagens] = useState<any[]>([])
 const [newsIndex, setNewsIndex] = useState(0)
 
 
+const [email, setEmail] = useState("")
+const [toast, setToast] = useState(false)
+
 
 const parseEventoDate = (dataStr: string) => {
   if (!dataStr) return null
@@ -92,6 +95,33 @@ useEffect(() => {
 
   return () => clearInterval(interval)
 }, [noticias])
+
+
+const handleNewsletter = async (e: React.FormEvent) => {
+  e.preventDefault()
+
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/newsletter`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email })
+    })
+
+    if (!res.ok) throw new Error()
+
+    setEmail("")
+    setToast(true)
+
+    setTimeout(() => {
+      setToast(false)
+    }, 3000)
+
+  } catch {
+    alert("Erro ao cadastrar email")
+  }
+}
   
   return (
     <main className="home">
@@ -485,21 +515,34 @@ useEffect(() => {
         Eventos, lançamentos e conteúdos exclusivos direto no seu e-mail.
       </p>
 
-      <form className="newsletterForm">
-        <input 
-          type="email" 
-          placeholder="Seu melhor e-mail"
-          required
-        />
-        <button type="submit">
-          Quero receber
-        </button>
-      </form>
+      <form className="newsletterForm" onSubmit={handleNewsletter}>
+  <input 
+    type="email" 
+    placeholder="Seu melhor e-mail"
+    required
+    value={email}
+    onChange={(e) => setEmail(e.target.value)}
+  />
+  <button type="submit">
+    Quero receber
+  </button>
+</form>
 
     </div>
 
   </div>
 </section>
+
+{toast && (
+  <div className="adminToast adminToast--success show">
+    <div className="adminToast__icon">✅</div>
+
+    <div className="adminToast__content">
+      <strong>Sucesso</strong>
+      <span>Email cadastrado com sucesso!</span>
+    </div>
+  </div>
+)}
 
     </main>
   )
