@@ -1,7 +1,7 @@
-from fastapi import APIRouter, BackgroundTasks
+from fastapi import APIRouter
 from app.services.firebase import db
 from pydantic import BaseModel
-from app.services.email_scheduler import schedule_event_email
+import time
 
 router = APIRouter(prefix="/eventos", tags=["Eventos"])
 
@@ -13,16 +13,6 @@ class Evento(BaseModel):
     local: str
     imagem: str = ""
     tag: str = ""
-
-
-def get_all_subscribers():
-    docs = db.collection("newsletter").stream()
-
-    class User:
-        def __init__(self, email):
-            self.email = email
-
-    return [User(doc.to_dict().get("email")) for doc in docs]
 
 
 # LISTAR
@@ -41,25 +31,21 @@ def listar_eventos():
 
 # CRIAR
 @router.post("/")
-def criar_evento(evento: Evento, background_tasks: BackgroundTasks):
+def criar_evento(evento: Evento):
 
     doc = db.collection("eventos").add(evento.dict())
 
-    title = evento.titulo
-    description = evento.descricao
-    url = f"https://www.rota7lagoas.com.br/evento/{doc[1].id}"
-
-    users = get_all_subscribers()
-
-    background_tasks.add_task(
-        schedule_event_email,
-        title,
-        description,
-        url,
-        users,
-        evento.data,
-        "Horário não informado"
-    )
+    # 🔥 salva na fila (NÃO envia agora)
+    db.collection("email_queue").add({
+        "tipo": "evento",
+        "title": evento.titulo,
+        "description": evento.descricao,
+        "url": f"https://www.rota7lagoas.com.br/evento/{doc[1].id}",
+        "data": evento.data,
+        "horario": "Horário não informado",
+        "status": "pendente",
+        "created_at": time.time()
+    })
 
     return {"msg": "Evento criado", "id": doc[1].id}
 
