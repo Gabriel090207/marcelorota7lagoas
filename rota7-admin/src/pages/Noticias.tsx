@@ -37,6 +37,14 @@ const handleDelete = async () => {
       .catch(err => console.error(err))
   }, [])
 
+
+  const noticiasOrdenadas = [...noticias].sort((a, b) => {
+  const dateA = new Date(a.data || a.created_at || 0).getTime()
+  const dateB = new Date(b.data || b.created_at || 0).getTime()
+
+  return dateB - dateA // 🔥 mais recente primeiro
+})
+
   return (
     <AdminLayout>
 
@@ -58,7 +66,7 @@ const handleDelete = async () => {
 
         <div className="adminTable">
 
-          {noticias.map((noticia) => (
+         {noticiasOrdenadas.map((noticia) => (
 
             <div key={noticia.id} className="adminTable__row">
 

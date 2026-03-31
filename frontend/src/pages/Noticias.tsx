@@ -18,6 +18,14 @@ const [categoria, setCategoria] = useState("Todas")
     getNoticias().then(setNoticias)
   }, [])
 
+
+  const noticiasOrdenadasPorData = [...noticias].sort((a, b) => {
+  const dateA = new Date(a.data || a.created_at || 0).getTime()
+  const dateB = new Date(b.data || b.created_at || 0).getTime()
+
+  return dateB - dateA // 🔥 mais recente primeiro
+})
+
   const noticiasFiltradas = noticias.filter((n) => {
 
 
@@ -65,20 +73,20 @@ const noticiasOrdenadas = [...noticiasFiltradas].sort((a, b) => {
           <div
             className="newsHeroImage"
             style={{
-              backgroundImage: `url(${noticias[0].imagem || ""})`
+              backgroundImage: `url(${noticiasOrdenadasPorData[0]?.imagem || ""})`
             }}
           >
             <div className="newsHeroOverlay">
 
-              <h1>{noticiasFiltradas[0].titulo}</h1>
+              <h1>{noticiasOrdenadasPorData[0]?.titulo}</h1>
 
               <p>
-                {noticiasFiltradas[0].conteudo?.replace(/<[^>]+>/g, "").slice(0, 120)}...
+                {noticiasOrdenadasPorData[0]?.conteudo?.replace(/<[^>]+>/g, "").slice(0, 120)}...
               </p>
 
               <button
                 className="btn btn--primary"
-                onClick={() => navigate(`/noticia/${noticias[0].id}`)}
+                onClick={() => navigate(`/noticia/${noticiasOrdenadasPorData[0]?.id}`)}
               >
                 Ler matéria completa
               </button>

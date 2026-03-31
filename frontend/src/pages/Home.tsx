@@ -7,6 +7,9 @@ import {
   FiImage,
   FiBookOpen
 } from 'react-icons/fi'
+
+import { FiCheckCircle, FiAlertCircle, FiX } from "react-icons/fi"
+
 import './Home.css'
 import news1 from '../assets/images/news/news-1.jpg'
 
@@ -28,8 +31,20 @@ const [newsIndex, setNewsIndex] = useState(0)
 
 
 const [email, setEmail] = useState("")
-const [toast, setToast] = useState(false)
+const [toastOpen, setToastOpen] = useState(false)
+const [toastType, setToastType] = useState<"success" | "error">("success")
+const [toastMessage, setToastMessage] = useState("")
 
+
+const showToast = (type: "success" | "error", message: string) => {
+  setToastType(type)
+  setToastMessage(message)
+  setToastOpen(true)
+
+  setTimeout(() => {
+    setToastOpen(false)
+  }, 3200)
+}
 
 const parseEventoDate = (dataStr: string) => {
   if (!dataStr) return null
@@ -112,14 +127,12 @@ const handleNewsletter = async (e: React.FormEvent) => {
     if (!res.ok) throw new Error()
 
     setEmail("")
-    setToast(true)
+    showToast("success", "Email cadastrado com sucesso!")
 
-    setTimeout(() => {
-      setToast(false)
-    }, 3000)
+  
 
   } catch {
-    alert("Erro ao cadastrar email")
+    showToast("error", "Erro ao cadastrar email.")
   }
 }
   
@@ -533,16 +546,33 @@ const handleNewsletter = async (e: React.FormEvent) => {
   </div>
 </section>
 
-{toast && (
-  <div className="adminToast adminToast--success show">
-    <div className="adminToast__icon">✅</div>
 
-    <div className="adminToast__content">
-      <strong>Sucesso</strong>
-      <span>Email cadastrado com sucesso!</span>
-    </div>
+<div
+  className={`adminToast adminToast--${toastType} ${toastOpen ? "show" : ""}`}
+>
+  <div className="adminToast__icon">
+    {toastType === "success" ? (
+      <FiCheckCircle size={18} />
+    ) : (
+      <FiAlertCircle size={18} />
+    )}
   </div>
-)}
+
+  <div className="adminToast__content">
+    <strong>
+      {toastType === "success" ? "Sucesso" : "Atenção"}
+    </strong>
+    <span>{toastMessage}</span>
+  </div>
+
+  <button
+    className="adminToast__close"
+    onClick={() => setToastOpen(false)}
+    type="button"
+  >
+    <FiX size={18} />
+  </button>
+</div>
 
     </main>
   )
