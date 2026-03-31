@@ -1,8 +1,19 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, BackgroundTasks
 from app.models.blog import Blog
 from app.services.firebase import db
+from app.services.email_scheduler import schedule_blog_email
 
 router = APIRouter(prefix="/blogs", tags=["Blogs"])
+
+
+def get_all_subscribers():
+    docs = db.collection("newsletter").stream()
+
+    class User:
+        def __init__(self, email):
+            self.email = email
+
+    return [User(doc.to_dict().get("email")) for doc in docs]
 
 
 @router.get("/")
@@ -20,8 +31,24 @@ def listar_blogs():
 
 
 @router.post("/")
-def criar_blog(blog: Blog):
-    db.collection("blogs").add(blog.dict())
+def criar_blog(blog: Blog, background_tasks: BackgroundTasks):
+
+    doc_ref = db.collection("blogs").add(blog.dict())
+
+    title = blog.titulo if hasattr(blog, "titulo") else "Novo blog"
+    description = blog.conteudo if hasattr(blog, "conteudo") else ""
+    url = f"https://www.rota7lagoas.com.br/blog/{doc_ref[1].id}"
+
+    users = get_all_subscribers()
+
+    background_tasks.add_task(
+        schedule_blog_email,
+        title,
+        description,
+        url,
+        users
+    )
+
     return {"msg": "Blog criado com sucesso"}
 
 

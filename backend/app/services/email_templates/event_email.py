@@ -6,24 +6,35 @@ def clean_html(text):
     return re.sub("<[^>]+>", "", text or "")
 
 
-def news_email_template(title, description, url):
-    # 🔥 limpa HTML e corta igual site
+def event_email_template(title, description, url, data, horario):
     descricao_limpa = clean_html(description)[:160] + "..."
 
     content = f"""
-    
+
     <!-- TÍTULO -->
     <h2 style="
-      margin-bottom: 16px;
       text-align: center;
       font-size: 24px;
       color: #ffffff;
-      font-weight: bold;
+      margin-bottom: 10px;
     ">
       {title}
     </h2>
 
-    <!-- TEXTO -->
+    <!-- DATA + HORÁRIO -->
+    <div style="
+      text-align: center;
+      margin-bottom: 18px;
+      color: #ff7a00;
+      font-weight: bold;
+      font-size: 14px;
+    ">
+      <span>{data}</span>
+      &nbsp;&nbsp;•&nbsp;&nbsp;
+      <span>{horario}</span>
+    </div>
+
+    <!-- DESCRIÇÃO -->
     <p style="
       color: #cccccc;
       font-size: 15px;
@@ -50,7 +61,7 @@ def news_email_template(title, description, url):
         font-weight: bold;
         font-size: 15px;
       ">
-        Ler notícia completa
+        Ver evento
       </a>
     </div>
 

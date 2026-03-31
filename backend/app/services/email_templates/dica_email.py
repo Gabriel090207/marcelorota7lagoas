@@ -6,19 +6,17 @@ def clean_html(text):
     return re.sub("<[^>]+>", "", text or "")
 
 
-def news_email_template(title, description, url):
-    # 🔥 limpa HTML e corta igual site
+def dica_email_template(title, description, url):
     descricao_limpa = clean_html(description)[:160] + "..."
 
     content = f"""
-    
+
     <!-- TÍTULO -->
     <h2 style="
-      margin-bottom: 16px;
       text-align: center;
       font-size: 24px;
       color: #ffffff;
-      font-weight: bold;
+      margin-bottom: 16px;
     ">
       {title}
     </h2>
@@ -36,10 +34,7 @@ def news_email_template(title, description, url):
     </p>
 
     <!-- BOTÃO -->
-    <div style="
-      text-align: center;
-      margin-top: 28px;
-    ">
+    <div style="text-align: center; margin-top: 28px;">
       <a href="{url}" style="
         display: inline-block;
         padding: 14px 26px;
@@ -48,9 +43,8 @@ def news_email_template(title, description, url):
         text-decoration: none;
         border-radius: 8px;
         font-weight: bold;
-        font-size: 15px;
       ">
-        Ler notícia completa
+        Ver dica
       </a>
     </div>
 
