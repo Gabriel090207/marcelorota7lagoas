@@ -14,17 +14,7 @@ class Dica(BaseModel):
     autor: str = ""
 
 
-def get_all_subscribers():
-    docs = db.collection("newsletter").stream()
-
-    class User:
-        def __init__(self, email):
-            self.email = email
-
-    return [User(doc.to_dict().get("email")) for doc in docs]
-
-
-# LISTAR
+# 🔹 LISTAR
 @router.get("/")
 def listar_dicas():
     docs = db.collection("dicas").stream()
@@ -38,30 +28,38 @@ def listar_dicas():
     return dicas
 
 
-# CRIAR
+# 🔹 CRIAR
 @router.post("/")
 def criar_dica(dica: Dica, background_tasks: BackgroundTasks):
 
     doc_ref = db.collection("dicas").add(dica.dict())
+    dica_id = doc_ref[1].id
 
-    title = dica.titulo
-    description = dica.conteudo
-    url = f"https://www.rota7lagoas.com.br/dica/{doc_ref[1].id}"
+    # 🔹 pegar inscritos
+    docs = db.collection("newsletter").stream()
 
-    users = get_all_subscribers()
+    class User:
+        def __init__(self, email):
+            self.email = email
 
+    users = [User(doc.to_dict().get("email")) for doc in docs]
+
+    # 🔹 agendar envio
     background_tasks.add_task(
         schedule_dica_email,
-        title,
-        description,
-        url,
+        dica.titulo,
+        dica.conteudo,
+        f"https://www.rota7lagoas.com.br/dica/{dica_id}",
         users
     )
 
-    return {"msg": "Dica criada", "id": doc_ref[1].id}
+    return {
+        "msg": "Dica criada com sucesso",
+        "id": dica_id
+    }
 
 
-# BUSCAR POR ID
+# 🔹 BUSCAR
 @router.get("/{id}")
 def get_dica(id: str):
     doc = db.collection("dicas").document(id).get()
@@ -71,19 +69,18 @@ def get_dica(id: str):
 
     data = doc.to_dict()
     data["id"] = doc.id
-
     return data
 
 
-# ATUALIZAR
+# 🔹 ATUALIZAR
 @router.put("/{id}")
 def atualizar_dica(id: str, dica: Dica):
     db.collection("dicas").document(id).update(dica.dict())
-    return {"msg": "Dica atualizada"}
+    return {"msg": "Dica atualizada com sucesso"}
 
 
-# DELETAR
+# 🔹 DELETAR
 @router.delete("/{id}")
 def deletar_dica(id: str):
     db.collection("dicas").document(id).delete()
-    return {"msg": "Dica deletada"}
+    return {"msg": "Dica deletada com sucesso"}

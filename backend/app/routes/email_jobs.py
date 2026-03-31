@@ -8,6 +8,7 @@ from app.services.email_templates.dica_email import dica_email_template
 from app.services.email_templates.blog_email import blog_email_template
 
 import time
+import asyncio
 
 router = APIRouter(prefix="/jobs", tags=["Jobs"])
 
@@ -42,7 +43,6 @@ def send_pending_emails():
 
         print(f"📨 Processando {data['tipo']}")
 
-        # 🔥 EVENTO
         if data["tipo"] == "evento":
             html = event_email_template(
                 data["title"],
@@ -53,7 +53,6 @@ def send_pending_emails():
             )
             assunto = "Novo evento"
 
-        # 🔥 NOTICIA
         elif data["tipo"] == "noticia":
             html = news_email_template(
                 data["title"],
@@ -62,7 +61,6 @@ def send_pending_emails():
             )
             assunto = "Nova notícia"
 
-        # 🔥 DICA
         elif data["tipo"] == "dica":
             html = dica_email_template(
                 data["title"],
@@ -71,7 +69,6 @@ def send_pending_emails():
             )
             assunto = "Nova dica"
 
-        # 🔥 BLOG
         elif data["tipo"] == "blog":
             html = blog_email_template(
                 data["title"],
@@ -85,7 +82,7 @@ def send_pending_emails():
 
         for user in users:
             print(f"📩 enviando para {user.email}")
-            send_email(user.email, assunto, html)
+            asyncio.run(send_email(user.email, assunto, html))
 
         db.collection("email_queue").document(doc.id).update({
             "status": "enviado"

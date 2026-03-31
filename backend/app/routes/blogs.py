@@ -31,23 +31,25 @@ def listar_blogs():
 
 
 @router.post("/")
-def criar_blog(blog: Blog, background_tasks: BackgroundTasks):
+def criar_blog(blog: Blog):
 
     doc_ref = db.collection("blogs").add(blog.dict())
+    blog_id = doc_ref[1].id
 
     title = blog.titulo if hasattr(blog, "titulo") else "Novo blog"
     description = blog.conteudo if hasattr(blog, "conteudo") else ""
-    url = f"https://www.rota7lagoas.com.br/blog/{doc_ref[1].id}"
+    url = f"https://www.rota7lagoas.com.br/blog/{blog_id}"
 
-    users = get_all_subscribers()
+    import time
 
-    background_tasks.add_task(
-        schedule_blog_email,
-        title,
-        description,
-        url,
-        users
-    )
+    db.collection("email_queue").add({
+        "tipo": "blog",
+        "title": title,
+        "description": description,
+        "url": url,
+        "status": "pendente",
+        "created_at": time.time()
+    })
 
     return {"msg": "Blog criado com sucesso"}
 

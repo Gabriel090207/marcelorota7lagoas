@@ -1,7 +1,7 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, BackgroundTasks
 from app.services.firebase import db
 from pydantic import BaseModel
-import time
+from app.services.email_scheduler import schedule_event_email
 
 router = APIRouter(prefix="/eventos", tags=["Eventos"])
 
@@ -15,7 +15,7 @@ class Evento(BaseModel):
     tag: str = ""
 
 
-# LISTAR
+# 🔹 LISTAR
 @router.get("/")
 def listar_eventos():
     docs = db.collection("eventos").stream()
@@ -29,28 +29,40 @@ def listar_eventos():
     return eventos
 
 
-# CRIAR
+# 🔹 CRIAR
 @router.post("/")
-def criar_evento(evento: Evento):
+def criar_evento(evento: Evento, background_tasks: BackgroundTasks):
 
-    doc = db.collection("eventos").add(evento.dict())
+    doc_ref = db.collection("eventos").add(evento.dict())
+    evento_id = doc_ref[1].id
 
-    # 🔥 salva na fila (NÃO envia agora)
-    db.collection("email_queue").add({
-        "tipo": "evento",
-        "title": evento.titulo,
-        "description": evento.descricao,
-        "url": f"https://www.rota7lagoas.com.br/evento/{doc[1].id}",
-        "data": evento.data,
-        "horario": "Horário não informado",
-        "status": "pendente",
-        "created_at": time.time()
-    })
+    # 🔹 pegar inscritos
+    docs = db.collection("newsletter").stream()
 
-    return {"msg": "Evento criado", "id": doc[1].id}
+    class User:
+        def __init__(self, email):
+            self.email = email
+
+    users = [User(doc.to_dict().get("email")) for doc in docs]
+
+    # 🔹 agendar envio
+    background_tasks.add_task(
+        schedule_event_email,
+        evento.titulo,
+        evento.descricao,
+        f"https://www.rota7lagoas.com.br/evento/{evento_id}",
+        users,
+        evento.data,
+        "Horário não informado"
+    )
+
+    return {
+        "msg": "Evento criado com sucesso",
+        "id": evento_id
+    }
 
 
-# GET BY ID
+# 🔹 BUSCAR
 @router.get("/{id}")
 def get_evento(id: str):
     doc = db.collection("eventos").document(id).get()
@@ -63,15 +75,15 @@ def get_evento(id: str):
     return data
 
 
-# UPDATE
+# 🔹 ATUALIZAR
 @router.put("/{id}")
 def update_evento(id: str, evento: Evento):
     db.collection("eventos").document(id).update(evento.dict())
-    return {"msg": "Evento atualizado"}
+    return {"msg": "Evento atualizado com sucesso"}
 
 
-# DELETE
+# 🔹 DELETAR
 @router.delete("/{id}")
 def delete_evento(id: str):
     db.collection("eventos").document(id).delete()
-    return {"msg": "Evento deletado"}
+    return {"msg": "Evento deletado com sucesso"}
