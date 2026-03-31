@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { getNoticiaById } from "../services/api"
 
-import { FiArrowLeft } from "react-icons/fi"
+import { FiArrowLeft, FiX } from "react-icons/fi"
 import { useNavigate } from "react-router-dom"
 
 export default function NoticiaDetalhe() {
@@ -13,6 +13,7 @@ export default function NoticiaDetalhe() {
 
   const { id } = useParams()
   const [noticia, setNoticia] = useState<any>(null)
+  const [selectedImg, setSelectedImg] = useState<string | null>(null)
 
   useEffect(() => {
     if (id) {
@@ -63,6 +64,54 @@ export default function NoticiaDetalhe() {
         />
 
       </section>
+
+
+      {/* GALERIA */}
+{noticia.imagens && noticia.imagens.length > 0 && (
+  <section className="noticiaDetalhe__galeria">
+
+    <h3>Imagens</h3>
+
+    <div className="noticiaDetalhe__grid">
+
+      {noticia.imagens.map((img: string, index: number) => (
+        <div
+          key={index}
+          className="noticiaDetalhe__item"
+          onClick={() => setSelectedImg(img)}
+        >
+          <img src={img} alt={`Imagem ${index}`} />
+        </div>
+      ))}
+
+    </div>
+
+  </section>
+)}
+
+
+{/* MODAL */}
+{selectedImg && (
+  <div className="galeriaModal">
+
+    <div
+      className="galeriaOverlay"
+      onClick={() => setSelectedImg(null)}
+    />
+
+    <button
+      className="galeriaClose"
+      onClick={() => setSelectedImg(null)}
+    >
+      <FiX size={22} />
+    </button>
+
+    <div className="galeriaModalContent">
+      <img src={selectedImg} alt="" />
+    </div>
+
+  </div>
+)}
 
     </main>
   )

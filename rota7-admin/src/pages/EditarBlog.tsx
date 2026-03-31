@@ -88,6 +88,17 @@ setPreviewExtras(data.imagens || [])
   setPreviewExtras(prev => [...prev, ...previews])
 }
 
+
+const handleRemoveImage = (index: number) => {
+  setPreviewExtras(prev => prev.filter((_, i) => i !== index))
+
+  // se for imagem nova (File)
+  setImagensExtras(prev => prev.filter((_, i) => i !== index))
+
+  // se for imagem já existente (URL)
+  setImagensAtuais(prev => prev.filter((_, i) => i !== index))
+}
+
   const handleSubmit = async () => {
     try {
       if (!titulo.trim() || !conteudo.trim() || conteudo === "<p></p>") {
@@ -250,8 +261,20 @@ setFile(null)
 {previewExtras.length > 0 && (
   <div className="novoBlog__galleryPreview">
     {previewExtras.map((img, index) => (
-      <img key={index} src={img} />
-    ))}
+  <div key={index} className="previewItem">
+
+    <img src={img} />
+
+    <button
+      className="removeImageBtn"
+      onClick={() => handleRemoveImage(index)}
+      type="button"
+    >
+      <FiX size={14} />
+    </button>
+
+  </div>
+))}
   </div>
 )}
 

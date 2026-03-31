@@ -102,7 +102,14 @@ useEffect(() => {
   <section className="homeNewsHero">
 
     <div className="homeNewsHero__slider">
-      {noticias.slice(0, 3).map((noticia, index) => (
+      {[...noticias]
+  .sort((a, b) => {
+    const dateA = new Date(a.data || a.created_at || 0).getTime()
+    const dateB = new Date(b.data || b.created_at || 0).getTime()
+    return dateB - dateA // mais recente primeiro
+  })
+  .slice(0, 3)
+  .map((noticia, index) => (
         <div
           key={noticia.id}
           className={`homeNewsHero__slide ${index === newsIndex ? "active" : ""}`}

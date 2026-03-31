@@ -20,6 +20,9 @@ const [categoria, setCategoria] = useState("Todas")
 
   const noticiasFiltradas = noticias.filter((n) => {
 
+
+   
+
   const texto = busca.toLowerCase()
 
   const matchBusca =
@@ -32,6 +35,25 @@ const [categoria, setCategoria] = useState("Todas")
     n.categoria === categoria
 
   return matchBusca && matchCategoria
+})
+
+ const ordemCategorias = [
+  "Mercado",
+  "Região",
+  "Eventos",
+  "Dicas",
+  "Moto Clubes"
+]
+
+const noticiasOrdenadas = [...noticiasFiltradas].sort((a, b) => {
+  const indexA = ordemCategorias.indexOf(a.categoria)
+  const indexB = ordemCategorias.indexOf(b.categoria)
+
+  // se não achar categoria, joga pro final
+  if (indexA === -1) return 1
+  if (indexB === -1) return -1
+
+  return indexA - indexB
 })
 
   return (
@@ -106,10 +128,7 @@ const [categoria, setCategoria] = useState("Todas")
 
         <div className="newsPage__grid">
 
-         {(categoria === "Todas" && busca === ""
-  ? noticiasFiltradas.slice(1)
-  : noticiasFiltradas
-).map((noticia) => (
+         {noticiasOrdenadas.map((noticia) => (
 
             <article key={noticia.id} className="newsCard">
 

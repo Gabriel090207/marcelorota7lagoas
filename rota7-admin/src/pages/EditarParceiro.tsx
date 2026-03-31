@@ -180,6 +180,7 @@ export default function EditarParceiro() {
               >
                 <option value="">Selecione</option>
                 <option>Oficina</option>
+                <option>Serviços</option>
                 <option>Equipamentos</option>
                 <option>Peças</option>
                 <option>Concessionária</option>

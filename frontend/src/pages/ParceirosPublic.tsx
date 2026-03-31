@@ -17,23 +17,25 @@ export default function ParceirosPublic() {
   }, [])
 
   const categorias = [
-    "Todos",
-    "Oficina",
-    "Equipamentos",
-    "Peças",
-    "Concessionária",
-    "Restaurante",
-    "Hotel / Pousada"
-  ]
+  "Todos",
+  "Oficina",
+  "Equipamentos",
+  "Peças",
+  "Concessionária",
+  "Restaurante",
+  "Hotel / Pousada",
+  "Serviços"
+]
 
   const filtrados = parceiros.filter(p => {
     const matchBusca =
       p.nome?.toLowerCase().includes(busca.toLowerCase()) ||
       p.descricao?.toLowerCase().includes(busca.toLowerCase())
 
-    const matchCategoria =
-      categoria === "Todos" || p.categoria === categoria
-
+   const matchCategoria =
+  categoria === "Todos" ||
+  p.categoria?.toLowerCase().includes(categoria.toLowerCase())
+  
     return matchBusca && matchCategoria
   })
 

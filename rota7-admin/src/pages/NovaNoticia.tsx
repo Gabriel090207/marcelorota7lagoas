@@ -15,6 +15,8 @@ export default function NovaNoticia() {
   const navigate = useNavigate()
 
   const [file, setFile] = useState<File | null>(null)
+  const [imagensExtras, setImagensExtras] = useState<File[]>([])
+const [previewExtras, setPreviewExtras] = useState<string[]>([])
   const [titulo, setTitulo] = useState("")
   const [categoria, setCategoria] = useState("")
   const [conteudo, setConteudo] = useState("")
@@ -34,6 +36,16 @@ export default function NovaNoticia() {
     }, 3200)
   }
 
+  const handleMultipleImages = (e: React.ChangeEvent<HTMLInputElement>) => {
+  if (!e.target.files) return
+
+  const filesArray = Array.from(e.target.files)
+  const previews = filesArray.map(file => URL.createObjectURL(file))
+
+  setImagensExtras(prev => [...prev, ...filesArray])
+  setPreviewExtras(prev => [...prev, ...previews])
+}
+
   const handleSubmit = async () => {
     try {
       if (!titulo.trim() || !conteudo.trim() || conteudo === "<p></p>") {
@@ -45,6 +57,14 @@ export default function NovaNoticia() {
 
       let imageUrl = ""
 
+      let imagensUrls: string[] = []
+
+if (imagensExtras.length > 0) {
+  imagensUrls = await Promise.all(
+    imagensExtras.map(img => uploadImage(img))
+  )
+}
+
       if (file) {
         imageUrl = await uploadImage(file)
       }
@@ -55,12 +75,13 @@ export default function NovaNoticia() {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          titulo,
-          conteudo,
-          imagem: imageUrl,
-          categoria,
-          autor: "Admin"
-        })
+  titulo,
+  conteudo,
+  imagem: imageUrl,
+  imagens: imagensUrls,
+  categoria,
+  autor: "Admin"
+})
       })
 
       if (!res.ok) {
@@ -76,6 +97,8 @@ export default function NovaNoticia() {
       setCategoria("")
       setConteudo("")
       setFile(null)
+      setImagensExtras([])
+setPreviewExtras([])
 
     } catch (error) {
       console.error(error)
@@ -176,6 +199,32 @@ export default function NovaNoticia() {
           </div>
 
           <RichTextEditor content={conteudo} onChange={setConteudo} />
+
+
+<div className="field">
+  <label>Imagens da notícia</label>
+
+  <label className="uploadBox">
+    <input
+      type="file"
+      multiple
+      onChange={handleMultipleImages}
+    />
+    <span>
+      {imagensExtras.length > 0
+        ? `${imagensExtras.length} imagens selecionadas`
+        : "Selecionar imagens"}
+    </span>
+  </label>
+</div>
+
+{previewExtras.length > 0 && (
+  <div className="galleryPreview">
+    {previewExtras.map((img, index) => (
+      <img key={index} src={img} />
+    ))}
+  </div>
+)}
 
           <button
             className="publishBtn"
