@@ -53,7 +53,7 @@ def criar_evento(evento: Evento, background_tasks: BackgroundTasks):
         f"https://www.rota7lagoas.com.br/evento/{evento_id}",
         users,
         evento.data,
-        "Horário não informado"
+        ""
     )
 
     return {

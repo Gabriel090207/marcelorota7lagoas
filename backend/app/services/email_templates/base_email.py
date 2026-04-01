@@ -32,7 +32,7 @@ def base_email_template(title, content):
                     <!-- LOGO -->
                     <img 
                       src="https://www.rota7lagoas.com.br/images/logo.png"
-                      alt="Portal 7 Lagoas"
+                      alt="Rota 7 Lagoas"
                       style="
                         height: 50px;
                         margin-bottom: 10px;
@@ -82,7 +82,7 @@ def base_email_template(title, content):
                     color: #777;
                     border-top: 1px solid #2a2a2a;
                   ">
-                    © Portal 7 Lagoas
+                    © Rota 7 Lagoas
                   </td>
                 </tr>
 

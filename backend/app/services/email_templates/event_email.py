@@ -23,16 +23,14 @@ def event_email_template(title, description, url, data, horario):
 
     <!-- DATA + HORÁRIO -->
     <div style="
-      text-align: center;
-      margin-bottom: 18px;
-      color: #ff7a00;
-      font-weight: bold;
-      font-size: 14px;
-    ">
-      <span>{data}</span>
-      &nbsp;&nbsp;•&nbsp;&nbsp;
-      <span>{horario}</span>
-    </div>
+  text-align: center;
+  margin-bottom: 18px;
+  color: #ff7a00;
+  font-weight: bold;
+  font-size: 14px;
+">
+  {f"<span>{data}</span>" if data else ""}
+</div>
 
     <!-- DESCRIÇÃO -->
     <p style="

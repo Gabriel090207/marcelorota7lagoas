@@ -6,6 +6,7 @@ from app.services.email_scheduler import schedule_blog_email
 router = APIRouter(prefix="/blogs", tags=["Blogs"])
 
 
+# 🔹 Buscar inscritos
 def get_all_subscribers():
     docs = db.collection("newsletter").stream()
 
@@ -16,12 +17,12 @@ def get_all_subscribers():
     return [User(doc.to_dict().get("email")) for doc in docs]
 
 
+# 🔹 LISTAR
 @router.get("/")
 def listar_blogs():
     blogs_ref = db.collection("blogs").stream()
 
     lista = []
-
     for doc in blogs_ref:
         data = doc.to_dict()
         data["id"] = doc.id
@@ -30,30 +31,34 @@ def listar_blogs():
     return lista
 
 
+# 🔹 CRIAR
 @router.post("/")
-def criar_blog(blog: Blog):
+def criar_blog(blog: Blog, background_tasks: BackgroundTasks):
 
     doc_ref = db.collection("blogs").add(blog.dict())
     blog_id = doc_ref[1].id
 
-    title = blog.titulo if hasattr(blog, "titulo") else "Novo blog"
-    description = blog.conteudo if hasattr(blog, "conteudo") else ""
+    # montar dados do email
+    title = getattr(blog, "titulo", "Novo blog")
+    description = getattr(blog, "conteudo", "")
     url = f"https://www.rota7lagoas.com.br/blog/{blog_id}"
 
-    import time
+    # pegar inscritos
+    users = get_all_subscribers()
 
-    db.collection("email_queue").add({
-        "tipo": "blog",
-        "title": title,
-        "description": description,
-        "url": url,
-        "status": "pendente",
-        "created_at": time.time()
-    })
+    # agendar envio (5 min depois)
+    background_tasks.add_task(
+        schedule_blog_email,
+        title,
+        description,
+        url,
+        users
+    )
 
     return {"msg": "Blog criado com sucesso"}
 
 
+# 🔹 BUSCAR
 @router.get("/{id}")
 def buscar_blog(id: str):
     doc_ref = db.collection("blogs").document(id).get()
@@ -63,10 +68,10 @@ def buscar_blog(id: str):
 
     data = doc_ref.to_dict()
     data["id"] = doc_ref.id
-
     return data
 
 
+# 🔹 ATUALIZAR
 @router.put("/{id}")
 def atualizar_blog(id: str, blog: Blog):
     doc_ref = db.collection("blogs").document(id)
@@ -79,6 +84,7 @@ def atualizar_blog(id: str, blog: Blog):
     return {"msg": "Blog atualizado com sucesso"}
 
 
+# 🔹 DELETAR
 @router.delete("/{id}")
 def deletar_blog(id: str):
     doc_ref = db.collection("blogs").document(id)

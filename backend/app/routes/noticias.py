@@ -40,7 +40,7 @@ def criar_noticia(noticia: Noticia, background_tasks: BackgroundTasks):
 
     # montar dados do email
     title = getattr(noticia, "titulo", "Nova notícia")
-    description = getattr(noticia, "descricao", "Confira agora os detalhes")
+    description = noticia.conteudo
     url = f"https://www.rota7lagoas.com.br/noticia/{doc_ref[1].id}"
 
     # pegar inscritos
