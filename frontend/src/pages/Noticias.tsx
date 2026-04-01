@@ -27,11 +27,38 @@ const [categoria, setCategoria] = useState("Todas")
 }, [])
 
 
-  const noticiasOrdenadasPorData = [...noticias].sort((a, b) => {
-  const dateA = new Date(a.data || a.created_at || 0).getTime()
-  const dateB = new Date(b.data || b.created_at || 0).getTime()
+ const parseNoticiaDate = (dataStr: string) => {
+  if (!dataStr) return new Date(0)
 
-  return dateB - dateA // 🔥 mais recente primeiro
+  if (dataStr.includes("T")) {
+    const d = new Date(dataStr)
+    return isNaN(d.getTime()) ? new Date(0) : d
+  }
+
+  try {
+    const [datePart, timePart] = dataStr.split(" ")
+    const [day, month, year] = datePart.split("/")
+    const [hour = "00", minute = "00"] = (timePart || "").split(":")
+
+    const d = new Date(
+      Number(year),
+      Number(month) - 1,
+      Number(day),
+      Number(hour),
+      Number(minute)
+    )
+
+    return isNaN(d.getTime()) ? new Date(0) : d
+  } catch {
+    return new Date(0)
+  }
+}
+
+const noticiasOrdenadasPorData = [...noticias].sort((a, b) => {
+  const dateA = a.data ? parseNoticiaDate(a.data).getTime() : Number(a.created_at || 0)
+  const dateB = b.data ? parseNoticiaDate(b.data).getTime() : Number(b.created_at || 0)
+
+  return dateB - dateA
 })
 
   const noticiasFiltradas = noticias.filter((n) => {

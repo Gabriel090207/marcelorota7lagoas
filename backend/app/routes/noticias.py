@@ -2,8 +2,8 @@ from fastapi import APIRouter, BackgroundTasks
 from app.services.email_scheduler import schedule_news_email
 from app.models.noticia import Noticia
 from app.services.firebase import db
+from datetime import datetime  # 🔥 IMPORTANTE
 
-# ✅ Router (TEM que vir antes de usar @router)
 router = APIRouter(prefix="/noticias", tags=["Noticias"])
 
 
@@ -18,7 +18,7 @@ def get_all_subscribers():
     return [User(doc.to_dict().get("email")) for doc in docs]
 
 
-# 🔹 Listar notícias
+# 🔹 LISTAR
 @router.get("/")
 def listar_noticias():
     noticias_ref = db.collection("noticias").stream()
@@ -32,11 +32,14 @@ def listar_noticias():
     return lista
 
 
-# 🔹 Criar notícia + agendar envio de email
+# 🔹 CRIAR (🔥 CORRIGIDO AQUI)
 @router.post("/")
 def criar_noticia(noticia: Noticia, background_tasks: BackgroundTasks):
 
-    doc_ref = db.collection("noticias").add(noticia.dict())
+    data = noticia.dict()
+    data["created_at"] = datetime.utcnow().isoformat()  # 🔥 ESSENCIAL
+
+    doc_ref = db.collection("noticias").add(data)
 
     # montar dados do email
     title = getattr(noticia, "titulo", "Nova notícia")
@@ -46,7 +49,7 @@ def criar_noticia(noticia: Noticia, background_tasks: BackgroundTasks):
     # pegar inscritos
     users = get_all_subscribers()
 
-    # agendar envio (5 min depois)
+    # agendar envio
     background_tasks.add_task(
         schedule_news_email,
         title,
@@ -58,7 +61,7 @@ def criar_noticia(noticia: Noticia, background_tasks: BackgroundTasks):
     return {"msg": "Notícia criada com sucesso"}
 
 
-# 🔹 Buscar notícia por ID
+# 🔹 BUSCAR
 @router.get("/{id}")
 def buscar_noticia(id: str):
     doc_ref = db.collection("noticias").document(id).get()
@@ -72,7 +75,7 @@ def buscar_noticia(id: str):
     return data
 
 
-# 🔹 Atualizar notícia
+# 🔹 ATUALIZAR
 @router.put("/{id}")
 def atualizar_noticia(id: str, noticia: Noticia):
     doc_ref = db.collection("noticias").document(id)
@@ -85,7 +88,7 @@ def atualizar_noticia(id: str, noticia: Noticia):
     return {"msg": "Notícia atualizada com sucesso"}
 
 
-# 🔹 Deletar notícia
+# 🔹 DELETAR
 @router.delete("/{id}")
 def deletar_noticia(id: str):
     doc_ref = db.collection("noticias").document(id)
