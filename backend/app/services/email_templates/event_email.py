@@ -29,7 +29,7 @@ def event_email_template(title, description, url, data, horario):
   font-weight: bold;
   font-size: 14px;
 ">
-  {f"<span>{data}</span>" if data else ""}
+  {f"<span>{data.split(' ')[0]} &nbsp;•&nbsp; {data.split(' ')[1]}</span>" if ' ' in data else f"<span>{data}</span>"}
 </div>
 
     <!-- DESCRIÇÃO -->
