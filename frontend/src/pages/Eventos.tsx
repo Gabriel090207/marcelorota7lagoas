@@ -3,15 +3,24 @@ import { Link } from 'react-router-dom'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import { getEventos } from '../services/api'
 
+
+
+import { getParceiros } from "../services/api"
+
 import './Eventos.css'
 
 export default function Eventos() {
+
+
+      const [parceiros, setParceiros] = useState<any[]>([])
+    const parceirosAtivos = parceiros.filter(p => p.ativo)
 
   const [currentDate, setCurrentDate] = useState(new Date())
   const [eventos, setEventos] = useState<any[]>([])
 
   useEffect(() => {
     getEventos().then(setEventos)
+    getParceiros().then(setParceiros) 
   }, [])
 
   // 🔥 PARSE CORRETO (SEM BUG)
@@ -251,7 +260,7 @@ export default function Eventos() {
 
             <div className="cta__actions">
               <a
-                href="https://wa.me/5500000000000"
+                href="https://wa.me/553198785864"
                 target="_blank"
                 className="btn btn--primary"
               >
@@ -266,6 +275,61 @@ export default function Eventos() {
 
         </div>
       </section>
+
+
+
+      
+      
+            <section className="newsPage__partners">
+      
+        <div className="newsPage__partnersInner">
+      
+          <div className="newsPage__partnersHeader">
+            <h2>Precisa de algo para sua moto?</h2>
+      <p>Conheça empresas parceiras que podem te ajudar agora mesmo.</p>
+          </div>
+      
+          <div className="newsPage__partnersGrid">
+      
+            {parceirosAtivos.slice(0, 3).map((p) => (
+      
+              <div key={p.id} className="partnerCard">
+      
+                  <div
+                        className="featuredCard__image"
+                        style={{
+                          backgroundImage: `url(${p.imagem || ""})`
+                        }}
+                      />
+      
+                      <div className="featuredCard__content">
+      
+                        <h3>{p.nome}</h3>
+      
+                        <span>
+                          {p.descricao?.slice(0, 120)}
+                        </span>
+      
+                        <a
+        href={`https://wa.me/55${p.telefone?.replace(/\D/g, "")}`}
+        target="_blank"
+        className="btn btn--primary"
+      >
+        Falar no WhatsApp
+      </a>
+      
+                      </div>
+      
+              </div>
+      
+            ))}
+      
+          </div>
+      
+        </div>
+      
+      </section>
+
 
     </main>
   )

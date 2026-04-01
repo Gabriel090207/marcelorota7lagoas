@@ -6,10 +6,14 @@ import { useNavigate } from "react-router-dom"
 import { getBlogs } from "../services/api"
 
 import { SectionDivider } from '../components/SectionDivider/SectionDivider'
+import { getParceiros } from "../services/api"
 
 
 
 export default function Blogs() {
+
+    const [parceiros, setParceiros] = useState<any[]>([])
+    const parceirosAtivos = parceiros.filter(p => p.ativo)
 
   const [blogs, setBlogs] = useState<any[]>([])
   const [busca, setBusca] = useState("")
@@ -17,7 +21,14 @@ export default function Blogs() {
 
   const navigate = useNavigate()
 
+
   useEffect(() => {
+   
+    getParceiros().then(setParceiros) // 🔥 novo
+  }, [])
+
+  useEffect(() => {
+    
     getBlogs()
       .then((data) => {
         if (Array.isArray(data)) {
@@ -184,6 +195,60 @@ const outrosBlogs = blogsFiltrados
 
         </div>
       </section>
+
+
+         <SectionDivider />
+
+
+      <section className="newsPage__partners">
+
+  <div className="newsPage__partnersInner">
+
+    <div className="newsPage__partnersHeader">
+      <h2>Precisa de algo para sua moto?</h2>
+<p>Conheça empresas parceiras que podem te ajudar agora mesmo.</p>
+    </div>
+
+    <div className="newsPage__partnersGrid">
+
+      {parceirosAtivos.slice(0, 3).map((p) => (
+
+        <div key={p.id} className="partnerCard">
+
+            <div
+                  className="featuredCard__image"
+                  style={{
+                    backgroundImage: `url(${p.imagem || ""})`
+                  }}
+                />
+
+                <div className="featuredCard__content">
+
+                  <h3>{p.nome}</h3>
+
+                  <span>
+                    {p.descricao?.slice(0, 120)}
+                  </span>
+
+                  <a
+  href={`https://wa.me/55${p.telefone?.replace(/\D/g, "")}`}
+  target="_blank"
+  className="btn btn--primary"
+>
+  Falar no WhatsApp
+</a>
+
+                </div>
+
+        </div>
+
+      ))}
+
+    </div>
+
+  </div>
+
+</section>
 
     
      

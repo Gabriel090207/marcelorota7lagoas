@@ -1,5 +1,6 @@
 .eventos {
   padding-top: 100px;
+  padding-bottom: 100px;
 }
 
 /* FEATURED */
@@ -200,6 +201,7 @@
 
 .eventos__cta {
   padding: 100px 24px;
+  padding-bottom: 180px;
   background: linear-gradient(
     135deg,
     rgba(255,122,0,0.08),
@@ -209,23 +211,28 @@
 }
 
 .eventos__ctaInner {
+ 
   max-width: 900px;
+ 
   margin: 0 auto;
   text-align: center;
 }
 
 .cta__label {
+
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 2px;
   color: var(--color-primary);
   display: inline-block;
   margin-bottom: 14px;
+
 }
 
 .cta__content h2 {
   font-size: 2.2rem;
   margin-bottom: 18px;
+
 }
 
 .cta__content p {

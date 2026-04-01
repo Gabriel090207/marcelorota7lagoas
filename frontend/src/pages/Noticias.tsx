@@ -6,7 +6,6 @@ import { getNoticias } from '../services/api'
 import { useNavigate } from 'react-router-dom'
 
 import { getParceiros } from "../services/api"
-
 import { SectionDivider } from '../components/SectionDivider/SectionDivider'
 
 export default function Noticias() {
