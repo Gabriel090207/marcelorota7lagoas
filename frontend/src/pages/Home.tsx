@@ -413,8 +413,7 @@ const parceirosAtivos = parceiros.filter(p => p.ativo)
 </span>
       <h2>Empresas que movem a Rota 7</h2>
       <p>
-        Oficinas, lojas e serviços que fortalecem o motociclismo em
-        Sete Lagoas e região.
+       Oficinas, lojas e serviços que movem a Rota 7.
       </p>
 
       <div className="marketActions">
