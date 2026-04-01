@@ -55,8 +55,13 @@ const [categoria, setCategoria] = useState("Todas")
 }
 
 const noticiasOrdenadasPorData = [...noticias].sort((a, b) => {
-  const dateA = a.data ? parseNoticiaDate(a.data).getTime() : Number(a.created_at || 0)
-  const dateB = b.data ? parseNoticiaDate(b.data).getTime() : Number(b.created_at || 0)
+const dateA = a.data
+  ? parseNoticiaDate(a.data).getTime()
+  : new Date(a.created_at || 0).getTime()
+
+const dateB = b.data
+  ? parseNoticiaDate(b.data).getTime()
+  : new Date(b.created_at || 0).getTime()
 
   return dateB - dateA
 })
