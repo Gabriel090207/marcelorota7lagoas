@@ -15,6 +15,15 @@ import {
 
 type ToastType = "success" | "error"
 
+const formatPhone = (value: string) => {
+  value = value.replace(/\D/g, "")
+
+  value = value.replace(/^(\d{2})(\d)/g, "($1) $2")
+  value = value.replace(/(\d{5})(\d)/, "$1-$2")
+
+  return value
+}
+
 const formatPrice = (value: string) => {
   value = value.replace(/\D/g, "")
   value = (Number(value) / 100).toFixed(2) + ""
@@ -128,12 +137,12 @@ export default function NovoAnuncio() {
             onChange={(e) => setPreco(formatPrice(e.target.value))}
           />
 
-          <input
-            className="input"
-            placeholder="Telefone"
-            value={telefone}
-            onChange={(e) => setTelefone(e.target.value)}
-          />
+         <input
+  className="input"
+  placeholder="(31) 99999-9999"
+  value={telefone}
+  onChange={(e) => setTelefone(formatPhone(e.target.value))}
+/>
 
           <textarea
             className="input"

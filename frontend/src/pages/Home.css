@@ -1278,3 +1278,67 @@
     justify-content: center;
   }
 }
+
+
+/* ===== HERO CARROSSEL RESPONSIVO ===== */
+
+@media (max-width: 1200px) {
+  .homeNewsHero__slider {
+    height: 480px;
+  }
+
+  .homeNewsHero__content {
+    padding: 100px 60px;
+  }
+
+  .homeNewsHero__content h1 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .homeNewsHero__slider {
+    height: 420px;
+  }
+
+  .homeNewsHero__content {
+    padding: 80px 40px;
+  }
+
+  .homeNewsHero__content h1 {
+    font-size: 1.7rem;
+  }
+
+  .homeNewsHero__content p {
+    font-size: 0.95rem;
+  }
+
+  .homeNewsHero__dots {
+    bottom: 290px;
+  }
+  
+}
+
+@media (max-width: 600px) {
+  .homeNewsHero__slider {
+    height: 380px;
+  }
+
+  .homeNewsHero__content {
+    padding: 60px 20px;
+  }
+
+  .homeNewsHero__content h1 {
+    font-size: 1.4rem;
+  }
+
+  .homeNewsHero__content p {
+    font-size: 0.85rem;
+  }
+
+  
+
+  .homeNewsHero__dots {
+    bottom: 230px;
+  }
+}

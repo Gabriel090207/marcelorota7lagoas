@@ -27,12 +27,15 @@ def listar_dicas():
 
     return dicas
 
+from datetime import datetime
 
-# 🔹 CRIAR
 @router.post("/")
 def criar_dica(dica: Dica, background_tasks: BackgroundTasks):
 
-    doc_ref = db.collection("dicas").add(dica.dict())
+    data = dica.dict()
+    data["created_at"] = datetime.utcnow().isoformat()
+
+    doc_ref = db.collection("dicas").add(data)
     dica_id = doc_ref[1].id
 
     # 🔹 pegar inscritos
@@ -57,7 +60,6 @@ def criar_dica(dica: Dica, background_tasks: BackgroundTasks):
         "msg": "Dica criada com sucesso",
         "id": dica_id
     }
-
 
 # 🔹 BUSCAR
 @router.get("/{id}")

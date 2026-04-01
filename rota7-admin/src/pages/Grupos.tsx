@@ -1,7 +1,7 @@
 import AdminLayout from "../components/admin/AdminLayout"
 import "./Grupos.css"
 
-import { FiPlus, FiEdit, FiTrash, FiEye } from "react-icons/fi"
+import { FiPlus, FiEdit, FiTrash, FiEye, FiCheckCircle, FiAlertCircle, FiX } from "react-icons/fi"
 import { Link, useNavigate } from "react-router-dom"
 
 import { useEffect, useState } from "react"
@@ -20,19 +20,37 @@ export default function Grupos() {
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
+  const [toastOpen, setToastOpen] = useState(false)
+const [toastType, setToastType] = useState<"success" | "error">("success")
+const [toastMessage, setToastMessage] = useState("")
+
+
+const showToast = (type: "success" | "error", message: string) => {
+  setToastType(type)
+  setToastMessage(message)
+  setToastOpen(true)
+
+  setTimeout(() => {
+    setToastOpen(false)
+  }, 3200)
+}
   // 🔥 DELETE
   const handleDelete = async () => {
-    if (!selectedId) return
+  if (!selectedId) return
 
-    try {
-      await deleteGrupo(selectedId)
-      setGrupos(prev => prev.filter(grupo => grupo.id !== selectedId))
-      setModalOpen(false)
-    } catch (error) {
-      console.error(error)
-    }
+  try {
+    await deleteGrupo(selectedId)
+
+    setGrupos(prev => prev.filter(grupo => grupo.id !== selectedId))
+    setModalOpen(false)
+
+    showToast("success", "Grupo deletado com sucesso!")
+
+  } catch (error) {
+    console.error(error)
+    showToast("error", "Erro ao deletar grupo.")
   }
-
+}
   // 🔥 carregar grupos
   useEffect(() => {
     getGrupos()
@@ -61,10 +79,43 @@ export default function Grupos() {
       .catch(() => setSolicitacoes([]))
   }, [])
 
+
+  const gruposOrdenados = [...grupos].sort((a, b) => {
+  const dateA = new Date(a.created_at || 0).getTime()
+  const dateB = new Date(b.created_at || 0).getTime()
+
+  return dateB - dateA
+})
+
   return (
     <AdminLayout>
 
       <main className="adminPage">
+
+        <div className={`adminToast adminToast--${toastType} ${toastOpen ? "show" : ""}`}>
+
+  <div className="adminToast__icon">
+    {toastType === "success"
+      ? <FiCheckCircle size={18} />
+      : <FiAlertCircle size={18} />}
+  </div>
+
+  <div className="adminToast__content">
+    <strong>
+      {toastType === "success" ? "Sucesso" : "Atenção"}
+    </strong>
+    <span>{toastMessage}</span>
+  </div>
+
+  <button
+    className="adminToast__close"
+    onClick={() => setToastOpen(false)}
+    type="button"
+  >
+    <FiX size={18} />
+  </button>
+
+</div>
 
         {/* HEADER */}
         <div className="adminPage__header">
@@ -110,7 +161,7 @@ export default function Grupos() {
                 Nenhum grupo cadastrado
               </p>
             ) : (
-              grupos.map((grupo) => (
+              gruposOrdenados.map((grupo) => (
 
                 <div key={grupo.id} className="adminTable__row">
 

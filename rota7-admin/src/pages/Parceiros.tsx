@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import AdminLayout from "../components/admin/AdminLayout"
 import "./Parceiros.css"
 
-import { FiPlus, FiEdit, FiTrash, FiEye } from "react-icons/fi"
+import { FiPlus, FiEdit, FiTrash, FiEye, FiCheckCircle, FiAlertCircle, FiX } from "react-icons/fi"
 import { Link, useNavigate } from "react-router-dom"
 
 import { getParceiros, deleteParceiro } from "../services/api"
@@ -20,6 +20,22 @@ export default function Parceiros() {
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
+  const [toastOpen, setToastOpen] = useState(false)
+const [toastType, setToastType] = useState<"success" | "error">("success")
+const [toastMessage, setToastMessage] = useState("")
+
+
+const showToast = (type: "success" | "error", message: string) => {
+  setToastType(type)
+  setToastMessage(message)
+  setToastOpen(true)
+
+  setTimeout(() => {
+    setToastOpen(false)
+  }, 3200)
+}
+
+
   // 🔥 carregar parceiros
   useEffect(() => {
     getParceiros().then(setParceiros)
@@ -35,20 +51,57 @@ export default function Parceiros() {
     })
 }, [])
 
+const parceirosOrdenados = [...parceiros].sort((a, b) => {
+  return b.id.localeCompare(a.id)
+})
+
   // 🔥 excluir parceiro
   const handleDelete = async () => {
-    if (!selectedId) return
+  if (!selectedId) return
 
+  try {
     await deleteParceiro(selectedId)
 
     setParceiros(prev => prev.filter(p => p.id !== selectedId))
     setModalOpen(false)
+
+    showToast("success", "Parceiro deletado com sucesso!")
+
+  } catch (error) {
+    console.error(error)
+    showToast("error", "Erro ao deletar parceiro.")
   }
+}
 
   return (
     <AdminLayout>
 
       <main className="adminPage">
+
+        <div className={`adminToast adminToast--${toastType} ${toastOpen ? "show" : ""}`}>
+
+  <div className="adminToast__icon">
+    {toastType === "success"
+      ? <FiCheckCircle size={18} />
+      : <FiAlertCircle size={18} />}
+  </div>
+
+  <div className="adminToast__content">
+    <strong>
+      {toastType === "success" ? "Sucesso" : "Atenção"}
+    </strong>
+    <span>{toastMessage}</span>
+  </div>
+
+  <button
+    className="adminToast__close"
+    onClick={() => setToastOpen(false)}
+    type="button"
+  >
+    <FiX size={18} />
+  </button>
+
+</div>
 
         <div className="adminPage__header">
           <div>
@@ -85,7 +138,7 @@ export default function Parceiros() {
         {abaAtiva === "parceiros" && (
           <div className="adminTable">
 
-            {parceiros.map(parceiro => (
+            {parceirosOrdenados.map(parceiro => (
               <div key={parceiro.id} className="adminTable__row">
 
                 <div className="adminTable__title">

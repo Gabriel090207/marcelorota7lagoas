@@ -2,7 +2,7 @@ import AdminLayout from "../components/admin/AdminLayout"
 import { Link, useNavigate } from "react-router-dom"
 import "./Noticias.css"
 
-import { FiPlus, FiEdit, FiTrash } from "react-icons/fi"
+import { FiPlus, FiEdit, FiTrash, FiCheckCircle, FiAlertCircle, FiX } from "react-icons/fi"
 import { useEffect, useState } from "react"
 
 
@@ -19,16 +19,39 @@ export default function Noticias() {
   const [modalOpen, setModalOpen] = useState(false)
 const [selectedId, setSelectedId] = useState<string | null>(null)
 
+
+const [toastOpen, setToastOpen] = useState(false)
+const [toastType, setToastType] = useState<"success" | "error">("success")
+const [toastMessage, setToastMessage] = useState("")
+
+
+const showToast = (type: "success" | "error", message: string) => {
+  setToastType(type)
+  setToastMessage(message)
+  setToastOpen(true)
+
+  setTimeout(() => {
+    setToastOpen(false)
+  }, 3200)
+}
+
 const handleDelete = async () => {
   if (!selectedId) return
 
-  await deleteNoticia(selectedId)
+  try {
+    await deleteNoticia(selectedId)
 
-  setNoticias(prev => prev.filter(n => n.id !== selectedId))
+    setNoticias(prev => prev.filter(n => n.id !== selectedId))
 
-  setModalOpen(false)
-} 
+    setModalOpen(false)
 
+    showToast("success", "Notícia deletada com sucesso!")
+
+  } catch (error) {
+    console.error(error)
+    showToast("error", "Erro ao deletar notícia.")
+  }
+}
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/noticias`)
@@ -49,6 +72,32 @@ const handleDelete = async () => {
     <AdminLayout>
 
       <main className="adminPage">
+
+
+        <div className={`adminToast adminToast--${toastType} ${toastOpen ? "show" : ""}`}>
+
+  <div className="adminToast__icon">
+    {toastType === "success"
+      ? <FiCheckCircle size={18} />
+      : <FiAlertCircle size={18} />}
+  </div>
+
+  <div className="adminToast__content">
+    <strong>
+      {toastType === "success" ? "Sucesso" : "Atenção"}
+    </strong>
+    <span>{toastMessage}</span>
+  </div>
+
+  <button
+    className="adminToast__close"
+    onClick={() => setToastOpen(false)}
+    type="button"
+  >
+    <FiX size={18} />
+  </button>
+
+</div>
 
         <div className="adminPage__header">
 

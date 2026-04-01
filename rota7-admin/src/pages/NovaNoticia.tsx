@@ -198,8 +198,11 @@ setPreviewExtras([])
 
           </div>
 
-          <RichTextEditor content={conteudo} onChange={setConteudo} />
-
+          <RichTextEditor
+  key={conteudo === "" ? "empty" : "filled"}
+  content={conteudo}
+  onChange={setConteudo}
+/>
 
 <div className="field">
   <label>Imagens da notícia</label>

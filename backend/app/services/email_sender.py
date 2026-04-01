@@ -13,7 +13,7 @@ async def send_email(to: str, subject: str, html: str):
                 "Content-Type": "application/json",
             },
             json={
-                "from": "Portal 7 Lagoas <noreply@portal7lagoas.email>",  # depois trocamos
+                "from": "Rota 7 Lagoas <noreply@portal7lagoas.email>",  # depois trocamos
                 "to": [to],
                 "subject": subject,
                 "html": html,

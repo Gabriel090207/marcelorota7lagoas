@@ -19,11 +19,17 @@ def listar_imagens():
     return lista
 
 
+import time
+
 @router.post("/")
 def criar_imagem(imagem: Imagem):
-    db.collection("galeria").add(imagem.dict())
-    return {"msg": "Imagem criada com sucesso"}
 
+    data = imagem.dict()
+    data["created_at"] = time.time()  # 🔥 salva data de criação
+
+    db.collection("galeria").add(data)
+
+    return {"msg": "Imagem criada com sucesso"}
 
 @router.delete("/{id}")
 def deletar_imagem(id: str):

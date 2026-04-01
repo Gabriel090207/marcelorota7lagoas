@@ -2,7 +2,7 @@ import AdminLayout from "../components/admin/AdminLayout"
 import "./Galeria.css"
 import { Link, useNavigate } from "react-router-dom"
 
-import { FiPlus, FiTrash, FiX, FiEye } from "react-icons/fi"
+import { FiPlus, FiTrash, FiX, FiEye, FiCheckCircle, FiAlertCircle } from "react-icons/fi"
 
 import { useEffect, useState } from "react"
 import { getImagens, deleteImagem } from "../services/api"
@@ -17,6 +17,20 @@ export default function Galeria() {
 
   const [abaAtiva, setAbaAtiva] = useState<"galeria" | "solicitacoes">("galeria")
 
+  const [toastOpen, setToastOpen] = useState(false)
+const [toastType, setToastType] = useState<"success" | "error">("success")
+const [toastMessage, setToastMessage] = useState("")
+
+
+const showToast = (type: "success" | "error", message: string) => {
+  setToastType(type)
+  setToastMessage(message)
+  setToastOpen(true)
+
+  setTimeout(() => {
+    setToastOpen(false)
+  }, 3200)
+}
   // 🔥 carregar galeria
   useEffect(() => {
     getImagens().then(setImagens)
@@ -38,18 +52,52 @@ export default function Galeria() {
   }, [])
 
   const handleDelete = async (id: string) => {
-    try {
-      await deleteImagem(id)
-      setImagens(prev => prev.filter(img => img.id !== id))
-    } catch (error) {
-      console.error(error)
-    }
+  try {
+    await deleteImagem(id)
+
+    setImagens(prev => prev.filter(img => img.id !== id))
+
+    showToast("success", "Imagem deletada com sucesso!")
+
+  } catch (error) {
+    console.error(error)
+    showToast("error", "Erro ao deletar imagem.")
   }
+}
+
+const imagensOrdenadas = [...imagens].sort((a, b) => {
+  return Number(b.created_at || 0) - Number(a.created_at || 0)
+})
 
   return (
     <AdminLayout>
 
       <main className="adminPage">
+
+        <div className={`adminToast adminToast--${toastType} ${toastOpen ? "show" : ""}`}>
+
+  <div className="adminToast__icon">
+    {toastType === "success"
+      ? <FiCheckCircle size={18} />
+      : <FiAlertCircle size={18} />}
+  </div>
+
+  <div className="adminToast__content">
+    <strong>
+      {toastType === "success" ? "Sucesso" : "Atenção"}
+    </strong>
+    <span>{toastMessage}</span>
+  </div>
+
+  <button
+    className="adminToast__close"
+    onClick={() => setToastOpen(false)}
+    type="button"
+  >
+    <FiX size={18} />
+  </button>
+
+</div>
 
         {/* HEADER */}
         <div className="adminPage__header">
@@ -96,7 +144,7 @@ export default function Galeria() {
               </p>
             ) : (
 
-              imagens.map(img => (
+             imagensOrdenadas.map(img => (
 
                 <div
                   key={img.id}

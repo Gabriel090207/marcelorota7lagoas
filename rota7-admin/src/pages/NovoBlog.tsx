@@ -216,6 +216,7 @@ if (imagensExtras.length > 0) {
           )}
 
           <RichTextEditor
+  key={conteudo === "" ? "empty" : "filled"}
   content={conteudo}
   onChange={setConteudo}
 />

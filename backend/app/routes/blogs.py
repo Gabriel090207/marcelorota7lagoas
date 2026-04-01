@@ -32,10 +32,15 @@ def listar_blogs():
 
 
 # 🔹 CRIAR
+import time
+
 @router.post("/")
 def criar_blog(blog: Blog, background_tasks: BackgroundTasks):
 
-    doc_ref = db.collection("blogs").add(blog.dict())
+    data = blog.dict()
+    data["created_at"] = time.time()
+
+    doc_ref = db.collection("blogs").add(data)
     blog_id = doc_ref[1].id
 
     # montar dados do email

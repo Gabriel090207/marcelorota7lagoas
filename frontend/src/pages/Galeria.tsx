@@ -14,12 +14,14 @@ export default function Galeria() {
     getImagens().then(setImagens)
   }, [])
 
-  const imagensFiltradas =
-    filtro === "Todos"
-      ? imagens
-      : imagens.filter(img => img.categoria === filtro)
+ const imagensOrdenadas = [...imagens].sort((a, b) => {
+  return Number(b.created_at || 0) - Number(a.created_at || 0)
+})
 
-
+const imagensFiltradas =
+  filtro === "Todos"
+    ? imagensOrdenadas
+    : imagensOrdenadas.filter(img => img.categoria === filtro)
 
   return (
     <main className="galeria">

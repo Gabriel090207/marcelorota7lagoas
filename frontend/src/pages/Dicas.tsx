@@ -11,6 +11,13 @@ export default function Dicas() {
   const [busca, setBusca] = useState("")
   const [categoria, setCategoria] = useState("Todas")
 
+  const dicasOrdenadas = [...dicas].sort((a, b) => {
+  const dateA = new Date(a.data || a.created_at || 0).getTime()
+  const dateB = new Date(b.data || b.created_at || 0).getTime()
+
+  return dateB - dateA // mais recente primeiro
+})
+
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -23,8 +30,7 @@ export default function Dicas() {
     return <div style={{ padding: 40 }}>Carregando dicas...</div>
   }
 
-  const dicasFiltradas = dicas.filter((d) => {
-
+  const dicasFiltradas = dicasOrdenadas.filter((d) => {
   const texto = busca.toLowerCase()
 
   const matchBusca =
@@ -38,12 +44,20 @@ export default function Dicas() {
   return matchBusca && matchCategoria
 })
 
+
+
   // 🔥 DESTAQUE + GRID
-  const destaque = categoria === "Todas" ? dicasFiltradas[0] : null
-  const outrasDicas =
-    categoria === "Todas"
-      ? dicasFiltradas.slice(1)
-      : dicasFiltradas
+  const destaque = categoria === "Todas" ? dicasOrdenadas[0] : null
+const ordemCategorias = ["Pilotagem", "Segurança", "Manutenção"]
+
+const outrasDicas = [...dicasFiltradas].sort((a, b) => {
+  return (
+    ordemCategorias.indexOf(a.categoria) -
+    ordemCategorias.indexOf(b.categoria)
+  )
+})
+
+  
 
   return (
     <main className="dicas">

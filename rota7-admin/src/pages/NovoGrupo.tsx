@@ -68,6 +68,7 @@ export default function NovoGrupo() {
       setNome("")
       setTipo("")
       setLink("")
+      setDescricao("")
       setFile(null)
 
     } catch (error) {

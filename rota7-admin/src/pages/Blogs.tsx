@@ -2,7 +2,7 @@ import AdminLayout from "../components/admin/AdminLayout"
 import { Link, useNavigate } from "react-router-dom"
 import "./Noticias.css"
 
-import { FiPlus, FiEdit, FiTrash } from "react-icons/fi"
+import { FiPlus, FiEdit, FiTrash, FiCheckCircle, FiAlertCircle, FiX } from "react-icons/fi"
 import { useEffect, useState } from "react"
 
 import ConfirmModal from "../components/admin/ConfirmModal"
@@ -15,16 +15,41 @@ export default function Blogs() {
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
-  const handleDelete = async () => {
-    if (!selectedId) return
 
+  const [toastOpen, setToastOpen] = useState(false)
+const [toastType, setToastType] = useState<"success" | "error">("success")
+const [toastMessage, setToastMessage] = useState("")
+
+
+const showToast = (type: "success" | "error", message: string) => {
+  setToastType(type)
+  setToastMessage(message)
+  setToastOpen(true)
+
+  setTimeout(() => {
+    setToastOpen(false)
+  }, 3200)
+}
+
+  const handleDelete = async () => {
+  if (!selectedId) return
+
+  try {
     await fetch(`${import.meta.env.VITE_API_URL}/blogs/${selectedId}`, {
       method: "DELETE"
     })
 
     setBlogs(prev => prev.filter(b => b.id !== selectedId))
+
     setModalOpen(false)
+
+    showToast("success", "Blog deletado com sucesso!")
+
+  } catch (error) {
+    console.error(error)
+    showToast("error", "Erro ao deletar blog.")
   }
+}
 
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/blogs`)
@@ -32,10 +57,41 @@ export default function Blogs() {
       .then(data => setBlogs(data))
   }, [])
 
+
+ const blogsOrdenados = [...blogs].sort((a, b) => {
+  return Number(b.created_at || 0) - Number(a.created_at || 0)
+})
+
   return (
     <AdminLayout>
 
       <main className="adminPage">
+
+
+        <div className={`adminToast adminToast--${toastType} ${toastOpen ? "show" : ""}`}>
+
+  <div className="adminToast__icon">
+    {toastType === "success"
+      ? <FiCheckCircle size={18} />
+      : <FiAlertCircle size={18} />}
+  </div>
+
+  <div className="adminToast__content">
+    <strong>
+      {toastType === "success" ? "Sucesso" : "Atenção"}
+    </strong>
+    <span>{toastMessage}</span>
+  </div>
+
+  <button
+    className="adminToast__close"
+    onClick={() => setToastOpen(false)}
+    type="button"
+  >
+    <FiX size={18} />
+  </button>
+
+</div>
 
         <div className="adminPage__header">
 
@@ -53,7 +109,7 @@ export default function Blogs() {
 
         <div className="adminTable">
 
-          {Array.isArray(blogs) && blogs.map((blog) => (
+          {Array.isArray(blogsOrdenados) && blogsOrdenados.map((blog) => (
 
             <div key={blog.id} className="adminTable__row">
 

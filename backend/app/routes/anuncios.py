@@ -19,9 +19,15 @@ def listar_anuncios():
     return lista
 
 
+import time
+
 @router.post("/")
 def criar_anuncio(anuncio: Anuncio):
-    db.collection("anuncios").add(anuncio.dict())
+    data = anuncio.dict()
+    data["created_at"] = time.time()
+
+    db.collection("anuncios").add(data)
+
     return {"msg": "Anúncio criado com sucesso"}
 
 

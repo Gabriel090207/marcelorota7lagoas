@@ -57,7 +57,7 @@ const [toastMessage, setToastMessage] = useState("")
 
       setTitulo("")
       setCategoria("")
-    setConteudo("<p></p>")
+   setConteudo("")
       setFile(null)
 
     } catch (error) {
@@ -128,6 +128,7 @@ const [toastMessage, setToastMessage] = useState("")
           </div>
 
           <RichTextEditor
+  key={conteudo === "" ? "empty" : "filled"}
   content={conteudo}
   onChange={setConteudo}
 />

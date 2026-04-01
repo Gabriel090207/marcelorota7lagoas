@@ -10,12 +10,17 @@ def listar():
     return [{"id": d.id, **d.to_dict()} for d in docs]
 
 
+import time
+
 @router.post("/")
 def criar(data: dict):
     id = str(uuid.uuid4())
-    db.collection("parceiros").document(id).set(data)
-    return {"id": id}
 
+    data["created_at"] = time.time()
+
+    db.collection("parceiros").document(id).set(data)
+
+    return {"id": id}
 
 @router.put("/{id}")
 def atualizar(id: str, data: dict):

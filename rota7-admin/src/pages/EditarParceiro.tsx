@@ -5,6 +5,7 @@ import AdminLayout from "../components/admin/AdminLayout"
 import "./NovoParceiro.css"
 
 import { getParceiros, updateParceiro } from "../services/api"
+import { uploadImage } from "../services/storage"
 
 import {
   FiArrowLeft,
@@ -21,8 +22,12 @@ export default function EditarParceiro() {
   const [nome, setNome] = useState("")
   const [categoria, setCategoria] = useState("")
   const [telefone, setTelefone] = useState("")
-  const [whatsapp, setWhatsapp] = useState("")
+  const [email, setEmail] = useState("")
   const [descricao, setDescricao] = useState("")
+
+  const [file, setFile] = useState<File | null>(null)
+  const [imagemAtual, setImagemAtual] = useState("")
+
   const [loading, setLoading] = useState(false)
 
   // 🔥 TOAST
@@ -40,7 +45,7 @@ export default function EditarParceiro() {
     }, 3000)
   }
 
-  // 🔥 MÁSCARA TELEFONE
+  // 🔥 máscara telefone
   const formatPhone = (value: string) => {
     const numbers = value.replace(/\D/g, "")
 
@@ -67,8 +72,9 @@ export default function EditarParceiro() {
         setNome(parceiro.nome || "")
         setCategoria(parceiro.categoria || "")
         setTelefone(parceiro.telefone || "")
-        setWhatsapp(parceiro.whatsapp || "")
+        setEmail(parceiro.email || "")
         setDescricao(parceiro.descricao || "")
+        setImagemAtual(parceiro.imagem || "")
       }
     }
 
@@ -87,17 +93,22 @@ export default function EditarParceiro() {
     try {
       setLoading(true)
 
+      let imageUrl = imagemAtual
+
+      if (file) {
+        imageUrl = await uploadImage(file)
+      }
+
       await updateParceiro(id, {
         nome,
         categoria,
         telefone,
-        whatsapp,
-        descricao
+        email,
+        descricao,
+        imagem: imageUrl
       })
 
       showToast("success", "Parceiro atualizado com sucesso!")
-
-     
 
     } catch (error) {
       console.error(error)
@@ -112,7 +123,7 @@ export default function EditarParceiro() {
 
       <main className="novoParceiro">
 
-        {/* 🔥 TOAST */}
+        {/* TOAST */}
         <div className={`adminToast adminToast--${toastType} ${toastOpen ? "show" : ""}`}>
 
           <div className="adminToast__icon">
@@ -156,92 +167,118 @@ export default function EditarParceiro() {
           <h1>Editar parceiro</h1>
         </div>
 
-        <div className="form">
+       <div className="form">
 
-          {/* NOME */}
-          <input
-            type="text"
-            placeholder="Nome da empresa"
-            className="input"
-            value={nome}
-            onChange={(e) => setNome(e.target.value)}
-          />
+  {/* NOME */}
+  <input
+    type="text"
+    placeholder="Nome da empresa"
+    className="input"
+    value={nome}
+    onChange={(e) => setNome(e.target.value)}
+  />
 
-          {/* CATEGORIA + TELEFONE */}
-          <div className="formRow">
+  {/* CATEGORIA + TELEFONE */}
+  <div className="formRow">
 
-            <div className="field">
-              <label>Categoria</label>
+    <div className="field">
+      <label>Categoria</label>
 
-              <select
-                className="selectInput"
-                value={categoria}
-                onChange={(e) => setCategoria(e.target.value)}
-              >
-                <option value="">Selecione</option>
-                <option>Oficina</option>
-                <option>Serviços</option>
-                <option>Equipamentos</option>
-                <option>Peças</option>
-                <option>Concessionária</option>
-                <option>Restaurante</option>
-                <option>Hotel / Pousada</option>
-              </select>
-            </div>
+      <select
+        className="selectInput"
+        value={categoria}
+        onChange={(e) => setCategoria(e.target.value)}
+      >
+        <option value="">Selecione</option>
+        <option>Oficina</option>
+        <option>Serviços</option>
+        <option>Equipamentos</option>
+        <option>Peças</option>
+        <option>Concessionária</option>
+        <option>Restaurante</option>
+        <option>Hotel / Pousada</option>
+      </select>
+    </div>
 
-            <div className="field">
-              <label>Telefone</label>
+    <div className="field">
+      <label>Telefone</label>
 
-              <input
-                type="text"
-                placeholder="(31) 99999-9999"
-                className="input"
-                value={telefone}
-                onChange={(e) => setTelefone(formatPhone(e.target.value))}
-              />
-            </div>
+      <input
+        type="text"
+        placeholder="(31) 99999-9999"
+        className="input"
+        value={telefone}
+        onChange={(e) => setTelefone(formatPhone(e.target.value))}
+      />
+    </div>
 
-          </div>
+  </div>
 
-          {/* WHATSAPP */}
-          <div className="formRow">
+  {/* EMAIL + IMAGEM */}
+  <div className="formRow">
 
-            <div className="field">
-              <label>WhatsApp</label>
+    <div className="field">
+      <label>Email</label>
 
-              <input
-                type="text"
-                placeholder="(31) 99999-9999"
-                className="input"
-                value={whatsapp}
-                onChange={(e) => setWhatsapp(formatPhone(e.target.value))}
-              />
-            </div>
+      <input
+        type="email"
+        placeholder="contato@empresa.com"
+        className="input"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+    </div>
 
-          </div>
+    <div className="field">
+      <label>Imagem</label>
 
-          {/* DESCRIÇÃO */}
-          <div className="field">
-            <label>Descrição</label>
+      <label className="uploadBox">
+        <input
+          type="file"
+          onChange={(e) => {
+            if (e.target.files?.[0]) {
+              setFile(e.target.files[0])
+            }
+          }}
+        />
+        <span>
+          {file ? file.name : "Selecionar imagem"}
+        </span>
+      </label>
 
-            <textarea
-              className="textarea"
-              placeholder="Descreva o parceiro..."
-              value={descricao}
-              onChange={(e) => setDescricao(e.target.value)}
-            />
-          </div>
+    </div>
 
-          {/* BOTÃO */}
-          <button
-            className="publishBtn"
-            onClick={handleSubmit}
-            disabled={loading}
-          >
-            {loading ? "Salvando..." : "Salvar alterações"}
-          </button>
+  </div>
 
-        </div>
+  {/* PREVIEW */}
+  {(file || imagemAtual) && (
+    <div className="novaNoticia__preview">
+      <img src={file ? URL.createObjectURL(file) : imagemAtual} />
+    </div>
+  )}
+
+  {/* DESCRIÇÃO */}
+  <div className="field">
+    <label>Descrição</label>
+
+    <textarea
+      className="textarea"
+      placeholder="Descreva o parceiro..."
+      value={descricao}
+      onChange={(e) => setDescricao(e.target.value)}
+    />
+  </div>
+
+  {/* BOTÃO */}
+  <button
+    className="publishBtn"
+    onClick={handleSubmit}
+    disabled={loading}
+  >
+    {loading ? "Salvando..." : "Salvar parceiro"}
+  </button>
+
+</div>
 
       </main>
 

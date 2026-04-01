@@ -1,7 +1,7 @@
 import AdminLayout from "../components/admin/AdminLayout"
 import "./Anuncios.css"
 
-import { FiPlus, FiEdit, FiTrash, FiEye } from "react-icons/fi"
+import { FiPlus, FiEdit, FiTrash, FiEye, FiCheckCircle, FiAlertCircle, FiX } from "react-icons/fi"
 import { Link, useNavigate } from "react-router-dom"
 
 import { useEffect, useState } from "react"
@@ -20,19 +20,38 @@ export default function Anuncios() {
   const [modalOpen, setModalOpen] = useState(false)
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
+
+  const [toastOpen, setToastOpen] = useState(false)
+const [toastType, setToastType] = useState<"success" | "error">("success")
+const [toastMessage, setToastMessage] = useState("")
+
+
+const showToast = (type: "success" | "error", message: string) => {
+  setToastType(type)
+  setToastMessage(message)
+  setToastOpen(true)
+
+  setTimeout(() => {
+    setToastOpen(false)
+  }, 3200)
+}
+
   const handleDelete = async () => {
-    if (!selectedId) return
+  if (!selectedId) return
 
-    try {
-      await deleteAnuncio(selectedId)
+  try {
+    await deleteAnuncio(selectedId)
 
-      setAnuncios(prev => prev.filter(anuncio => anuncio.id !== selectedId))
-      setModalOpen(false)
+    setAnuncios(prev => prev.filter(a => a.id !== selectedId))
+    setModalOpen(false)
 
-    } catch (error) {
-      console.error(error)
-    }
+    showToast("success", "Anúncio deletado com sucesso!")
+
+  } catch (error) {
+    console.error(error)
+    showToast("error", "Erro ao deletar anúncio.")
   }
+}
 
   // anúncios aprovados
   useEffect(() => {
@@ -68,10 +87,40 @@ export default function Anuncios() {
       })
   }, [])
 
+
+  const anunciosOrdenados = [...anuncios].sort((a, b) => {
+  return b.id.localeCompare(a.id)
+})
+
   return (
     <AdminLayout>
 
       <main className="adminPage">
+
+        <div className={`adminToast adminToast--${toastType} ${toastOpen ? "show" : ""}`}>
+
+  <div className="adminToast__icon">
+    {toastType === "success"
+      ? <FiCheckCircle size={18} />
+      : <FiAlertCircle size={18} />}
+  </div>
+
+  <div className="adminToast__content">
+    <strong>
+      {toastType === "success" ? "Sucesso" : "Atenção"}
+    </strong>
+    <span>{toastMessage}</span>
+  </div>
+
+  <button
+    className="adminToast__close"
+    onClick={() => setToastOpen(false)}
+    type="button"
+  >
+    <FiX size={18} />
+  </button>
+
+</div>
 
         <div className="adminPage__header">
 
@@ -115,7 +164,7 @@ export default function Anuncios() {
                 Nenhum anúncio cadastrado
               </p>
             ) : (
-              anuncios.map((anuncio) => (
+              anunciosOrdenados.map((anuncio) => (
 
                 <div key={anuncio.id} className="adminTable__row">
 
