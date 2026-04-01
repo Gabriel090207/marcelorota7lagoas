@@ -141,3 +141,39 @@
   color: #ff7a00;
   background: rgba(255,123,0,0.08);
 }
+
+/* TOGGLE SWITCH */
+.toggleSwitch {
+  width: 42px;
+  height: 22px;
+  border-radius: 20px;
+  background: #2a2a2a;
+  position: relative;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.toggleSwitch__circle {
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: 0.3s;
+}
+
+/* ATIVO (LARANJA 🔥) */
+.toggleSwitch.active {
+  background: #ff7a00;
+}
+
+.toggleSwitch.active .toggleSwitch__circle {
+  left: 22px;
+}
+
+/* HOVER */
+.toggleSwitch:hover {
+  opacity: 0.8;
+}

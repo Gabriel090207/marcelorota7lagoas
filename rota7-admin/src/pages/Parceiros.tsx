@@ -73,6 +73,38 @@ const parceirosOrdenados = [...parceiros].sort((a, b) => {
   }
 }
 
+const toggleAtivo = async (parceiro: any) => {
+  try {
+    const novoStatus = !parceiro.ativo
+
+    await fetch(`${import.meta.env.VITE_API_URL}/parceiros/${parceiro.id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        ...parceiro,
+        ativo: novoStatus
+      })
+    })
+
+    setParceiros(prev =>
+      prev.map(p =>
+        p.id === parceiro.id ? { ...p, ativo: novoStatus } : p
+      )
+    )
+
+    showToast(
+      "success",
+      novoStatus ? "Ativado com sucesso!" : "Desativado com sucesso!"
+    )
+
+  } catch (error) {
+    console.error(error)
+    showToast("error", "Erro ao atualizar status.")
+  }
+}
+
   return (
     <AdminLayout>
 
@@ -151,6 +183,12 @@ const parceirosOrdenados = [...parceiros].sort((a, b) => {
 
                 <div className="adminTable__actions">
 
+                 <div
+  className={`toggleSwitch ${parceiro.ativo ? "active" : ""}`}
+  onClick={() => toggleAtivo(parceiro)}
+>
+  <div className="toggleSwitch__circle" />
+</div>
                   <button
                     className="iconBtn"
                     onClick={() => navigate(`/parceiros/editar/${parceiro.id}`)}

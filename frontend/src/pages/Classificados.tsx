@@ -36,9 +36,11 @@ const filtrarPorCategoria = (categorias: string[]) => {
 const servicos = filtrarPorCategoria(["serviço", "servicos", "oficina"])
 const hospedagens = filtrarPorCategoria(["hotel", "pousada"])
 
+const parceirosAtivos = parceiros.filter(p => p.ativo)
+
 const parceirosDestaqueFiltrados =
   filtroAtivo === "todos"
-    ? parceiros
+    ? parceirosAtivos
     : filtroAtivo === "oficinas"
     ? filtrarPorCategoria(["oficina"])
     : filtroAtivo === "servicos"
