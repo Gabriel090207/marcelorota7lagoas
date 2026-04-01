@@ -1234,7 +1234,9 @@
 
 .homeNewsHero__dots {
   position: absolute;
-  bottom: 150px;
+ 
+    bottom: 210px;
+  
   left: 50%;
   transform: translateX(-50%);
 
@@ -1294,6 +1296,10 @@
   .homeNewsHero__content h1 {
     font-size: 2rem;
   }
+
+   .homeNewsHero__dots {
+    bottom: 260px;
+  }
 }
 
 @media (max-width: 900px) {
@@ -1316,6 +1322,11 @@
   .homeNewsHero__dots {
     bottom: 290px;
   }
+
+   .homeNewsHero__dots {
+    bottom: 290px;
+  }
+  
   
 }
 

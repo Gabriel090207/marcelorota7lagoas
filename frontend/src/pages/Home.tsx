@@ -135,6 +135,9 @@ const handleNewsletter = async (e: React.FormEvent) => {
     showToast("error", "Erro ao cadastrar email.")
   }
 }
+
+
+const parceirosAtivos = parceiros.filter(p => p.ativo)
   
   return (
     <main className="home">
@@ -435,7 +438,7 @@ const handleNewsletter = async (e: React.FormEvent) => {
       Nenhum parceiro cadastrado
     </p>
   ) : (
-    parceiros.slice(0, 4).map((parceiro) => (
+   parceirosAtivos.slice(0, 4).map((parceiro) => (
 
       <div key={parceiro.id} className="marketItem">
 

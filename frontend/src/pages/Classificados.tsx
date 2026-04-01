@@ -209,11 +209,12 @@ const equipamentosFiltrados =
                   </span>
 
                   <a
-                    href={`mailto:${p.email}`}
-                    className="btn btn--primary"
-                  >
-                    Entrar em contato
-                  </a>
+  href={`https://wa.me/55${p.telefone?.replace(/\D/g, "")}`}
+  target="_blank"
+  className="btn btn--primary"
+>
+  Falar no WhatsApp
+</a>
 
                 </div>
 

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { FiInstagram, FiFacebook, FiMail} from 'react-icons/fi'
 import { FaWhatsapp } from 'react-icons/fa'
-import logo from '../assets/logo.png'
+import logo from '../assets/logo7.png'
 import './Footer.css'
 
 export function Footer() {

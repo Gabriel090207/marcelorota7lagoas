@@ -40,7 +40,7 @@ export default function QueroAnunciar() {
         {/* EMPRESA */}
         <div
           className="anuncioCard"
-          onClick={() => window.location.href = "/anunciar/empresa"}
+          onClick={() => navigate("/anunciar/empresa")}
         >
 
           <div className="anuncioCard__icon">
@@ -63,7 +63,7 @@ export default function QueroAnunciar() {
         {/* PRODUTOS */}
         <div
           className="anuncioCard"
-          onClick={() => window.location.href = "/anunciar/produto"}
+          onClick={() => navigate("/anunciar/produto")}
         >
 
           <div className="anuncioCard__icon">
