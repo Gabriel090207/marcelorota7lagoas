@@ -172,7 +172,7 @@ const parceirosAtivos = parceiros.filter(p => p.ativo)
       <section className="newsPage__list">
 
         <div className="newsPage__sectionHeader">
-          <h2>Mais notíciaes</h2>
+          <h2>Mais notícias</h2>
           <p>Confira as últimas novidades do portal Rota 7 Lagoas.</p>
         </div>
 
