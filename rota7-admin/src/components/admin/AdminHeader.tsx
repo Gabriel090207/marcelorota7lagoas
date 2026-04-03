@@ -168,7 +168,7 @@ setNotifications(pendentes)
       {item.tipo === "empresa" && <FiUsers className="notificationIcon" />}
       {item.tipo === "grupo" && <FiLayers className="notificationIcon" />}
       {item.tipo === "evento" && <FiCalendar className="notificationIcon" />}
-      {item.tipo === "anuncio" && <FiTag className="notificationIcon" />}
+      {item.tipo === "produto" && <FiTag className="notificationIcon" />}
       {item.tipo === "galeria" && <FiImage className="notificationIcon" />}
 
       <span className="notificationText">
