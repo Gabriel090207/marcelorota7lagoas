@@ -171,9 +171,9 @@ setNotifications(pendentes)
       {item.tipo === "produto" && <FiTag className="notificationIcon" />}
       {item.tipo === "galeria" && <FiImage className="notificationIcon" />}
 
-      <span className="notificationText">
-        Nova solicitação: {item.nome}
-      </span>
+    <span className="notificationText">
+  Nova solicitação: {item.nome || item.titulo}
+</span>
 
     </div>
 
