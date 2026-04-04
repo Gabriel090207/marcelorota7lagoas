@@ -128,7 +128,7 @@ const parceirosAtivos = parceiros.filter(p => p.ativo)
 
               <button
                 className="btn btn--primary"
-                onClick={() => navigate(`/noticia/${noticiasOrdenadasPorData[0]?.id}`)}
+                onClick={() => navigate(`/noticia/${noticiasOrdenadasPorData[0]?.slug || noticiasOrdenadasPorData[0]?.id}`)}
               >
                 Ler matéria completa
               </button>
@@ -205,7 +205,7 @@ const parceirosAtivos = parceiros.filter(p => p.ativo)
 
                 <button
                   className="btn btn--outline newsReadMore"
-                  onClick={() => navigate(`/noticia/${noticia.id}`)}
+                  onClick={() => navigate(`/noticia/${noticia.slug || noticia.id}`)}
                 >
                   Ler mais
                 </button>

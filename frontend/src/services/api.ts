@@ -14,6 +14,11 @@ export const getNoticiaById = async (id: string) => {
   return res.json()
 }
 
+export const getNoticiaBySlug = async (slug: string) => {
+  const res = await fetch(`https://rota7-backend.onrender.com/noticias/slug/${slug}`)
+  return res.json()
+}
+
 
 // =======================
 // DICAS
