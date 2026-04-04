@@ -155,8 +155,14 @@ def preview_dica(id_ou_slug: str):
         <meta property="og:title" content="{titulo}" />
         <meta property="og:description" content="{descricao}" />
         <meta property="og:image" content="{imagem}" />
+        <meta property="og:image:secure_url" content="{imagem}" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:image:type" content="image/jpeg" />
         <meta property="og:url" content="{url}" />
         <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="Rota 7 Lagoas" />
+        <meta name="twitter:card" content="summary_large_image" />
       </head>
 
       <body>
