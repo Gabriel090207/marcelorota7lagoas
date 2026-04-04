@@ -15,7 +15,7 @@ export const getNoticiaById = async (id: string) => {
 }
 
 export const getNoticiaBySlug = async (slug: string) => {
-  const res = await fetch(`https://rota7-backend.onrender.com/noticias/slug/${slug}`)
+  const res = await fetch(`${API_URL}/noticias/${slug}`)
   return res.json()
 }
 
