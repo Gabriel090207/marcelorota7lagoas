@@ -131,24 +131,34 @@ def deletar_noticia(id: str):
 
     return {"msg": "Notícia deletada com sucesso"}
 
+@router.get("/preview/{id_ou_slug}", response_class=HTMLResponse)
+def preview_noticia(id_ou_slug: str):
 
-# 🔹 PREVIEW (PARA WHATSAPP 🔥)
-@router.get("/preview/{id}", response_class=HTMLResponse)
-def preview_noticia(id: str):
-    doc_ref = db.collection("noticias").document(id).get()
+    # 🔎 tenta por ID
+    doc_ref = db.collection("noticias").document(id_ou_slug).get()
 
-    if not doc_ref.exists:
-        return "<h1>Notícia não encontrada</h1>"
+    if doc_ref.exists:
+        data = doc_ref.to_dict()
+        data["id"] = doc_ref.id
+    else:
+        # 🔎 tenta por SLUG
+        noticias_ref = db.collection("noticias").stream()
+        data = None
 
-    data = doc_ref.to_dict()
+        for doc in noticias_ref:
+            d = doc.to_dict()
+            if d.get("slug") == id_ou_slug:
+                d["id"] = doc.id
+                data = d
+                break
+
+        if not data:
+            return "<h1>Notícia não encontrada</h1>"
 
     titulo = data.get("titulo", "Notícia")
     imagem = data.get("imagem", "")
-
-    # 🔥 cliente pediu isso
     descricao = titulo
-
-    slug = data.get("slug", id)
+    slug = data.get("slug", data.get("id"))
 
     url = f"https://rota7lagoas.com.br/noticia/{slug}"
 
@@ -157,25 +167,16 @@ def preview_noticia(id: str):
       <head>
         <title>{titulo}</title>
 
-        <!-- Open Graph -->
-        <meta property="og:title" content="{titulo.strip()}" />
+        <meta property="og:title" content="{titulo}" />
         <meta property="og:description" content="{descricao}" />
         <meta property="og:image" content="{imagem}" />
         <meta property="og:url" content="{url}" />
         <meta property="og:type" content="article" />
-        <meta property="og:site_name" content="Portal Rota 7 Lagoas" />
-
-        <!-- Twitter -->
-        <meta name="twitter:card" content="summary_large_image" />
       </head>
 
       <body>
-        <h1>Redirecionando...</h1>
-
         <script>
-          setTimeout(() => {{
-            window.location.href = "{url}"
-          }}, 1500)
+          window.location.href = "{url}"
         </script>
       </body>
     </html>

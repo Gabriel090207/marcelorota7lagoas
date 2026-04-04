@@ -16,13 +16,12 @@ export default function NoticiaDetalhe() {
   const [noticia, setNoticia] = useState<any>(null)
   const [selectedImg, setSelectedImg] = useState<string | null>(null)
 
-const handleShare = () => {
 
-  const linkBonito = `https://rota7lagoas.com.br/noticia/${noticia.slug || noticia.id}`
+  const handleShare = () => {
 
-  const previewUrl = `https://rota7lagoas.com.br/noticias/preview/${noticia.id}`
+  const previewUrl = `https://rota7-backend.onrender.com/noticias/preview/${noticia.slug || noticia.id}`
 
-  const texto = `${previewUrl}\n\n*${noticia.titulo}*\n${linkBonito}`
+  const texto = `*${noticia.titulo}*\n${previewUrl}`
 
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`
 
