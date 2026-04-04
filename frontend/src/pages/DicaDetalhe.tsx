@@ -10,24 +10,25 @@ import "./DicaDetalhe.css"
 
 export default function DicaDetalhe() {
 
-  const handleShare = () => {
+const handleShare = () => {
 
   const previewUrl = `https://rota7-backend.onrender.com/dicas/preview/${dica.slug || dica.id}`
+  
+  const texto = `*${dica.titulo}*\n\n${previewUrl}`
 
-  const texto = dica.titulo
-
+  // 📱 CELULAR
   if (navigator.share) {
     navigator.share({
-      title: dica.titulo,
-      text: texto,
-      url: previewUrl
+      text: texto
     })
     return
   }
 
-  const whatsapp = `https://wa.me/?text=${encodeURIComponent(texto + "\n\n" + previewUrl)}`
-  window.open(whatsapp, "_blank")
+  // 💻 PC
+  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`
+  window.open(whatsappUrl, "_blank")
 }
+
 
   const { slug } = useParams()
   const navigate = useNavigate()

@@ -19,23 +19,20 @@ const handleShare = () => {
 
   const previewUrl = `https://rota7-backend.onrender.com/blogs/preview/${blog.slug || blog.id}`
 
-  const texto = `${blog.titulo}`
+  const texto = `*${blog.titulo}*\n\n${previewUrl}`
 
-  // 🔥 tenta abrir menu nativo do celular
+  // 📱 CELULAR
   if (navigator.share) {
     navigator.share({
-      title: blog.titulo,
-      text: texto,
-      url: previewUrl
+      text: texto
     })
     return
   }
 
-  // fallback (desktop)
-  const whatsapp = `https://wa.me/?text=${encodeURIComponent(texto + "\n\n" + previewUrl)}`
-  window.open(whatsapp, "_blank")
+  // 💻 PC
+  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`
+  window.open(whatsappUrl, "_blank")
 }
-
   useEffect(() => {
     if (!slug) return
 

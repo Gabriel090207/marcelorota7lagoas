@@ -138,6 +138,10 @@ def preview_dica(id_ou_slug: str):
 
     titulo = data.get("titulo", "Dica")
     imagem = data.get("imagem", "")
+
+    # 🔥 corrigir Firebase (CRÍTICO)
+    if imagem and "firebasestorage.googleapis.com" in imagem and "?alt=media" not in imagem:
+        imagem = imagem + "?alt=media"
     descricao = titulo
     slug = data.get("slug", data.get("id"))
 
