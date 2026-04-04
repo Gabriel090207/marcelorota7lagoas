@@ -104,8 +104,8 @@ def deletar_noticia(id: str):
 
 
 
-
 from fastapi.responses import HTMLResponse
+import re
 
 @router.get("/preview/{id}", response_class=HTMLResponse)
 def preview_noticia(id: str):
@@ -120,9 +120,8 @@ def preview_noticia(id: str):
     conteudo = data.get("conteudo", "")
     imagem = data.get("imagem", "")
 
-    # 🔥 limpar HTML do conteúdo
-    import re
-    descricao = re.sub("<[^<]+?>", "", conteudo)[:150]
+    # 🔥 IMPORTANTE: descrição = título (igual cliente quer)
+    descricao = titulo
 
     url = f"https://portalrota7lagoas.netlify.app/noticia/{id}"
 
@@ -131,13 +130,17 @@ def preview_noticia(id: str):
       <head>
         <title>{titulo}</title>
 
-        <meta property="og:title" content="{titulo}" />
+        <!-- Open Graph -->
+        <meta property="og:title" content="{titulo.strip()}" />
         <meta property="og:description" content="{descricao}" />
         <meta property="og:image" content="{imagem}" />
         <meta property="og:url" content="{url}" />
         <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="Portal Rota 7 Lagoas" />
 
+        <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image" />
+
       </head>
 
       <body>
