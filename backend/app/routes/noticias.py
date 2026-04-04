@@ -1,13 +1,24 @@
 from fastapi import APIRouter, BackgroundTasks
-
+from fastapi.responses import HTMLResponse
+import re
 
 from app.services.email_scheduler import schedule_news_email
 from app.models.noticia import Noticia
 from app.services.firebase import db
 from datetime import datetime  # 🔥 IMPORTANTE
 
+
+
+
+
 router = APIRouter(prefix="/noticias", tags=["Noticias"])
 
+
+def gerar_slug(texto):
+    texto = texto.lower()
+    texto = re.sub(r"[^\w\s-]", "", texto)
+    texto = re.sub(r"\s+", "-", texto)
+    return texto
 
 # 🔹 Buscar emails inscritos
 def get_all_subscribers():
@@ -39,6 +50,7 @@ def listar_noticias():
 def criar_noticia(noticia: Noticia, background_tasks: BackgroundTasks):
 
     data = noticia.dict()
+    data["slug"] = gerar_slug(noticia.titulo)
     data["created_at"] = datetime.utcnow().isoformat()  # 🔥 ESSENCIAL
 
     doc_ref = db.collection("noticias").add(data)
@@ -104,8 +116,6 @@ def deletar_noticia(id: str):
 
 
 
-from fastapi.responses import HTMLResponse
-import re
 
 @router.get("/preview/{id}", response_class=HTMLResponse)
 def preview_noticia(id: str):
@@ -123,7 +133,8 @@ def preview_noticia(id: str):
     # 🔥 IMPORTANTE: descrição = título (igual cliente quer)
     descricao = titulo
 
-    url = f"https://portalrota7lagoas.netlify.app/noticia/{id}"
+    slug = data.get("slug", id)
+    url = f"https://portalrota7lagoas.netlify.app/noticia/{slug}"
 
     html = f"""
     <html>

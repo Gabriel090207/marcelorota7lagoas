@@ -9,7 +9,10 @@ class Noticia(BaseModel):
     imagem: Optional[str] = None
     imagens: Optional[List[str]] = []
     legendaCapa: Optional[str] = None
-    legendas: Optional[List[str]] = []  # 🔥 ESSA LINHA RESOLVE
+    legendas: Optional[List[str]] = []
     categoria: Optional[str] = None
     autor: Optional[str] = "Admin"
     data: Optional[datetime] = datetime.now()
+
+    # 🔥 NOVO CAMPO
+    slug: Optional[str] = None
