@@ -17,13 +17,14 @@ export default function NoticiaDetalhe() {
   const [selectedImg, setSelectedImg] = useState<string | null>(null)
 
   // 🔥 SHARE (mantém como está)
-  const handleShare = () => {
-    const url = window.location.href
-    const texto = `${noticia.titulo}\n\n${url}`
+ const handleShare = () => {
+  const url = `https://rota7-backend.onrender.com/noticias/preview/${noticia.id}`
 
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`
-    window.open(whatsappUrl, "_blank")
-  }
+  const texto = `${noticia.titulo}\n\n${url}`
+
+  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`
+  window.open(whatsappUrl, "_blank")
+}
 
   // 🔥 BUSCA POR SLUG
   useEffect(() => {
