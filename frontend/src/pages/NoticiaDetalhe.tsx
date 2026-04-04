@@ -27,10 +27,13 @@ export default function NoticiaDetalhe() {
   const [selectedImg, setSelectedImg] = useState<string | null>(null)
 
   useEffect(() => {
-    if (id) {
-      getNoticiaById(id).then(setNoticia)
-    }
-  }, [id])
+  if (id) {
+    getNoticiaById(id).then((data) => {
+      console.log("IMAGEM:", data.imagem) // 👈 AQUI
+      setNoticia(data)
+    })
+  }
+}, [id])
 
   if (!noticia) {
     return <p style={{ padding: 40 }}>Carregando...</p>

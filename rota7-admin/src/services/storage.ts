@@ -6,7 +6,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyAqnx718mmZd_FA2Bg6VRL7SfI5h9jNnZE",
   authDomain: "rota-7-lagoas.firebaseapp.com",
   projectId: "rota-7-lagoas",
-  storageBucket: "rota-7-lagoas.firebasestorage.app",
+  storageBucket: "rota-7-lagoas.appspot.com",
   messagingSenderId: "311360052704",
   appId: "1:311360052704:web:796bdec7f07e8ce2855f85",
   measurementId: "G-K91N7CYJNC"
