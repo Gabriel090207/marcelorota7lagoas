@@ -21,10 +21,20 @@ export default function NoticiaDetalhe() {
 
   const previewUrl = `https://rota7-backend.onrender.com/noticias/preview/${noticia.slug || noticia.id}`
 
- const texto = `*${noticia.titulo}*\n\n${previewUrl}`
+  const texto = noticia.titulo
 
-  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`
+  // 🔥 MENU NATIVO (celular)
+  if (navigator.share) {
+    navigator.share({
+      title: noticia.titulo,
+      text: texto,
+      url: previewUrl
+    })
+    return
+  }
 
+  // 🔥 fallback (PC)
+  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto + "\n\n" + previewUrl)}`
   window.open(whatsappUrl, "_blank")
 }
 

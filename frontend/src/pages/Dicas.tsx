@@ -118,7 +118,7 @@ const outrasDicas = [...dicasFiltradas].sort((a, b) => {
 
               <button
                 className="btn btn--primary"
-                onClick={() => navigate(`/dicas/${destaque.id}`)}
+                onClick={() => navigate(`/dicas/${destaque.slug || destaque.id}`)}
               >
                 Ler artigo completo
               </button>
@@ -194,7 +194,7 @@ const outrasDicas = [...dicasFiltradas].sort((a, b) => {
 
                   <button
                     className="dicaReadMore"
-                    onClick={() => navigate(`/dicas/${dica.id}`)}
+                    onClick={() => navigate(`/dicas/${dica.slug || dica.id}`)}
                   >
                     Ler mais
                   </button>

@@ -49,7 +49,7 @@ export function AppRoutes() {
 
       {/* ================= DETALHES ================= */}
       <Route path="/noticia/:slug" element={<NoticiaDetalhe />} />
-      <Route path="/dicas/:id" element={<DicaDetalhe />} />
+      <Route path="/dicas/:slug" element={<DicaDetalhe />} />
       <Route path="/eventos/:id" element={<EventoDetalhe />} />
       <Route path="/blog/:slug" element={<BlogDetalhe />} />
       <Route path="/preview/:id" element={<PreviewNoticia />} />
