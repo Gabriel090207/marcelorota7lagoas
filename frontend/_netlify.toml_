@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/noticias/preview/*"
+  to = "https://rota7-backend.onrender.com/noticias/preview/:splat"
+  status = 200
+  force = true

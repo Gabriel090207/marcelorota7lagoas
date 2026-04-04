@@ -20,9 +20,11 @@ const handleShare = () => {
 
   const linkBonito = `https://rota7lagoas.com.br/noticia/${noticia.slug || noticia.id}`
 
-const previewUrl = `https://rota7lagoas.com.br/preview/${noticia.slug || noticia.id}`
-const texto = `${previewUrl}\u200B\n\n*${noticia.titulo}*\n\n${linkBonito}`
- const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`
+  const previewUrl = `https://rota7lagoas.com.br/noticias/preview/${noticia.id}`
+
+  const texto = `${previewUrl}\n\n*${noticia.titulo}*\n${linkBonito}`
+
+  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`
 
   window.open(whatsappUrl, "_blank")
 }
