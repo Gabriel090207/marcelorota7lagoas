@@ -20,8 +20,7 @@ const handleShare = () => {
 
   const linkBonito = `https://rota7lagoas.com.br/noticia/${noticia.slug || noticia.id}`
 
-  
-const previewUrl = `https://rota7-backend.onrender.com/noticias/preview/${noticia.id}`
+const previewUrl = `https://rota7lagoas.com.br/preview/${noticia.slug || noticia.id}`
 const texto = `${previewUrl}\u200B\n\n*${noticia.titulo}*\n\n${linkBonito}`
  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`
 

@@ -16,6 +16,7 @@ import NoticiaDetalhe from "../pages/NoticiaDetalhe"
 import DicaDetalhe from "../pages/DicaDetalhe"
 import EventoDetalhe from "../pages/EventoDetalhe"
 import BlogDetalhe from "../pages/BlogDetalhe"
+import PreviewNoticia from "../pages/PreviewNoticia"
 
 // ================= CLASSIFICADOS =================
 import ParceirosPublic from "../pages/ParceirosPublic"
@@ -51,6 +52,7 @@ export function AppRoutes() {
       <Route path="/dicas/:id" element={<DicaDetalhe />} />
       <Route path="/eventos/:id" element={<EventoDetalhe />} />
       <Route path="/blog/:id" element={<BlogDetalhe />} />
+      <Route path="/preview/:id" element={<PreviewNoticia />} />
 
       {/* ================= CLASSIFICADOS ================= */}
       <Route path="/classificados/parceiros" element={<ParceirosPublic />} />
