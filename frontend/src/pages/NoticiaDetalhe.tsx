@@ -22,9 +22,7 @@ const handleShare = () => {
 
   
 const previewUrl = `https://rota7-backend.onrender.com/noticias/preview/${noticia.id}`
-
-const texto = `${previewUrl}\n\n*${noticia.titulo}*\n\n${linkBonito}`
-
+const texto = `${previewUrl}\u200B\n\n*${noticia.titulo}*\n\n${linkBonito}`
  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`
 
   window.open(whatsappUrl, "_blank")
