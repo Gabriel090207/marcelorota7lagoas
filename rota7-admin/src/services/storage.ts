@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase/app"
+import { getApps, initializeApp } from "firebase/app"
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
 
 
@@ -12,7 +12,9 @@ const firebaseConfig = {
   measurementId: "G-K91N7CYJNC"
 };
 
-const app = initializeApp(firebaseConfig)
+const app = getApps().length === 0
+  ? initializeApp(firebaseConfig)
+  : getApps()[0]
 const storage = getStorage(app)
 
 export const uploadImage = async (file: File) => {
