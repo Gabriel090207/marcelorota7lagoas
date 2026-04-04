@@ -3,11 +3,22 @@ import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { getNoticiaById } from "../services/api"
 
-import { FiArrowLeft, FiX } from "react-icons/fi"
+import { FiArrowLeft, FiX, FiShare2 } from "react-icons/fi"
 import { useNavigate } from "react-router-dom"
+
+
+import { Helmet } from "react-helmet-async"
 
 export default function NoticiaDetalhe() {
 
+
+ const handleShare = () => {
+  const url = window.location.href
+  const texto = `${noticia.titulo}\n\n${url}`
+
+  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`
+  window.open(whatsappUrl, "_blank")
+}
 
   const navigate = useNavigate()
 
@@ -25,8 +36,18 @@ export default function NoticiaDetalhe() {
     return <p style={{ padding: 40 }}>Carregando...</p>
   }
 
-  return (
-    <main className="noticiaDetalhe">
+return (
+  <main className="noticiaDetalhe">
+
+    <Helmet>
+      <title>{noticia.titulo}</title>
+
+      <meta property="og:title" content={noticia.titulo} />
+      <meta property="og:description" content={noticia.conteudo.replace(/<[^>]+>/g, "").slice(0, 150)} />
+      <meta property="og:image" content={noticia.imagem} />
+      <meta property="og:url" content={window.location.href} />
+      <meta property="og:type" content="article" />
+    </Helmet>
 
         <div className="noticiaDetalhe__back" onClick={() => navigate(-1)}>
   <FiArrowLeft size={18} />
@@ -52,8 +73,17 @@ export default function NoticiaDetalhe() {
             {new Date(noticia.data).toLocaleDateString("pt-BR")}
           </span>
 
+        
         </div>
       </section>
+
+      {noticia.legendaCapa && (
+  <div className="noticiaDetalhe__legendaWrapper">
+    <span className="noticiaDetalhe__legendaCapa">
+      {noticia.legendaCapa}
+    </span>
+  </div>
+)}
 
       {/* CONTEÚDO */}
       <section className="noticiaDetalhe__content">
@@ -75,14 +105,20 @@ export default function NoticiaDetalhe() {
     <div className="noticiaDetalhe__grid">
 
       {noticia.imagens.map((img: string, index: number) => (
-        <div
-          key={index}
-          className="noticiaDetalhe__item"
-          onClick={() => setSelectedImg(img)}
-        >
-          <img src={img} alt={`Imagem ${index}`} />
-        </div>
-      ))}
+  <div
+    key={index}
+    className="noticiaDetalhe__item"
+    onClick={() => setSelectedImg(img)}
+  >
+    <img src={img} alt={`Imagem ${index}`} />
+
+    {noticia.legendas && noticia.legendas[index] && (
+      <span className="noticiaDetalhe__legenda">
+        {noticia.legendas[index]}
+      </span>
+    )}
+  </div>
+))}
 
     </div>
 
@@ -106,12 +142,33 @@ export default function NoticiaDetalhe() {
       <FiX size={22} />
     </button>
 
-    <div className="galeriaModalContent">
-      <img src={selectedImg} alt="" />
-    </div>
+  <div className="galeriaModalContent">
+  <img src={selectedImg} alt="" />
+
+  {(() => {
+    const index = noticia.imagens.findIndex((img: string) => img === selectedImg)
+    return noticia.legendas && noticia.legendas[index] ? (
+      <span className="galeriaModalLegenda">
+        {noticia.legendas[index]}
+      </span>
+    ) : null
+  })()}
+</div>
 
   </div>
 )}
+
+<div className="noticiaDetalhe__share">
+
+  <button
+    className="shareBtn"
+    onClick={handleShare}
+  >
+    <FiShare2 size={18} />
+    <span>Compartilhar</span>
+  </button>
+
+</div>
 
     </main>
   )

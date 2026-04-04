@@ -4,10 +4,14 @@ import { BrowserRouter } from 'react-router-dom'
 import './styles/global.css'
 import App from './App.tsx'
 
+import { HelmetProvider } from "react-helmet-async"
+
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
+ <StrictMode>
+  <HelmetProvider>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </StrictMode>,
+  </HelmetProvider>
+</StrictMode>
 )

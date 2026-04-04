@@ -15,8 +15,13 @@ export default function NovaNoticia() {
   const navigate = useNavigate()
 
   const [file, setFile] = useState<File | null>(null)
+  const [previewImagem, setPreviewImagem] = useState("")
   const [imagensExtras, setImagensExtras] = useState<File[]>([])
 const [previewExtras, setPreviewExtras] = useState<string[]>([])
+
+const [legendaCapa, setLegendaCapa] = useState("")
+const [legendasExtras, setLegendasExtras] = useState<string[]>([])
+
   const [titulo, setTitulo] = useState("")
   const [categoria, setCategoria] = useState("")
   const [conteudo, setConteudo] = useState("")
@@ -44,6 +49,10 @@ const [previewExtras, setPreviewExtras] = useState<string[]>([])
 
   setImagensExtras(prev => [...prev, ...filesArray])
   setPreviewExtras(prev => [...prev, ...previews])
+  setLegendasExtras(prev => [
+  ...prev,
+  ...filesArray.map(() => "")
+])
 }
 
   const handleSubmit = async () => {
@@ -78,7 +87,9 @@ if (imagensExtras.length > 0) {
   titulo,
   conteudo,
   imagem: imageUrl,
+  legendaCapa,
   imagens: imagensUrls,
+  legendas: legendasExtras,
   categoria,
   autor: "Admin"
 })
@@ -182,21 +193,43 @@ setPreviewExtras([])
 
               <label className="uploadBox">
                 <input
-                  type="file"
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                      setFile(e.target.files[0])
-                    }
-                  }}
-                />
+  type="file"
+  onChange={(e) => {
+    if (e.target.files && e.target.files[0]) {
+      const selectedFile = e.target.files[0]
+      setFile(selectedFile)
+      setPreviewImagem(URL.createObjectURL(selectedFile))
+    }
+  }}
+/>
                 <span>
                   {file ? file.name : "Selecionar imagem"}
                 </span>
               </label>
 
+               <input
+  type="text"
+  placeholder="Legenda da imagem de capa"
+  className="input"
+  value={legendaCapa}
+  onChange={(e) => setLegendaCapa(e.target.value)}
+/>
+
+  {previewImagem && (
+  <div className="novaNoticia__preview">
+    <img src={previewImagem} alt="Preview da capa" />
+  </div>
+)}
+
+             
+
+
+
             </div>
 
           </div>
+
+          
 
           <RichTextEditor
   key={conteudo === "" ? "empty" : "filled"}
@@ -219,12 +252,27 @@ setPreviewExtras([])
         : "Selecionar imagens"}
     </span>
   </label>
+
 </div>
 
 {previewExtras.length > 0 && (
   <div className="galleryPreview">
     {previewExtras.map((img, index) => (
-      <img key={index} src={img} />
+      <div key={index}>
+        <img src={img} />
+
+        <input
+          type="text"
+          placeholder="Legenda da imagem"
+          className="input"
+          value={legendasExtras[index] || ""}
+          onChange={(e) => {
+            const novas = [...legendasExtras]
+            novas[index] = e.target.value
+            setLegendasExtras(novas)
+          }}
+        />
+      </div>
     ))}
   </div>
 )}

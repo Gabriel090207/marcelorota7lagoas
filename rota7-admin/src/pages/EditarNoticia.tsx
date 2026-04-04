@@ -20,6 +20,10 @@ export default function EditarNoticia() {
   const [imagensExtras, setImagensExtras] = useState<File[]>([])
 const [previewExtras, setPreviewExtras] = useState<string[]>([])
 const [imagensAtuais, setImagensAtuais] = useState<string[]>([])
+
+const [legendaCapa, setLegendaCapa] = useState("")
+const [legendasExtras, setLegendasExtras] = useState<string[]>([])
+
   const [titulo, setTitulo] = useState("")
   const [categoria, setCategoria] = useState("")
   const [conteudo, setConteudo] = useState("")
@@ -56,6 +60,8 @@ const [imagensAtuais, setImagensAtuais] = useState<string[]>([])
         setPreviewImagem(data.imagem || "")
         setImagensAtuais(data.imagens || [])
 setPreviewExtras(data.imagens || [])
+setLegendaCapa(data.legendaCapa || "")
+setLegendasExtras(data.legendas || [])
       } catch (error) {
         console.error(error)
         showToast("error", "Erro ao carregar notícia.")
@@ -65,6 +71,7 @@ setPreviewExtras(data.imagens || [])
     fetchData()
   }, [id])
 
+  
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0]
@@ -81,12 +88,18 @@ setPreviewExtras(data.imagens || [])
 
   setImagensExtras(prev => [...prev, ...filesArray])
   setPreviewExtras(prev => [...prev, ...previews])
+  setLegendasExtras(prev => [
+  ...prev,
+  ...filesArray.map(() => "")
+])
 }
 
 const handleRemoveImage = (index: number) => {
   setPreviewExtras(prev => prev.filter((_, i) => i !== index))
   setImagensExtras(prev => prev.filter((_, i) => i !== index))
   setImagensAtuais(prev => prev.filter((_, i) => i !== index))
+
+  setLegendasExtras(prev => prev.filter((_, i) => i !== index))
 }
 
   const handleSubmit = async () => {
@@ -116,12 +129,14 @@ if (imagensExtras.length > 0) {
         imageUrl = await uploadImage(file)
       }
 
-     await updateNoticia(id, {
+    await updateNoticia(id, {
   titulo,
   conteudo,
   categoria,
   imagem: imageUrl,
+  legendaCapa,
   imagens: imagensUrls,
+  legendas: legendasExtras,
   autor: "Admin"
 })
       // 🔥 mantém na página
@@ -220,15 +235,27 @@ if (imagensExtras.length > 0) {
                 <input type="file" onChange={handleFileChange} />
                 <span>{file ? file.name : "Alterar imagem"}</span>
               </label>
-            </div>
 
-          </div>
+              <input
+  type="text"
+  placeholder="Legenda da imagem de capa"
+  className="input"
+  value={legendaCapa}
+  onChange={(e) => setLegendaCapa(e.target.value)}
+/>
 
-          {previewImagem && (
+
+ {previewImagem && (
             <div className="novaNoticia__preview">
               <img src={previewImagem} alt="Preview da capa" />
             </div>
           )}
+
+            </div>
+
+          </div>
+
+       
 
           <RichTextEditor
             content={conteudo}
@@ -257,17 +284,29 @@ if (imagensExtras.length > 0) {
     {previewExtras.map((img, index) => (
   <div key={index} className="previewItem">
 
-    <img src={img} />
+  <img src={img} />
 
-    <button
-      className="removeImageBtn"
-      onClick={() => handleRemoveImage(index)}
-      type="button"
-    >
-      <FiX size={14} />
-    </button>
+  <input
+    type="text"
+    placeholder="Legenda da imagem"
+    className="input"
+    value={legendasExtras[index] || ""}
+    onChange={(e) => {
+      const novas = [...legendasExtras]
+      novas[index] = e.target.value
+      setLegendasExtras(novas)
+    }}
+  />
 
-  </div>
+  <button
+    className="removeImageBtn"
+    onClick={() => handleRemoveImage(index)}
+    type="button"
+  >
+    <FiX size={14} />
+  </button>
+
+</div>
 ))}
   </div>
 )}
