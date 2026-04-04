@@ -5,20 +5,19 @@ import re
 from app.services.email_scheduler import schedule_news_email
 from app.models.noticia import Noticia
 from app.services.firebase import db
-from datetime import datetime  # 🔥 IMPORTANTE
-
-
-
+from datetime import datetime
 
 
 router = APIRouter(prefix="/noticias", tags=["Noticias"])
 
 
+# 🔥 GERAR SLUG
 def gerar_slug(texto):
     texto = texto.lower()
     texto = re.sub(r"[^\w\s-]", "", texto)
     texto = re.sub(r"\s+", "-", texto)
     return texto
+
 
 # 🔹 Buscar emails inscritos
 def get_all_subscribers():
@@ -45,25 +44,26 @@ def listar_noticias():
     return lista
 
 
-# 🔹 CRIAR (🔥 CORRIGIDO AQUI)
+# 🔹 CRIAR (COM SLUG)
 @router.post("/")
 def criar_noticia(noticia: Noticia, background_tasks: BackgroundTasks):
 
     data = noticia.dict()
+
+    # 🔥 gera slug
     data["slug"] = gerar_slug(noticia.titulo)
-    data["created_at"] = datetime.utcnow().isoformat()  # 🔥 ESSENCIAL
+
+    data["created_at"] = datetime.utcnow().isoformat()
 
     doc_ref = db.collection("noticias").add(data)
 
-    # montar dados do email
-    title = getattr(noticia, "titulo", "Nova notícia")
-    description = noticia.conteudo
-    url = f"https://www.rota7lagoas.com.br/noticia/{doc_ref[1].id}"
+    # 🔹 EMAIL
+    title = noticia.titulo
+    description = noticia.titulo  # 👈 cliente pediu título aqui
+    url = f"https://www.rota7lagoas.com.br/noticia/{data['slug']}"
 
-    # pegar inscritos
     users = get_all_subscribers()
 
-    # agendar envio
     background_tasks.add_task(
         schedule_news_email,
         title,
@@ -75,21 +75,32 @@ def criar_noticia(noticia: Noticia, background_tasks: BackgroundTasks):
     return {"msg": "Notícia criada com sucesso"}
 
 
-# 🔹 BUSCAR
-@router.get("/{id}")
-def buscar_noticia(id: str):
-    doc_ref = db.collection("noticias").document(id).get()
+# 🔹 BUSCAR (ID OU SLUG 🔥)
+@router.get("/{id_ou_slug}")
+def buscar_noticia(id_ou_slug: str):
 
-    if not doc_ref.exists:
-        return {"erro": "Notícia não encontrada"}
+    # 🔎 tenta por ID
+    doc_ref = db.collection("noticias").document(id_ou_slug).get()
 
-    data = doc_ref.to_dict()
-    data["id"] = doc_ref.id
+    if doc_ref.exists:
+        data = doc_ref.to_dict()
+        data["id"] = doc_ref.id
+        return data
 
-    return data
+    # 🔎 tenta por SLUG
+    noticias_ref = db.collection("noticias").stream()
+
+    for doc in noticias_ref:
+        data = doc.to_dict()
+
+        if data.get("slug") == id_ou_slug:
+            data["id"] = doc.id
+            return data
+
+    return {"erro": "Notícia não encontrada"}
 
 
-# 🔹 ATUALIZAR
+# 🔹 ATUALIZAR (COM SLUG 🔥)
 @router.put("/{id}")
 def atualizar_noticia(id: str, noticia: Noticia):
     doc_ref = db.collection("noticias").document(id)
@@ -97,7 +108,13 @@ def atualizar_noticia(id: str, noticia: Noticia):
     if not doc_ref.get().exists:
         return {"erro": "Notícia não encontrada"}
 
-    doc_ref.update(noticia.dict())
+    data = noticia.dict()
+
+    # 🔥 atualiza slug se tiver título
+    if noticia.titulo:
+        data["slug"] = gerar_slug(noticia.titulo)
+
+    doc_ref.update(data)
 
     return {"msg": "Notícia atualizada com sucesso"}
 
@@ -115,8 +132,7 @@ def deletar_noticia(id: str):
     return {"msg": "Notícia deletada com sucesso"}
 
 
-
-
+# 🔹 PREVIEW (PARA WHATSAPP 🔥)
 @router.get("/preview/{id}", response_class=HTMLResponse)
 def preview_noticia(id: str):
     doc_ref = db.collection("noticias").document(id).get()
@@ -127,13 +143,13 @@ def preview_noticia(id: str):
     data = doc_ref.to_dict()
 
     titulo = data.get("titulo", "Notícia")
-    conteudo = data.get("conteudo", "")
     imagem = data.get("imagem", "")
 
-    # 🔥 IMPORTANTE: descrição = título (igual cliente quer)
+    # 🔥 cliente pediu isso
     descricao = titulo
 
     slug = data.get("slug", id)
+
     url = f"https://portalrota7lagoas.netlify.app/noticia/{slug}"
 
     html = f"""
@@ -151,7 +167,6 @@ def preview_noticia(id: str):
 
         <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image" />
-
       </head>
 
       <body>
