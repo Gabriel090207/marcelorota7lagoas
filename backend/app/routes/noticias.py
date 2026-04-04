@@ -150,7 +150,7 @@ def preview_noticia(id: str):
 
     slug = data.get("slug", id)
 
-    url = f"https://portalrota7lagoas.netlify.app/noticia/{slug}"
+    url = f"https://rota7lagoas.com.br/noticia/{slug}"
 
     html = f"""
     <html>
