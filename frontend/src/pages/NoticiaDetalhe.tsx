@@ -21,7 +21,7 @@ export default function NoticiaDetalhe() {
 
   const previewUrl = `https://rota7-backend.onrender.com/noticias/preview/${noticia.slug || noticia.id}`
 
-  const texto = `*${noticia.titulo}*\n${previewUrl}`
+ const texto = `*${noticia.titulo}*\n\n${previewUrl}`
 
   const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`
 
