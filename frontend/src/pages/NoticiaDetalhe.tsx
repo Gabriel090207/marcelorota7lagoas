@@ -17,24 +17,22 @@ export default function NoticiaDetalhe() {
   const [selectedImg, setSelectedImg] = useState<string | null>(null)
 
 
-  const handleShare = () => {
+const handleShare = () => {
 
   const previewUrl = `https://rota7-backend.onrender.com/noticias/preview/${noticia.slug || noticia.id}`
 
-  const texto = noticia.titulo
+  const texto = `*${noticia.titulo}*\n\n${previewUrl}`
 
-  // 🔥 MENU NATIVO (celular)
+  // 📱 CELULAR (corrigido)
   if (navigator.share) {
     navigator.share({
-      title: noticia.titulo,
-      text: texto,
-      url: previewUrl
-    })
+  text: texto
+})
     return
   }
 
-  // 🔥 fallback (PC)
-  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto + "\n\n" + previewUrl)}`
+  // 💻 PC (igual já tava perfeito)
+  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`
   window.open(whatsappUrl, "_blank")
 }
 

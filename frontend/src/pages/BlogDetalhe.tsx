@@ -4,6 +4,9 @@ import { useEffect, useState } from "react"
 import { FiArrowLeft, FiX, FiShare2 } from "react-icons/fi"
 import { getBlogBySlug } from "../services/api"
 
+
+import { Helmet } from "react-helmet-async"
+
 export default function BlogDetalhe() {
 
   const { slug } = useParams()
@@ -48,6 +51,16 @@ const handleShare = () => {
 
   return (
     <main className="blogDetalhe">
+ <Helmet>
+  <title>{blog.titulo}</title>
+
+  <meta property="og:title" content={blog.titulo} />
+  <meta property="og:description" content={blog.conteudo.replace(/<[^>]+>/g, "").slice(0, 150)} />
+  <meta property="og:image" content={blog.imagem} />
+  <meta property="og:url" content={window.location.href} />
+  <meta property="og:type" content="article" />
+</Helmet>
+      
 
       {/* VOLTAR */}
       <div className="blogDetalhe__back" onClick={() => navigate(-1)}>

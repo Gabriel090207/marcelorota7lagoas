@@ -4,6 +4,8 @@ import { getDicaById } from "../services/api"
 import { FiArrowLeft } from "react-icons/fi"
 import { FiShare2 } from "react-icons/fi"
 
+import { Helmet } from "react-helmet-async"
+
 import "./DicaDetalhe.css"
 
 export default function DicaDetalhe() {
@@ -46,6 +48,16 @@ getDicaById(slug)
 
   return (
     <main className="dicaDetalhe">
+
+      <Helmet>
+  <title>{dica.titulo}</title>
+
+  <meta property="og:title" content={dica.titulo} />
+  <meta property="og:description" content={dica.conteudo.replace(/<[^>]+>/g, "").slice(0, 150)} />
+  <meta property="og:image" content={dica.imagem} />
+  <meta property="og:url" content={window.location.href} />
+  <meta property="og:type" content="article" />
+</Helmet>
 
       {/* VOLTAR */}
       <div className="dicaDetalhe__back" onClick={() => navigate(-1)}>
