@@ -16,11 +16,21 @@ const handleShare = () => {
 
   const previewUrl = `https://rota7-backend.onrender.com/blogs/preview/${blog.slug || blog.id}`
 
-  const texto = `*${blog.titulo}*\n\n${previewUrl}`
+  const texto = `${blog.titulo}`
 
-  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`
+  // 🔥 tenta abrir menu nativo do celular
+  if (navigator.share) {
+    navigator.share({
+      title: blog.titulo,
+      text: texto,
+      url: previewUrl
+    })
+    return
+  }
 
-  window.open(whatsappUrl, "_blank")
+  // fallback (desktop)
+  const whatsapp = `https://wa.me/?text=${encodeURIComponent(texto + "\n\n" + previewUrl)}`
+  window.open(whatsapp, "_blank")
 }
 
   useEffect(() => {
