@@ -22,6 +22,10 @@ export default function NovoBlog() {
   const [file, setFile] = useState<File | null>(null)
   const [imagensExtras, setImagensExtras] = useState<File[]>([])
   const [previewExtras, setPreviewExtras] = useState<string[]>([])
+
+  const [legendaCapa, setLegendaCapa] = useState("")
+const [legendasExtras, setLegendasExtras] = useState<string[]>([])
+
   const [titulo, setTitulo] = useState("")
   const [categoria, setCategoria] = useState("")
   const [conteudo, setConteudo] = useState("")
@@ -59,7 +63,11 @@ export default function NovoBlog() {
 
   // 🔥 AGORA ACUMULA
   setImagensExtras(prev => [...prev, ...filesArray])
-  setPreviewExtras(prev => [...prev, ...previews])
+setPreviewExtras(prev => [...prev, ...previews])
+setLegendasExtras(prev => [
+  ...prev,
+  ...filesArray.map(() => "")
+])
 }
 
   const handleSubmit = async () => {
@@ -91,13 +99,15 @@ if (imagensExtras.length > 0) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          titulo,
-          conteudo,
-          imagem: imageUrl,
-          imagens: imagensUrls, 
-          categoria,
-          autor: "Marcelão"
-        })
+  titulo,
+  conteudo,
+  imagem: imageUrl,
+  legendaCapa,
+  imagens: imagensUrls,
+  legendas: legendasExtras,
+  categoria,
+  autor: "Marcelão"
+})
       })
 
       if (!res.ok) {
@@ -205,15 +215,26 @@ if (imagensExtras.length > 0) {
                   {file ? file.name : "Selecionar imagem"}
                 </span>
               </label>
-            </div>
 
-          </div>
+              <input
+  type="text"
+  placeholder="Legenda da imagem de capa"
+  className="input"
+  value={legendaCapa}
+  onChange={(e) => setLegendaCapa(e.target.value)}
+/>
 
-          {previewImagem && (
+
+  {previewImagem && (
             <div className="novoBlog__preview">
               <img src={previewImagem} alt="Preview da capa" />
             </div>
           )}
+            </div>
+
+          </div>
+
+        
 
           <RichTextEditor
   key={conteudo === "" ? "empty" : "filled"}
@@ -242,8 +263,22 @@ if (imagensExtras.length > 0) {
 {previewExtras.length > 0 && (
   <div className="novoBlog__galleryPreview">
     {previewExtras.map((img, index) => (
-      <img key={index} src={img} />
-    ))}
+  <div key={index}>
+    <img src={img} />
+
+    <input
+      type="text"
+      placeholder="Legenda da imagem"
+      className="input"
+      value={legendasExtras[index] || ""}
+      onChange={(e) => {
+        const novas = [...legendasExtras]
+        novas[index] = e.target.value
+        setLegendasExtras(novas)
+      }}
+    />
+  </div>
+))}
   </div>
 )}
 

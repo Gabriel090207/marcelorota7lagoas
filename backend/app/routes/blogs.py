@@ -38,6 +38,17 @@ import time
 def criar_blog(blog: Blog, background_tasks: BackgroundTasks):
 
     data = blog.dict()
+
+
+    import re
+
+    def gerar_slug(texto):
+        texto = texto.lower()
+        texto = re.sub(r"[^\w\s-]", "", texto)
+        texto = re.sub(r"\s+", "-", texto)
+        return texto
+
+    data["slug"] = gerar_slug(blog.titulo)
     data["created_at"] = time.time()
 
     doc_ref = db.collection("blogs").add(data)
@@ -64,17 +75,28 @@ def criar_blog(blog: Blog, background_tasks: BackgroundTasks):
 
 
 # 🔹 BUSCAR
-@router.get("/{id}")
-def buscar_blog(id: str):
-    doc_ref = db.collection("blogs").document(id).get()
+@router.get("/{id_ou_slug}")
+def buscar_blog(id_ou_slug: str):
 
-    if not doc_ref.exists:
-        return {"erro": "Blog não encontrado"}
+    # tenta por ID
+    doc_ref = db.collection("blogs").document(id_ou_slug).get()
 
-    data = doc_ref.to_dict()
-    data["id"] = doc_ref.id
-    return data
+    if doc_ref.exists:
+        data = doc_ref.to_dict()
+        data["id"] = doc_ref.id
+        return data
 
+    # tenta por SLUG
+    blogs_ref = db.collection("blogs").stream()
+
+    for doc in blogs_ref:
+        data = doc.to_dict()
+
+        if data.get("slug") == id_ou_slug:
+            data["id"] = doc.id
+            return data
+
+    return {"erro": "Blog não encontrado"}
 
 # 🔹 ATUALIZAR
 @router.put("/{id}")

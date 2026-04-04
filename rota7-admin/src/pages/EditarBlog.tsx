@@ -25,6 +25,9 @@ export default function EditarBlog() {
   const [imagensExtras, setImagensExtras] = useState<File[]>([])
 const [previewExtras, setPreviewExtras] = useState<string[]>([])
 const [imagensAtuais, setImagensAtuais] = useState<string[]>([])
+const [legendaCapa, setLegendaCapa] = useState("")
+const [legendasExtras, setLegendasExtras] = useState<string[]>([])
+
   const [titulo, setTitulo] = useState("")
   const [categoria, setCategoria] = useState("")
   const [conteudo, setConteudo] = useState("")
@@ -60,6 +63,8 @@ const [imagensAtuais, setImagensAtuais] = useState<string[]>([])
         setPreviewImagem(data.imagem || "")
         setImagensAtuais(data.imagens || [])
 setPreviewExtras(data.imagens || [])
+setLegendaCapa(data.legendaCapa || "")
+setLegendasExtras(data.legendas || [])
       } catch (error) {
         console.error(error)
         showToast("error", "Erro ao carregar blog.")
@@ -131,7 +136,9 @@ await updateBlog(id, {
   conteudo,
   categoria,
   imagem: imageUrl,
+  legendaCapa,
   imagens: imagensUrls,
+  legendas: legendasExtras,
   autor: "Marcelão"
 })
       setImagemAtual(imageUrl)
@@ -226,15 +233,25 @@ setFile(null)
                 <input type="file" onChange={handleFileChange} />
                 <span>{file ? file.name : "Alterar imagem"}</span>
               </label>
-            </div>
 
-          </div>
+              <input
+  type="text"
+  placeholder="Legenda da imagem de capa"
+  className="input"
+  value={legendaCapa}
+  onChange={(e) => setLegendaCapa(e.target.value)}
+/>
 
-          {previewImagem && (
+ {previewImagem && (
             <div className="novoBlog__preview">
               <img src={previewImagem} alt="Preview da capa" />
             </div>
           )}
+            </div>
+
+          </div>
+
+         
 
           <RichTextEditor
   content={conteudo}
@@ -260,10 +277,22 @@ setFile(null)
 
 {previewExtras.length > 0 && (
   <div className="novoBlog__galleryPreview">
-    {previewExtras.map((img, index) => (
+   {previewExtras.map((img, index) => (
   <div key={index} className="previewItem">
 
     <img src={img} />
+
+    <input
+      type="text"
+      placeholder="Legenda da imagem"
+      className="input"
+      value={legendasExtras[index] || ""}
+      onChange={(e) => {
+        const novas = [...legendasExtras]
+        novas[index] = e.target.value
+        setLegendasExtras(novas)
+      }}
+    />
 
     <button
       className="removeImageBtn"

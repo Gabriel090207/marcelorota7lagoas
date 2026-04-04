@@ -7,4 +7,7 @@ class Blog(BaseModel):
     categoria: Optional[str] = ""
     imagem: Optional[str] = ""
     imagens: Optional[List[str]] = []
+    legendaCapa: Optional[str] = None
+    legendas: Optional[List[str]] = []
     autor: Optional[str] = ""
+    slug: Optional[str] = None

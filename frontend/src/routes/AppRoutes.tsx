@@ -51,7 +51,7 @@ export function AppRoutes() {
       <Route path="/noticia/:slug" element={<NoticiaDetalhe />} />
       <Route path="/dicas/:id" element={<DicaDetalhe />} />
       <Route path="/eventos/:id" element={<EventoDetalhe />} />
-      <Route path="/blog/:id" element={<BlogDetalhe />} />
+      <Route path="/blog/:slug" element={<BlogDetalhe />} />
       <Route path="/preview/:id" element={<PreviewNoticia />} />
 
       {/* ================= CLASSIFICADOS ================= */}

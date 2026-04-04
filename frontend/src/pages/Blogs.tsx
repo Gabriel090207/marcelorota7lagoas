@@ -145,7 +145,7 @@ const outrosBlogs = blogsFiltrados
 
                   <button
                     className="blogReadMore"
-                    onClick={() => navigate(`/blog/${blog.id}`)}
+                    onClick={() => navigate(`/blog/${blog.slug || blog.id}`)}
                   >
                     Ler mais
                   </button>

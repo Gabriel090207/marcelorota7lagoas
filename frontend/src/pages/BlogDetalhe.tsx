@@ -1,24 +1,36 @@
 import "./BlogDetalhe.css"
 import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { FiArrowLeft, FiX } from "react-icons/fi"
-import { getBlogById } from "../services/api"
+import { FiArrowLeft, FiX, FiShare2 } from "react-icons/fi"
+import { getBlogBySlug } from "../services/api"
 
 export default function BlogDetalhe() {
 
-  const { id } = useParams()
+  const { slug } = useParams()
   const navigate = useNavigate()
 
   const [blog, setBlog] = useState<any>(null)
   const [selectedImg, setSelectedImg] = useState<string | null>(null)
 
-  useEffect(() => {
-    if (!id) return
+  const handleShare = () => {
 
-    getBlogById(id)
+    const previewUrl = `https://rota7-backend.onrender.com/blogs/preview/${blog.slug || blog.id}`
+
+    const texto = `*${blog.titulo}*\n\n${previewUrl}`
+
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`
+
+    window.open(whatsappUrl, "_blank")
+  }
+
+  useEffect(() => {
+    if (!slug) return
+
+    getBlogBySlug(slug)
       .then(setBlog)
       .catch(console.error)
-  }, [id])
+
+  }, [slug])
 
   if (!blog) {
     return <div style={{ padding: 40 }}>Carregando...</div>
@@ -55,14 +67,21 @@ export default function BlogDetalhe() {
         </div>
       </section>
 
+      {/* LEGENDA CAPA */}
+      {blog.legendaCapa && (
+        <div className="noticiaDetalhe__legendaWrapper">
+          <span className="noticiaDetalhe__legendaCapa">
+            {blog.legendaCapa}
+          </span>
+        </div>
+      )}
+
       {/* CONTEÚDO */}
       <section className="blogDetalhe__content">
-
         <div
           className="blogDetalhe__texto"
           dangerouslySetInnerHTML={{ __html: blog.conteudo }}
         />
-
       </section>
 
       {/* GALERIA */}
@@ -80,6 +99,12 @@ export default function BlogDetalhe() {
                 onClick={() => setSelectedImg(img)}
               >
                 <img src={img} alt={`Imagem ${index}`} />
+
+                {blog.legendas && blog.legendas[index] && (
+                  <span className="noticiaDetalhe__legenda">
+                    {blog.legendas[index]}
+                  </span>
+                )}
               </div>
             ))}
 
@@ -88,17 +113,15 @@ export default function BlogDetalhe() {
         </section>
       )}
 
-      {/* MODAL IGUAL GALERIA */}
+      {/* MODAL */}
       {selectedImg && (
         <div className="galeriaModal">
 
-          {/* OVERLAY */}
           <div
             className="galeriaOverlay"
             onClick={() => setSelectedImg(null)}
           />
 
-          {/* FECHAR */}
           <button
             className="galeriaClose"
             onClick={() => setSelectedImg(null)}
@@ -106,13 +129,32 @@ export default function BlogDetalhe() {
             <FiX size={22} />
           </button>
 
-          {/* IMAGEM */}
           <div className="galeriaModalContent">
             <img src={selectedImg} alt="" />
+
+            {(() => {
+              const index = blog.imagens.findIndex((img: string) => img === selectedImg)
+              return blog.legendas && blog.legendas[index] ? (
+                <span className="galeriaModalLegenda">
+                  {blog.legendas[index]}
+                </span>
+              ) : null
+            })()}
           </div>
 
         </div>
       )}
+
+      {/* SHARE */}
+      <div className="noticiaDetalhe__share">
+        <button
+          className="shareBtn"
+          onClick={handleShare}
+        >
+          <FiShare2 size={18} />
+          <span>Compartilhar</span>
+        </button>
+      </div>
 
     </main>
   )

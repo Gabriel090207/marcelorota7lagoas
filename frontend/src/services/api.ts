@@ -96,7 +96,7 @@ export const getBlogs = async () => {
   return res.json()
 }
 
-export const getBlogById = async (id: string) => {
-  const res = await fetch(`${API_URL}/blogs/${id}`)
+export const getBlogBySlug = async (slug: string) => {
+  const res = await fetch(`${API_URL}/blogs/${slug}`)
   return res.json()
 }
