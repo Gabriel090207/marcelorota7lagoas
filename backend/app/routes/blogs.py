@@ -122,3 +122,59 @@ def deletar_blog(id: str):
     doc_ref.delete()
 
     return {"msg": "Blog deletado com sucesso"}
+
+
+from fastapi.responses import HTMLResponse
+
+@router.get("/preview/{id_ou_slug}", response_class=HTMLResponse)
+def preview_blog(id_ou_slug: str):
+
+    # 🔎 tenta por ID
+    doc_ref = db.collection("blogs").document(id_ou_slug).get()
+
+    if doc_ref.exists:
+        data = doc_ref.to_dict()
+        data["id"] = doc_ref.id
+    else:
+        # 🔎 tenta por SLUG
+        blogs_ref = db.collection("blogs").stream()
+        data = None
+
+        for doc in blogs_ref:
+            d = doc.to_dict()
+            if d.get("slug") == id_ou_slug:
+                d["id"] = doc.id
+                data = d
+                break
+
+        if not data:
+            return "<h1>Blog não encontrado</h1>"
+
+    titulo = data.get("titulo", "Blog")
+    imagem = data.get("imagem", "")
+    descricao = titulo
+    slug = data.get("slug", data.get("id"))
+
+    url = f"https://rota7lagoas.com.br/blog/{slug}"
+
+    html = f"""
+    <html>
+      <head>
+        <title>{titulo}</title>
+
+        <meta property="og:title" content="{titulo}" />
+        <meta property="og:description" content="{descricao}" />
+        <meta property="og:image" content="{imagem}" />
+        <meta property="og:url" content="{url}" />
+        <meta property="og:type" content="article" />
+      </head>
+
+      <body>
+        <script>
+          window.location.href = "{url}"
+        </script>
+      </body>
+    </html>
+    """
+
+    return HTMLResponse(content=html)

@@ -12,16 +12,16 @@ export default function BlogDetalhe() {
   const [blog, setBlog] = useState<any>(null)
   const [selectedImg, setSelectedImg] = useState<string | null>(null)
 
-  const handleShare = () => {
+const handleShare = () => {
 
-    const previewUrl = `https://rota7-backend.onrender.com/blogs/preview/${blog.slug || blog.id}`
+  const previewUrl = `https://rota7-backend.onrender.com/blogs/preview/${blog.slug || blog.id}`
 
-    const texto = `*${blog.titulo}*\n\n${previewUrl}`
+  const texto = `*${blog.titulo}*\n\n${previewUrl}`
 
-    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`
+  const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(texto)}`
 
-    window.open(whatsappUrl, "_blank")
-  }
+  window.open(whatsappUrl, "_blank")
+}
 
   useEffect(() => {
     if (!slug) return
