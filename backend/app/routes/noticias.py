@@ -1,5 +1,5 @@
 from fastapi import APIRouter, BackgroundTasks
-from fastapi.responses import HTMLResponse
+
 
 from app.services.email_scheduler import schedule_news_email
 from app.models.noticia import Noticia
@@ -104,6 +104,9 @@ def deletar_noticia(id: str):
 
 
 
+
+from fastapi.responses import HTMLResponse
+
 @router.get("/preview/{id}", response_class=HTMLResponse)
 def preview_noticia(id: str):
     doc_ref = db.collection("noticias").document(id).get()
@@ -114,8 +117,12 @@ def preview_noticia(id: str):
     data = doc_ref.to_dict()
 
     titulo = data.get("titulo", "Notícia")
-    descricao = data.get("conteudo", "")[:150]
+    conteudo = data.get("conteudo", "")
     imagem = data.get("imagem", "")
+
+    # 🔥 limpar HTML do conteúdo
+    import re
+    descricao = re.sub("<[^<]+?>", "", conteudo)[:150]
 
     url = f"https://portalrota7lagoas.netlify.app/noticia/{id}"
 
@@ -134,8 +141,12 @@ def preview_noticia(id: str):
       </head>
 
       <body>
+        <h1>Redirecionando...</h1>
+
         <script>
-          window.location.href = "{url}"
+          setTimeout(() => {{
+            window.location.href = "{url}"
+          }}, 1500)
         </script>
       </body>
     </html>
