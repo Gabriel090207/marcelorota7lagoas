@@ -1,4 +1,6 @@
 from fastapi import APIRouter, BackgroundTasks
+from fastapi.responses import HTMLResponse
+
 from app.services.email_scheduler import schedule_news_email
 from app.models.noticia import Noticia
 from app.services.firebase import db
@@ -99,3 +101,44 @@ def deletar_noticia(id: str):
     doc_ref.delete()
 
     return {"msg": "Notícia deletada com sucesso"}
+
+
+
+@router.get("/preview/{id}", response_class=HTMLResponse)
+def preview_noticia(id: str):
+    doc_ref = db.collection("noticias").document(id).get()
+
+    if not doc_ref.exists:
+        return "<h1>Notícia não encontrada</h1>"
+
+    data = doc_ref.to_dict()
+
+    titulo = data.get("titulo", "Notícia")
+    descricao = data.get("conteudo", "")[:150]
+    imagem = data.get("imagem", "")
+
+    url = f"https://portalrota7lagoas.netlify.app/noticia/{id}"
+
+    html = f"""
+    <html>
+      <head>
+        <title>{titulo}</title>
+
+        <meta property="og:title" content="{titulo}" />
+        <meta property="og:description" content="{descricao}" />
+        <meta property="og:image" content="{imagem}" />
+        <meta property="og:url" content="{url}" />
+        <meta property="og:type" content="article" />
+
+        <meta name="twitter:card" content="summary_large_image" />
+      </head>
+
+      <body>
+        <script>
+          window.location.href = "{url}"
+        </script>
+      </body>
+    </html>
+    """
+
+    return HTMLResponse(content=html)

@@ -24,6 +24,9 @@ export default function NoticiaDetalhe() {
 
   const { id } = useParams()
   const [noticia, setNoticia] = useState<any>(null)
+
+  console.log("IMAGEM:", noticia?.imagem)
+  
   const [selectedImg, setSelectedImg] = useState<string | null>(null)
 
   useEffect(() => {
