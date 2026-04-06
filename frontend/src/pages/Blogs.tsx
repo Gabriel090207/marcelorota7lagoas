@@ -54,7 +54,18 @@ const blogsFiltrados = blogs.filter((b) => {
   return matchBusca && matchCategoria
 })
 
-const outrosBlogs = blogsFiltrados
+const outrosBlogs = [...blogsFiltrados].sort((a, b) => {
+  const dateA = a.data
+    ? new Date(a.data).getTime()
+    : new Date(a.created_at * 1000).getTime()
+
+  const dateB = b.data
+    ? new Date(b.data).getTime()
+    : new Date(b.created_at * 1000).getTime()
+
+  return dateB - dateA
+})
+
 
   return (
     <main className="blogs">
@@ -143,12 +154,31 @@ const outrosBlogs = blogsFiltrados
                       .slice(0, 100)}...
                   </p>
 
-                  <button
-                    className="blogReadMore"
-                    onClick={() => navigate(`/blog/${blog.slug || blog.id}`)}
-                  >
-                    Ler mais
-                  </button>
+                  <div className="blogFooter">
+
+ <span className="newsDate">
+  Publicado em{" "}
+  {(() => {
+    let d = new Date(0)
+
+    if (blog.data) {
+      d = new Date(blog.data)
+    } else if (blog.created_at) {
+      d = new Date(blog.created_at * 1000)
+    }
+
+    return d.toLocaleDateString("pt-BR")
+  })()}
+</span>
+
+<button
+  className="btn btn--outline newsReadMore"
+  onClick={() => navigate(`/blog/${blog.slug || blog.id}`)}
+>
+  Ler mais
+</button>
+
+</div>
 
                 </div>
 

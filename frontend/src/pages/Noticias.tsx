@@ -122,9 +122,26 @@ const parceirosAtivos = parceiros.filter(p => p.ativo)
 
               <h1>{noticiasOrdenadasPorData[0]?.titulo}</h1>
 
+
+
               <p>
                 {noticiasOrdenadasPorData[0]?.conteudo?.replace(/<[^>]+>/g, "").slice(0, 120)}...
               </p>
+
+              
+              <span className="newsHeroDate">
+  Publicado em{" "}
+  {(() => {
+    const n = noticiasOrdenadasPorData[0]
+
+    const d = n?.data
+      ? parseNoticiaDate(n.data)
+      : new Date(n?.created_at)
+
+    return d.toLocaleDateString("pt-BR")
+  })()}
+</span>
+
 
               <button
                 className="btn btn--primary"
@@ -203,12 +220,27 @@ const parceirosAtivos = parceiros.filter(p => p.ativo)
                     .slice(0, 100)}...
                 </p>
 
-                <button
-                  className="btn btn--outline newsReadMore"
-                  onClick={() => navigate(`/noticia/${noticia.slug || noticia.id}`)}
-                >
-                  Ler mais
-                </button>
+                <div className="newsFooter">
+
+  <span className="newsDate">
+    Publicado em{" "}
+    {(() => {
+      const d = noticia.data
+        ? parseNoticiaDate(noticia.data)
+        : new Date(noticia.created_at)
+
+      return d.toLocaleDateString("pt-BR")
+    })()}
+  </span>
+
+  <button
+    className="btn btn--outline newsReadMore"
+    onClick={() => navigate(`/noticia/${noticia.slug || noticia.id}`)}
+  >
+    Ler mais
+  </button>
+
+</div>
 
               </div>
 

@@ -3,6 +3,12 @@ from app.services.firebase import db
 from pydantic import BaseModel
 from app.services.email_scheduler import schedule_dica_email
 
+
+from datetime import datetime
+from typing import Optional
+
+
+
 router = APIRouter(prefix="/dicas", tags=["Dicas"])
 
 
@@ -12,6 +18,7 @@ class Dica(BaseModel):
     categoria: str = ""
     imagem: str = ""
     autor: str = ""
+    data: Optional[datetime] = datetime.now()
     slug: Optional[str] = None
 
 # 🔹 LISTAR
@@ -44,7 +51,10 @@ def criar_dica(dica: Dica, background_tasks: BackgroundTasks):
         return texto
 
     data["slug"] = gerar_slug(dica.titulo)
-    data["created_at"] = datetime.utcnow().isoformat()
+
+    agora = datetime.now()
+
+    data["data"] = agora.isoformat()
 
     doc_ref = db.collection("dicas").add(data)
     dica_id = doc_ref[1].id

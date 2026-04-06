@@ -32,6 +32,7 @@ def listar_blogs():
 
 
 # 🔹 CRIAR
+from datetime import datetime
 import time
 
 @router.post("/")
@@ -49,7 +50,10 @@ def criar_blog(blog: Blog, background_tasks: BackgroundTasks):
         return texto
 
     data["slug"] = gerar_slug(blog.titulo)
-    data["created_at"] = time.time()
+
+    agora = datetime.now()
+
+    data["data"] = agora.isoformat()
 
     doc_ref = db.collection("blogs").add(data)
     blog_id = doc_ref[1].id

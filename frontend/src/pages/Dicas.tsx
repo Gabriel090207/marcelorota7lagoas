@@ -116,6 +116,17 @@ const outrasDicas = [...dicasFiltradas].sort((a, b) => {
                   .slice(0, 140)}...
               </p>
 
+              <span className="newsHeroDate">
+  Publicado em{" "}
+  {(() => {
+    const d = destaque.data
+      ? new Date(destaque.data)
+      : new Date(destaque.created_at * 1000)
+
+    return d.toLocaleDateString("pt-BR")
+  })()}
+</span>
+
               <button
                 className="btn btn--primary"
                 onClick={() => navigate(`/dicas/${destaque.slug || destaque.id}`)}
@@ -192,12 +203,27 @@ const outrasDicas = [...dicasFiltradas].sort((a, b) => {
                       .slice(0, 100)}...
                   </p>
 
-                  <button
-                    className="dicaReadMore"
-                    onClick={() => navigate(`/dicas/${dica.slug || dica.id}`)}
-                  >
-                    Ler mais
-                  </button>
+                  <div className="newsFooter">
+
+  <span className="newsDate">
+    Publicado em{" "}
+    {(() => {
+      const d = dica.data
+        ? new Date(dica.data)
+        : new Date(dica.created_at * 1000)
+
+      return d.toLocaleDateString("pt-BR")
+    })()}
+  </span>
+
+  <button
+    className="btn btn--outline newsReadMore"
+    onClick={() => navigate(`/dicas/${dica.slug || dica.id}`)}
+  >
+    Ler mais
+  </button>
+
+</div>
 
                 </div>
 

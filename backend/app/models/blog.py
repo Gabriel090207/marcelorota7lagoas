@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional
+from datetime import datetime
+
 
 class Blog(BaseModel):
     titulo: str
@@ -10,4 +12,6 @@ class Blog(BaseModel):
     legendaCapa: Optional[str] = None
     legendas: Optional[List[str]] = []
     autor: Optional[str] = ""
+    
+    data: Optional[datetime] = datetime.now()
     slug: Optional[str] = None

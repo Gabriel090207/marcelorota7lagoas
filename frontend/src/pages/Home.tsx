@@ -18,12 +18,13 @@ import { getParceiros } from "../services/api"
 import { SectionDivider } from '../components/SectionDivider/SectionDivider'
 
 import { useEffect, useState } from "react"
-import { getNoticias, getEventos, getGrupos, getImagens } from "../services/api"
+import { getNoticias, getEventos, getGrupos, getImagens, getBlogs } from "../services/api"
 
 export default function Home() {
 
 
-  const [noticias, setNoticias] = useState<any[]>([])
+const [noticias, setNoticias] = useState<any[]>([])
+const [blogs, setBlogs] = useState<any[]>([])
 const [eventos, setEventos] = useState<any[]>([])
 const [grupos, setGrupos] = useState<any[]>([])
 const [imagens, setImagens] = useState<any[]>([])
@@ -95,6 +96,7 @@ const proximosEventos = eventos
 
 useEffect(() => {
   getNoticias().then(data => setNoticias(data || []))
+  getBlogs().then(data => setBlogs(data || []))
   getEventos().then(data => setEventos(data || []))
   getGrupos().then(data => setGrupos(data || []))
   getImagens().then(data => setImagens(data || []))
@@ -102,11 +104,13 @@ useEffect(() => {
 }, [])
 
 useEffect(() => {
-  if (noticias.length <= 1) return
+ if (alternados.length <= 1) return
 
-  const interval = setInterval(() => {
-    setNewsIndex((prev) => (prev === Math.min(2, noticias.length - 1) ? 0 : prev + 1))
-  }, 5000)
+const interval = setInterval(() => {
+  setNewsIndex((prev) =>
+    prev === alternados.length - 1 ? 0 : prev + 1
+  )
+}, 5000)
 
   return () => clearInterval(interval)
 }, [noticias])
@@ -139,6 +143,38 @@ const handleNewsletter = async (e: React.FormEvent) => {
 
 const parceirosAtivos = parceiros.filter(p => p.ativo)
   
+
+
+
+
+const blogsOrdenados = [...blogs]
+  .sort((a, b) => {
+    const dateA = new Date(a.data || a.created_at || 0).getTime()
+    const dateB = new Date(b.data || b.created_at || 0).getTime()
+    return dateB - dateA
+  })
+  .slice(0, 3)
+
+const noticiasOrdenadas = [...noticias]
+  .sort((a, b) => {
+    const dateA = new Date(a.data || a.created_at || 0).getTime()
+    const dateB = new Date(b.data || b.created_at || 0).getTime()
+    return dateB - dateA
+  })
+  .slice(0, 3)
+
+const alternados = []
+
+for (let i = 0; i < 3; i++) {
+  if (blogsOrdenados[i]) {
+    alternados.push({ ...blogsOrdenados[i], tipo: "blog" })
+  }
+
+  if (noticiasOrdenadas[i]) {
+    alternados.push({ ...noticiasOrdenadas[i], tipo: "noticia" })
+  }
+}
+
   return (
     <main className="home">
 
@@ -148,51 +184,54 @@ const parceirosAtivos = parceiros.filter(p => p.ativo)
   <section className="homeNewsHero">
 
     <div className="homeNewsHero__slider">
-      {[...noticias]
-  .sort((a, b) => {
-    const dateA = new Date(a.data || a.created_at || 0).getTime()
-    const dateB = new Date(b.data || b.created_at || 0).getTime()
-    return dateB - dateA // mais recente primeiro
-  })
-  .slice(0, 3)
-  .map((noticia, index) => (
-        <div
-          key={noticia.id}
-          className={`homeNewsHero__slide ${index === newsIndex ? "active" : ""}`}
-          style={{
-            backgroundImage: `url(${noticia.imagem || news1})`
-          }}
-        >
+      {alternados.map((item, index) => (
+       <div
+  key={`${item.tipo}-${item.id}`}
+  className={`homeNewsHero__slide ${index === newsIndex ? "active" : ""}`}
+  style={{
+    backgroundImage: `url(${item.imagem || news1})`
+  }}
+>
           <div className="homeNewsHero__overlay">
             <div className="homeNewsHero__content">
 
-              <span className="homeNewsHero__category">
-                {noticia.categoria || "Notícia"}
-              </span>
+             <span className="homeNewsHero__category">
+  {item.tipo === "blog" ? "Blog" : item.categoria || "Notícia"}
+</span>
 
-              <h1>{noticia.titulo}</h1>
+<h1>{item.titulo}</h1>
 
-              <p>
-                {noticia.conteudo
-                  ?.replace(/<[^>]+>/g, "")
-                  .slice(0, 140)}...
-              </p>
+<p>
+  {item.conteudo
+    ?.replace(/<[^>]+>/g, "")
+    .slice(0, 140)}...
+</p>
 
               <div className="homeNewsHero__actions">
 
   <button
     className="btn btn--primary"
-    onClick={() => window.location.href = `/noticia/${noticia.id}`}
+  onClick={() => {
+  const url =
+    item.tipo === "blog"
+      ? `/blog/${item.slug ?? item.id}`
+      : `/noticia/${item.slug ?? item.id}`
+
+  window.location.href = url
+}}
   >
     Ler matéria completa
   </button>
 
-  <button
-    className="btn btn--outline"
-    onClick={() => window.location.href = `/noticias`}
-  >
-    Ver notícias
-  </button>
+ <button
+  className="btn btn--outline"
+  onClick={() =>
+    window.location.href =
+      item.tipo === "blog" ? "/blogs" : "/noticias"
+  }
+>
+  {item.tipo === "blog" ? "Ver blogs" : "Ver notícias"}
+</button>
 
 </div>
 
@@ -203,7 +242,7 @@ const parceirosAtivos = parceiros.filter(p => p.ativo)
     </div>
 
     <div className="homeNewsHero__dots">
-      {noticias.slice(0, 3).map((_, index) => (
+      {alternados.map((_, index) => (
         <button
           key={index}
           className={index === newsIndex ? "active" : ""}
