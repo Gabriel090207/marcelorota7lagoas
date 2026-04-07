@@ -62,15 +62,19 @@
 }
 
 /* BOTÃO OUTLINE */
-.btn--outline {
+.btn--out {
+
+
+   border: none;
 
   background: transparent;
   color: var(--color-text);
-border: none;
+
   transition: var(--transition-default);
 }
 
-.btn--outline:hover {
+.btn--out:hover {
+  border: none;
   background: transparent;
   color: var(--color-primary);
 }
