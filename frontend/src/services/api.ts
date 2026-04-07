@@ -100,3 +100,56 @@ export const getBlogBySlug = async (slug: string) => {
   const res = await fetch(`${API_URL}/blogs/${slug}`)
   return res.json()
 }
+
+
+
+// =======================
+// AUTH
+// =======================
+
+export const registerUser = async (data: any) => {
+  const res = await fetch(`${API_URL}/auth/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+
+  return res.json()
+}
+
+export const loginUser = async (data: any) => {
+  const res = await fetch(`${API_URL}/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+
+  return res.json()
+}
+
+
+
+// =======================
+// COMENTÁRIOS
+// =======================
+
+export const getComentariosByBlog = async (blogId: string) => {
+  const res = await fetch(`${API_URL}/comentarios/${blogId}`)
+  return res.json()
+}
+
+export const createComentario = async (data: any) => {
+  const res = await fetch(`${API_URL}/comentarios`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+
+  return res.json()
+}

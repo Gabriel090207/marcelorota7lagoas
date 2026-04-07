@@ -155,7 +155,9 @@
   pointer-events: auto;
 }
 
-/* ===== DRAWER (SIDEBAR) ===== */
+/* ===== 
+
+(SIDEBAR) ===== */
 .header__drawer {
   position: fixed;
   top: 0;
@@ -241,6 +243,18 @@
 .header__drawerLogin {
   width: 100%;
   justify-content: center;
+
+  margin-top: 20px; /* 👈 AQUI aumenta o espaço */
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 14px;
+
+  border-radius: 14px;
+
+  font-weight: 600;
 }
 
 /* ===== RESPONSIVO ===== */
@@ -267,7 +281,7 @@
   }
 
   .header__loginBtn {
-    display: none;
+    display: none !important;
   }
 
   .header__container {
@@ -339,6 +353,279 @@
 /* Esconde Carrinho em telas menores que 1024px */
 @media (max-width: 1024px) {
   .header__cartBtn {
+    display: none;
+  }
+}
+
+
+.header__loginBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  border-radius: 14px;
+
+  transition: 0.25s ease;
+}
+
+.header__loginBtn svg {
+  font-size: 1rem;
+}
+
+/* Glow leve no hover */
+.header__loginBtn:hover {
+  box-shadow: 0 6px 20px rgba(255, 122, 0, 0.25);
+}
+
+
+/* ================= MODAL LOGIN ================= */
+
+.loginModal {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+}
+
+/* OVERLAY */
+
+.loginOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+
+  animation: fadeIn 0.3s ease;
+}
+
+/* CONTAINER */
+
+.loginContent {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+
+  width: 100%;
+  max-width: 400px;
+
+  background: #141414;
+  border: 1px solid #1f1f1f;
+
+  border-radius: 18px;
+
+  padding: 30px;
+
+  display: flex;
+  flex-direction: column;
+
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+
+  animation: modalEnter 0.3s ease forwards;
+}
+
+/* HEADER */
+
+.loginHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.loginHeader img {
+  height: 80px;
+}
+
+.loginHeader h2 {
+  color: var(--color-primary);
+  text-align: center;
+}
+
+/* FORM */
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.loginForm input {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+
+  background: #0f0f0f;
+  border: 1px solid #2a2a2a;
+
+  color: #fff;
+}
+
+.loginForm input:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+/* BOTÃO PRINCIPAL */
+
+.loginSubmit {
+  margin-top: 8px;
+  padding: 12px;
+  border-radius: 12px;
+
+  background: linear-gradient(90deg, #ff7a00, #ff9100);
+  color: #000;
+
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.loginSubmit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(255,122,0,0.4);
+}
+
+/* TEXTO */
+
+.loginSwitchText {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--color-primary);
+  margin-top: 10px;
+}
+
+/* BOTÃO SECUNDÁRIO */
+
+.loginSwitch {
+  padding: 10px;
+  border-radius: 10px;
+
+  background: transparent;
+  border: 1px solid #2a2a2a;
+
+  color: #fff;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.loginSwitch:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* FECHAR */
+
+.loginClose {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  background: transparent;
+  color: #aaa;
+  cursor: pointer;
+}
+
+/* ANIMAÇÕES */
+
+@keyframes modalEnter {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+
+/* ===== USER HEADER ===== */
+
+.headerUser {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.headerUser__name {
+  font-size: 0.8rem;
+  color: var(--color-primary);
+}
+
+/* AVATAR */
+
+.headerUser__avatar {
+  width: 36px;
+  height: 36px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 700;
+  font-size: 0.8rem;
+
+  color: var(--color-primary);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255,122,0,0.2),
+      rgba(255,145,0,0.1)
+    );
+
+  border: 1px solid rgba(255,122,0,0.4);
+}
+
+/* BOTÃO SAIR */
+
+.headerLogoutBtn {
+  padding: 8px 10px;
+  border-radius: 8px;
+
+  background: rgba(255,255,255,0.05);
+  color: var(--color-primary);
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.headerLogoutBtn:hover {
+  background: rgba(255,122,0,0.2);
+}
+
+
+.headerLogoutBtn {
+  width: 36px;
+  height: 36px;
+
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255,255,255,0.05);
+  color: var(--color-primary);
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.headerLogoutBtn:hover {
+  background: rgba(255,122,0,0.2);
+}
+
+@media (max-width: 900px) {
+  .headerUser__name {
     display: none;
   }
 }

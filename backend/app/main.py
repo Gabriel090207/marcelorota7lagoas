@@ -4,6 +4,10 @@ from app.routes import noticias, dicas, eventos, parceiros, solicitacoes, grupos
 from app.routes import newsletter
 from app.routes import email_jobs
 
+
+from app.routes.auth import router as auth_router
+from app.routes.comentarios import router as comentarios_router
+
 from fastapi import FastAPI
 
 
@@ -31,6 +35,9 @@ app.include_router(grupos.router)
 app.include_router(anuncios.router)
 app.include_router(galeria.router)
 app.include_router(blogs.router)
+
+app.include_router(auth_router)
+app.include_router(comentarios_router)
 
 
 @app.get("/")
