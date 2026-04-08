@@ -58,8 +58,17 @@ const showToast = (type: "success" | "error", message: string) => {
   }, [])
 
 
- const blogsOrdenados = [...blogs].sort((a, b) => {
-  return Number(b.created_at || 0) - Number(a.created_at || 0)
+
+  const blogsOrdenados = [...blogs].sort((a, b) => {
+  const dateA = a.data
+    ? new Date(a.data).getTime()
+    : new Date(a.created_at || 0).getTime()
+
+  const dateB = b.data
+    ? new Date(b.data).getTime()
+    : new Date(b.created_at || 0).getTime()
+
+  return dateB - dateA
 })
 
   return (

@@ -153,7 +153,7 @@ const blogsOrdenados = [...blogs]
     const dateB = new Date(b.data || b.created_at || 0).getTime()
     return dateB - dateA
   })
-  .slice(0, 3)
+  .slice(0, 6)
 
 const noticiasOrdenadas = [...noticias]
   .sort((a, b) => {
@@ -161,17 +161,17 @@ const noticiasOrdenadas = [...noticias]
     const dateB = new Date(b.data || b.created_at || 0).getTime()
     return dateB - dateA
   })
-  .slice(0, 3)
+ .slice(0, 6)
 
 const alternados = []
 
-for (let i = 0; i < 3; i++) {
-  if (blogsOrdenados[i]) {
-    alternados.push({ ...blogsOrdenados[i], tipo: "blog" })
-  }
-
+for (let i = 0; i < 6; i++) {
   if (noticiasOrdenadas[i]) {
     alternados.push({ ...noticiasOrdenadas[i], tipo: "noticia" })
+  }
+
+  if (blogsOrdenados[i]) {
+    alternados.push({ ...blogsOrdenados[i], tipo: "blog" })
   }
 }
 

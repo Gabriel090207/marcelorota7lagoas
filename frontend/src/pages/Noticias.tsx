@@ -96,13 +96,24 @@ const noticiasOrdenadas = [...noticiasFiltradas].sort((a, b) => {
   const indexA = ordemCategorias.indexOf(a.categoria)
   const indexB = ordemCategorias.indexOf(b.categoria)
 
-  // se não achar categoria, joga pro final
-  if (indexA === -1) return 1
-  if (indexB === -1) return -1
+  // categorias diferentes → mantém ordem de categoria
+  if (indexA !== indexB) {
+    if (indexA === -1) return 1
+    if (indexB === -1) return -1
+    return indexA - indexB
+  }
 
-  return indexA - indexB
+  // 🔥 mesma categoria → ordenar por data (mais recente primeiro)
+  const dateA = a.data
+    ? parseNoticiaDate(a.data).getTime()
+    : new Date(a.created_at || 0).getTime()
+
+  const dateB = b.data
+    ? parseNoticiaDate(b.data).getTime()
+    : new Date(b.created_at || 0).getTime()
+
+  return dateB - dateA
 })
-
 
 const parceirosAtivos = parceiros.filter(p => p.ativo)
 

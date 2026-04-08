@@ -124,7 +124,11 @@ if (imagensExtras.length > 0) {
       setFile(null)
       setPreviewImagem("")
       setImagensExtras([])
-      setPreviewExtras([])        
+      setPreviewExtras([])    
+      
+      setPreviewImagem("")
+setLegendaCapa("")
+setLegendasExtras([])
 
     } catch (error) {
       console.error(error)
