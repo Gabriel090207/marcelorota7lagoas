@@ -3,6 +3,9 @@ from typing import Optional, List
 from datetime import datetime
 
 
+from datetime import datetime
+from pydantic import Field
+
 class Noticia(BaseModel):
     titulo: str
     conteudo: str
@@ -12,7 +15,8 @@ class Noticia(BaseModel):
     legendas: Optional[List[str]] = []
     categoria: Optional[str] = None
     autor: Optional[str] = "Admin"
-    data: Optional[datetime] = datetime.now()
+    
+    data: Optional[datetime] = None
 
     # 🔥 NOVO CAMPO
     slug: Optional[str] = None

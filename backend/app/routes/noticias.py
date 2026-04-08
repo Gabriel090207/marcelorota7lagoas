@@ -6,6 +6,7 @@ from app.services.email_scheduler import schedule_news_email
 from app.models.noticia import Noticia
 from app.services.firebase import db
 from datetime import datetime
+import pytz
 
 
 router = APIRouter(prefix="/noticias", tags=["Noticias"])
@@ -49,6 +50,11 @@ def listar_noticias():
 def criar_noticia(noticia: Noticia, background_tasks: BackgroundTasks):
 
     data = noticia.dict()
+
+    data.pop("data", None)
+
+    brasil = pytz.timezone("America/Sao_Paulo")
+    data["data"] = datetime.now(brasil)
 
     # 🔥 gera slug
     data["slug"] = gerar_slug(noticia.titulo)
