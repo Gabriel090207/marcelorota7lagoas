@@ -13,5 +13,5 @@ class Blog(BaseModel):
     legendas: Optional[List[str]] = []
     autor: Optional[str] = ""
     
-    data: Optional[datetime] = datetime.now()
+    data: Optional[datetime] = None
     slug: Optional[str] = None

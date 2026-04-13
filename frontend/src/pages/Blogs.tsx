@@ -55,13 +55,8 @@ const blogsFiltrados = blogs.filter((b) => {
 })
 
 const outrosBlogs = [...blogsFiltrados].sort((a, b) => {
-  const dateA = a.data
-    ? new Date(a.data).getTime()
-    : new Date(a.created_at * 1000).getTime()
-
-  const dateB = b.data
-    ? new Date(b.data).getTime()
-    : new Date(b.created_at * 1000).getTime()
+ const dateA = new Date(a.data).getTime()
+const dateB = new Date(b.data).getTime()
 
   return dateB - dateA
 })
@@ -161,11 +156,7 @@ const outrosBlogs = [...blogsFiltrados].sort((a, b) => {
   {(() => {
     let d = new Date(0)
 
-    if (blog.data) {
-      d = new Date(blog.data)
-    } else if (blog.created_at) {
-      d = new Date(blog.created_at * 1000)
-    }
+   const d = new Date(blog.data)
 
     return d.toLocaleDateString("pt-BR")
   })()}

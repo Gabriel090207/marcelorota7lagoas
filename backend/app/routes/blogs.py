@@ -2,6 +2,7 @@ from fastapi import APIRouter, BackgroundTasks
 from app.models.blog import Blog
 from app.services.firebase import db
 from app.services.email_scheduler import schedule_blog_email
+import pytz
 
 router = APIRouter(prefix="/blogs", tags=["Blogs"])
 
@@ -51,9 +52,10 @@ def criar_blog(blog: Blog, background_tasks: BackgroundTasks):
 
     data["slug"] = gerar_slug(blog.titulo)
 
-    agora = datetime.now()
+    data.pop("data", None)
 
-    data["data"] = agora.isoformat()
+    brasil = pytz.timezone("America/Sao_Paulo")
+    data["data"] = datetime.now(brasil)
 
     doc_ref = db.collection("blogs").add(data)
     blog_id = doc_ref[1].id
