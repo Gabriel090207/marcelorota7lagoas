@@ -154,7 +154,7 @@ const dateB = new Date(b.data).getTime()
  <span className="newsDate">
   Publicado em{" "}
   {(() => {
-    let d = new Date(0)
+   
 
    const d = new Date(blog.data)
 
