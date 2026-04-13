@@ -59,8 +59,7 @@ def criar_noticia(noticia: Noticia, background_tasks: BackgroundTasks):
     # 🔥 gera slug
     data["slug"] = gerar_slug(noticia.titulo)
 
-    data["created_at"] = datetime.utcnow().isoformat()
-
+   
     doc_ref = db.collection("noticias").add(data)
 
     # 🔹 EMAIL

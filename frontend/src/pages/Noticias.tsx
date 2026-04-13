@@ -54,13 +54,8 @@ const [categoria, setCategoria] = useState("Todas")
 }
 
 const noticiasOrdenadasPorData = [...noticias].sort((a, b) => {
-const dateA = a.data
-  ? parseNoticiaDate(a.data).getTime()
-  : new Date(a.created_at || 0).getTime()
-
-const dateB = b.data
-  ? parseNoticiaDate(b.data).getTime()
-  : new Date(b.created_at || 0).getTime()
+const dateA = parseNoticiaDate(a.data).getTime()
+const dateB = parseNoticiaDate(b.data).getTime()
 
   return dateB - dateA
 })
@@ -104,13 +99,8 @@ const noticiasOrdenadas = [...noticiasFiltradas].sort((a, b) => {
   }
 
   // 🔥 mesma categoria → ordenar por data (mais recente primeiro)
-  const dateA = a.data
-    ? parseNoticiaDate(a.data).getTime()
-    : new Date(a.created_at || 0).getTime()
-
-  const dateB = b.data
-    ? parseNoticiaDate(b.data).getTime()
-    : new Date(b.created_at || 0).getTime()
+ const dateA = parseNoticiaDate(a.data).getTime()
+const dateB = parseNoticiaDate(b.data).getTime()
 
   return dateB - dateA
 })
@@ -144,10 +134,7 @@ const parceirosAtivos = parceiros.filter(p => p.ativo)
   Publicado em{" "}
   {(() => {
     const n = noticiasOrdenadasPorData[0]
-
-    const d = n?.data
-      ? parseNoticiaDate(n.data)
-      : new Date(n?.created_at)
+const d = parseNoticiaDate(n?.data)
 
     return d.toLocaleDateString("pt-BR")
   })()}
@@ -236,9 +223,7 @@ const parceirosAtivos = parceiros.filter(p => p.ativo)
   <span className="newsDate">
     Publicado em{" "}
     {(() => {
-      const d = noticia.data
-        ? parseNoticiaDate(noticia.data)
-        : new Date(noticia.created_at)
+      const d = parseNoticiaDate(noticia.data)
 
       return d.toLocaleDateString("pt-BR")
     })()}
