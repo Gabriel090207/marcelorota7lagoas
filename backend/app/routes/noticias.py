@@ -49,7 +49,7 @@ def listar_noticias():
 @router.post("/")
 def criar_noticia(noticia: Noticia, background_tasks: BackgroundTasks):
 
-    data = noticia.dict()
+    data = noticia.dict(exclude_none=True)
 
     data.pop("data", None)
 
