@@ -242,3 +242,130 @@
 .shareBtn:hover {
   background: rgba(255,255,255,0.06);
 }
+
+
+/* ================= VIDEOS ================= */
+
+.noticiaDetalhe__video {
+  max-width: 1200px;
+  margin: 60px auto 0 auto;
+  padding: 0 20px;
+}
+
+.noticiaDetalhe__video h3 {
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+}
+
+.noticiaDetalhe__videoBox {
+  margin-bottom: 25px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--color-border);
+}
+
+.noticiaDetalhe__videoBox iframe,
+.noticiaDetalhe__videoBox video {
+  width: 100%;
+  height: 520px;
+  display: block;
+  border: none;
+  background: #000;
+}
+
+@media (max-width: 900px) {
+  .noticiaDetalhe__videoBox iframe,
+  .noticiaDetalhe__videoBox video {
+    height: 420px;
+  }
+}
+
+@media (max-width: 600px) {
+  .noticiaDetalhe__videoBox iframe,
+  .noticiaDetalhe__videoBox video {
+    height: 240px;
+  }
+}
+
+
+.noticiaDetalhe__texto img {
+  width: 100%;
+  max-width: 1020px;
+  height: 480px;
+  object-fit: cover;
+
+  display: block;
+  margin: 12px auto 46px auto;
+
+  border-radius: 14px;
+  border: 1px solid var(--color-border);
+}
+
+.noticiaDetalhe__texto .editorImageCaption,
+.noticiaDetalhe__texto img + p {
+  width: 100%;
+  max-width: 1020px;
+
+  margin: -30px auto 34px auto;
+  padding: 0 10px;
+
+  color: #9ca3af;
+  font-size: 0.92rem;
+  font-style: italic;
+  font-weight: 400;
+  text-align: center;
+  line-height: 1.5;
+
+  text-indent: 0 !important;
+}
+
+.noticiaDetalhe__videoLegenda {
+  width: 100%;
+  max-width: 1200px;
+
+  margin: 8px auto 30px auto;
+  padding: 0 6px;
+
+  color: #9ca3af;
+  font-size: 0.9rem;
+  font-style: italic;
+  line-height: 1.5;
+
+  text-align: left;
+}
+
+
+.noticiaDetalhe__texto a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.noticiaDetalhe__texto a:hover {
+  opacity: 0.85;
+}
+
+/* RESPONSIVIDADE IMAGEM CONTEÚDO */
+
+@media (max-width: 600px) {
+  .noticiaDetalhe__texto img {
+    width: 100%;
+    max-width: 100%;
+    height: 280px;
+    object-fit: cover;
+  }
+
+  .noticiaDetalhe__texto .editorImageCaption,
+  .noticiaDetalhe__texto img + p {
+    width: 100%;
+    max-width: 100%;
+    margin: -18px auto 24px auto;
+    padding: 0 8px;
+
+    font-size: 0.82rem;
+    line-height: 1.4;
+    text-align: center;
+  }
+}

@@ -21,6 +21,10 @@ const [previewExtras, setPreviewExtras] = useState<string[]>([])
 
 const [legendaCapa, setLegendaCapa] = useState("")
 const [legendasExtras, setLegendasExtras] = useState<string[]>([])
+const [videoLink, setVideoLink] = useState("")
+const [videoFiles, setVideoFiles] = useState<File[]>([])
+const [legendasVideos, setLegendasVideos] = useState<string[]>([])
+const [legendaVideo, setLegendaVideo] = useState("")
 
   const [titulo, setTitulo] = useState("")
   const [categoria, setCategoria] = useState("")
@@ -65,6 +69,7 @@ const [legendasExtras, setLegendasExtras] = useState<string[]>([])
       setLoading(true)
 
       let imageUrl = ""
+     let videosUrls: string[] = []
 
       let imagensUrls: string[] = []
 
@@ -78,15 +83,24 @@ if (imagensExtras.length > 0) {
         imageUrl = await uploadImage(file)
       }
 
+  if (videoFiles.length > 0) {
+  videosUrls = await Promise.all(
+    videoFiles.map(video => uploadImage(video))
+  )
+}
       const res = await fetch(`${import.meta.env.VITE_API_URL}/noticias`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({
+       body: JSON.stringify({
   titulo,
   conteudo,
   imagem: imageUrl,
+  videoLink,
+videoArquivo: videosUrls,
+legendasVideos,
+legendaVideo,
   legendaCapa,
   imagens: imagensUrls,
   legendas: legendasExtras,
@@ -113,6 +127,10 @@ setPreviewExtras([])
 setPreviewImagem("")
 setLegendaCapa("")
 setLegendasExtras([])
+setVideoLink("")
+setVideoFiles([])
+setLegendasVideos([])
+setLegendaVideo("")
 
     } catch (error) {
       console.error(error)
@@ -279,6 +297,86 @@ setLegendasExtras([])
     ))}
   </div>
 )}
+
+<div className="field">
+  <label>Vídeo da matéria</label>
+
+  <input
+    type="text"
+    placeholder="Cole o link do vídeo"
+    className="input"
+   value={videoLink}
+onChange={(e) => setVideoLink(e.target.value)}
+  />
+  <input
+  type="text"
+  placeholder="Legenda do vídeo"
+  className="input"
+  value={legendaVideo}
+  onChange={(e) => setLegendaVideo(e.target.value)}
+  style={{ marginTop: "10px" }}
+/>
+  <label className="uploadBox" style={{ marginTop: "10px" }}>
+ <input
+  type="file"
+  accept="video/*"
+  multiple
+ onChange={(e) => {
+  if (!e.target.files) return
+
+  const arquivos = Array.from(e.target.files)
+
+  setVideoFiles(prev => [...prev, ...arquivos])
+
+  setLegendasVideos(prev => [
+    ...prev,
+    ...arquivos.map(() => "")
+  ])
+}}
+  />
+  <span>
+    {videoFiles.length > 0
+  ? `${videoFiles.length} vídeos selecionados`
+  : "Selecionar vídeos"}
+  </span>
+</label>
+
+{videoFiles.length > 0 && (
+  <div className="videoList">
+    {videoFiles.map((file, index) => (
+      <div key={index} className="previewItem">
+        <div className="fileCard">
+          {file.name}
+        </div>
+        <input
+  type="text"
+  placeholder="Legenda do vídeo"
+  className="input"
+  value={legendasVideos[index] || ""}
+  onChange={(e) => {
+    const novas = [...legendasVideos]
+    novas[index] = e.target.value
+    setLegendasVideos(novas)
+  }}
+/>
+
+        <button
+          className="removeImageBtn"
+          type="button"
+         onClick={() => {
+  setVideoFiles(prev => prev.filter((_, i) => i !== index))
+  setLegendasVideos(prev => prev.filter((_, i) => i !== index))
+}}
+        >
+          <FiX size={14} />
+        </button>
+      </div>
+    ))}
+  </div>
+)}
+
+
+</div>
 
           <button
             className="publishBtn"

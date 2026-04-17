@@ -389,3 +389,52 @@
   border-radius: 10px;
   border: 1px solid var(--color-border);
 }
+
+
+
+/* LISTA DE VIDEOS */
+
+.videoList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+ 
+}
+
+.fileCard {
+  width: 100%;
+  min-height: 56px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px 52px 12px 16px;
+
+  border-radius: 12px;
+  border: 1px dashed rgba(255,122,0,0.35);
+
+  background: rgba(255,122,0,0.06);
+  color: var(--color-text);
+
+  text-align: center;
+  line-height: 1.4;
+
+  word-break: break-word;
+  overflow-wrap: anywhere;
+
+  position: relative;
+}
+
+.videoList .previewItem {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+  position: relative;
+}
+
+.videoList .previewItem .input {
+  width: 100%;
+}

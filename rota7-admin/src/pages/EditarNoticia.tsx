@@ -23,6 +23,11 @@ const [imagensAtuais, setImagensAtuais] = useState<string[]>([])
 
 const [legendaCapa, setLegendaCapa] = useState("")
 const [legendasExtras, setLegendasExtras] = useState<string[]>([])
+const [videoLink, setVideoLink] = useState("")
+const [videoFiles, setVideoFiles] = useState<File[]>([])
+const [videosAtuais, setVideosAtuais] = useState<string[]>([])
+const [legendasVideos, setLegendasVideos] = useState<string[]>([])
+const [legendaVideo, setLegendaVideo] = useState("")
 
   const [titulo, setTitulo] = useState("")
   const [categoria, setCategoria] = useState("")
@@ -62,6 +67,16 @@ const [legendasExtras, setLegendasExtras] = useState<string[]>([])
 setPreviewExtras(data.imagens || [])
 setLegendaCapa(data.legendaCapa || "")
 setLegendasExtras(data.legendas || [])
+setVideoLink(data.videoLink || "")
+setVideosAtuais(
+  data.videoArquivo
+    ? Array.isArray(data.videoArquivo)
+      ? data.videoArquivo
+      : [data.videoArquivo]
+    : []
+)
+setLegendaVideo(data.legendaVideo || "")
+setLegendasVideos(data.legendasVideos || [])
       } catch (error) {
         console.error(error)
         showToast("error", "Erro ao carregar notícia.")
@@ -102,6 +117,16 @@ const handleRemoveImage = (index: number) => {
   setLegendasExtras(prev => prev.filter((_, i) => i !== index))
 }
 
+const handleRemoveVideoAtual = (index: number) => {
+  setVideosAtuais(prev => prev.filter((_, i) => i !== index))
+  setLegendasVideos(prev => prev.filter((_, i) => i !== index))
+}
+
+const handleRemoveVideoNovo = (index: number) => {
+  setVideoFiles(prev => prev.filter((_, i) => i !== index))
+  setLegendasVideos(prev => prev.filter((_, i) => i !== index))
+}
+
   const handleSubmit = async () => {
     try {
       if (!titulo.trim() || !conteudo.trim() || conteudo === "<p></p>") {
@@ -137,6 +162,10 @@ if (imagensExtras.length > 0) {
   legendaCapa,
   imagens: imagensUrls,
   legendas: legendasExtras,
+  videoLink,
+videoArquivo: [...videosAtuais],
+legendaVideo,
+legendasVideos,
   autor: "Admin"
 })
       // 🔥 mantém na página
@@ -308,6 +337,109 @@ if (imagensExtras.length > 0) {
 
 </div>
 ))}
+  </div>
+)}
+
+
+<div className="field">
+  <label>Vídeos da matéria</label>
+
+  <input
+    type="text"
+    placeholder="Cole o link do vídeo"
+    className="input"
+    value={videoLink}
+    onChange={(e) => setVideoLink(e.target.value)}
+  />
+
+  <input
+  type="text"
+  placeholder="Legenda do vídeo"
+  className="input"
+  value={legendaVideo}
+  onChange={(e) => setLegendaVideo(e.target.value)}
+/>
+
+  <label className="uploadBox">
+    <input
+      type="file"
+      accept="video/*"
+      multiple
+      onChange={(e) => {
+        if (!e.target.files) return
+        const arquivos = Array.from(e.target.files)
+        setVideoFiles(prev => [...prev, ...arquivos])
+
+setLegendasVideos(prev => [
+  ...prev,
+  ...arquivos.map(() => "")
+])
+      }}
+    />
+    <span>
+      {videoFiles.length > 0
+        ? `${videoFiles.length} vídeos selecionados`
+        : "Selecionar vídeos"}
+    </span>
+  </label>
+</div>
+
+{videosAtuais.length > 0 && (
+  <div className="videoList">
+    {videosAtuais.map((video, index) => (
+      <div key={index} className="previewItem">
+      <div className="fileCard">
+  {decodeURIComponent(
+    video
+      .split("%2F")
+      .pop()
+      ?.split("?")[0]
+      ?.replace(/^\d+-/, "")
+      ?.replace(/_/g, " ")
+      ?.trim() || `Vídeo ${index + 1}`
+  )}
+</div>
+
+<input
+  type="text"
+  placeholder="Legenda do vídeo"
+  className="input"
+  value={legendasVideos[index] || ""}
+  onChange={(e) => {
+    const novas = [...legendasVideos]
+    novas[index] = e.target.value
+    setLegendasVideos(novas)
+  }}
+/>
+        <button
+          className="removeImageBtn"
+          type="button"
+          onClick={() => handleRemoveVideoAtual(index)}
+        >
+          <FiX size={14} />
+        </button>
+      </div>
+    ))}
+  </div>
+)}
+
+{videoFiles.length > 0 && (
+  <div className="videoList">
+    {videoFiles.map((file, index) => (
+      <div key={index} className="previewItem">
+        <div className="fileCard">
+          {file.name}
+        </div>
+
+        <button
+          className="removeImageBtn"
+          type="button"
+          onClick={() => handleRemoveVideoNovo(index)}
+        >
+          <FiX size={14} />
+        </button>
+      </div>
+    ))}
   </div>
 )}
 

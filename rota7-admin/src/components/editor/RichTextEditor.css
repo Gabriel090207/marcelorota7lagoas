@@ -1,43 +1,309 @@
 .editor {
-
   border-radius: 12px;
-
   border: 1px solid rgba(255,255,255,0.08);
-
   background: rgba(255,255,255,0.02);
-
   padding: 20px;
-
-  min-height: 250px;
+  min-height: auto;
 }
 
-/* texto */
+/* TOOLBAR */
 
-.editorContent p {
+.editorToolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 
   margin-bottom: 16px;
+  padding-bottom: 14px;
 
-  line-height: 1.7;
-
-  text-indent: 24px; /* margem da primeira palavra */
+  border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
-/* títulos */
+.editorBtn {
+  height: 38px;
+  padding: 0 14px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+
+  background: rgba(255,255,255,0.03);
+  color: var(--color-text);
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.editorBtn:hover {
+  border-color: rgba(255,122,0,0.55);
+  background: rgba(255,122,0,0.08);
+}
+
+/* CONTENT */
+
+.editorContent {
+  min-height: 80px;
+}
+
+.ProseMirror {
+  outline: none;
+  min-height: 80px;
+}
+
+/* TEXTO */
+.editorContent p,
+.ProseMirror p {
+  margin-bottom: 12px;
+  line-height: 1.7;
+  text-indent: 24px;
+}
+
+.ProseMirror img + p,
+.editorContent img + p {
+  width: 100%;
+  max-width: 320px;
+  min-height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 12px auto !important;
+  padding: 0 14px;
+
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+
+  color: #9ca3af;
+  font-size: 0.95rem;
+  font-style: normal;
+  text-align: center;
+  line-height: 1.4;
+
+  text-indent: 0 !important;
+}
+
+.ProseMirror p.editorCaptionPlaceholder,
+.editorContent p.editorCaptionPlaceholder {
+  width: 100%;
+  max-width: 320px;
+  min-height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 12px auto !important;
+  padding: 0 14px;
+
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.02);
+
+  color: transparent;
+  text-indent: 0 !important;
+  position: relative;
+}
+
+.ProseMirror p.editorCaptionPlaceholder:empty::before,
+.editorContent p.editorCaptionPlaceholder:empty::before {
+  content: "Digite a legenda da imagem";
+  color: #9ca3af;
+  font-size: 0.95rem;
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
 
 .editorContent h1,
 .editorContent h2,
 .editorContent h3 {
-
   margin-top: 20px;
   margin-bottom: 10px;
 }
 
-/* listas */
-
-.editorContent ul {
-  padding-left: 20px;
+.editorContent ul,
+.editorContent ol {
+  padding-left: 22px;
 }
 
 .editorContent li {
   margin-bottom: 6px;
+}
+
+.editorContent img,
+.ProseMirror img {
+  width: 100%;
+  max-width: 1020px;
+  height: 480px;
+  object-fit: cover;
+
+  display: block;
+  margin: 38px auto 38px auto;
+
+
+  border-radius: 14px;
+  border: 1px solid var(--color-border);
+}
+
+/* LEGENDA */
+
+.editorImageCaption,
+.editorContent .editorImageCaption,
+.ProseMirror .editorImageCaption {
+  max-width: 420px;
+  margin: 0 auto 20px auto;
+
+  font-size: 0.85rem;
+  color: #9ca3af;
+  font-style: italic;
+  line-height: 1.4;
+  text-align: center;
+  text-indent: 0 !important;
+}
+
+/* SELEÇÃO */
+
+.ProseMirror-selectednode {
+  outline: 2px solid rgba(255,122,0,0.8);
+  outline-offset: 3px;
+  border-radius: 14px;
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 768px) {
+  .editor {
+    padding: 16px;
+  }
+
+  .editorBtn span {
+    display: none;
+  }
+
+  .editorContent img,
+  .ProseMirror img,
+  .editorImageCaption {
+    max-width: 100%;
+    height: 240px;
+  }
+}
+
+
+.editorImageBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.editorImageBlock img {
+  width: 100%;
+  max-width: 320px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid var(--color-border);
+}
+.editorImageCaption {
+  width: 100%;
+  max-width: 320px;
+  min-height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto;
+  padding: 0 14px;
+
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: rgba(255,255,255,0.02);
+
+  color: #9ca3af;
+  font-size: 0.95rem;
+  font-style: normal;
+  text-align: center;
+
+  text-indent: 0 !important;
+  line-height: 1.4;
+}
+
+
+
+.editorModalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.editorModal {
+  width: 100%;
+  max-width: 420px;
+  padding: 22px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: #111;
+}
+
+.editorModal h3 {
+  margin-bottom: 16px;
+  font-size: 1.1rem;
+}
+
+.editorModalInput {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  color: white;
+  outline: none;
+}
+
+.editorModalActions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.editorModalActions .editorBtn:last-child {
+  background: var(--color-primary);
+  color: #000;
+  border-color: var(--color-primary);
+  font-weight: 600;
+}
+
+.editorModalActions .editorBtn:last-child:hover {
+  opacity: 0.9;
+  background: var(--color-primary);
+}
+
+/* LINKS DO EDITOR */
+
+.ProseMirror a,
+.editorContent a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.ProseMirror a:hover,
+.editorContent a:hover {
+  text-decoration: underline;
 }

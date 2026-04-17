@@ -113,7 +113,11 @@ def atualizar_noticia(id: str, noticia: Noticia):
     if not doc_ref.get().exists:
         return {"erro": "Notícia não encontrada"}
 
-    data = noticia.dict()
+    # pega somente campos enviados
+    data = noticia.dict(exclude_none=True)
+
+    # 🔥 nunca alterar data de criação
+    data.pop("data", None)
 
     # 🔥 atualiza slug se tiver título
     if noticia.titulo:
@@ -122,7 +126,6 @@ def atualizar_noticia(id: str, noticia: Noticia):
     doc_ref.update(data)
 
     return {"msg": "Notícia atualizada com sucesso"}
-
 
 # 🔹 DELETAR
 @router.delete("/{id}")

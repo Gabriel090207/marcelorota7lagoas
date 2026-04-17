@@ -168,6 +168,63 @@ const handleShare = () => {
         </div>
       )}
 
+  {/* VIDEOS */}
+{(noticia.videoLink || noticia.videoArquivo) && (
+  <section className="noticiaDetalhe__video">
+
+    <h3>Vídeos</h3>
+
+    {noticia.videoLink && (
+      <>
+        <div className="noticiaDetalhe__videoBox">
+          <iframe
+            src={String(noticia.videoLink)
+              .replace("watch?v=", "embed/")
+              .replace("youtu.be/", "youtube.com/embed/")}
+            title="Vídeo da notícia"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        </div>
+
+        {noticia.legendaVideo && (
+          <p className="noticiaDetalhe__videoLegenda">
+            {noticia.legendaVideo}
+          </p>
+        )}
+      </>
+    )}
+
+    {noticia.videoArquivo && (
+      <>
+        {(Array.isArray(noticia.videoArquivo)
+          ? noticia.videoArquivo
+          : [noticia.videoArquivo]
+        ).map((video: string, index: number) => (
+          <div key={index}>
+
+            <div className="noticiaDetalhe__videoBox">
+              <video controls playsInline>
+                <source src={video} />
+                Seu navegador não suporta vídeo.
+              </video>
+            </div>
+
+            {noticia.legendasVideos?.[index] && (
+              <p className="noticiaDetalhe__videoLegenda">
+                {noticia.legendasVideos[index]}
+              </p>
+            )}
+
+          </div>
+        ))}
+      </>
+    )}
+
+  </section>
+)}
+
       {/* SHARE */}
       <div className="noticiaDetalhe__share">
         <button
