@@ -157,6 +157,15 @@ export default function RichTextEditor({
         <button
           type="button"
           className="editorBtn"
+          onClick={handleRemoveImage}
+        >
+          <FiTrash2 size={16} />
+          <span>Remover Imagem</span>
+        </button>
+
+        <button
+          type="button"
+          className="editorBtn"
           onClick={handleAddLink}
         >
           <FiLink size={16} />
@@ -172,14 +181,7 @@ export default function RichTextEditor({
           <span>Remover Link</span>
         </button>
 
-        <button
-          type="button"
-          className="editorBtn"
-          onClick={handleRemoveImage}
-        >
-          <FiTrash2 size={16} />
-          <span>Remover</span>
-        </button>
+        
 
       </div>
 
