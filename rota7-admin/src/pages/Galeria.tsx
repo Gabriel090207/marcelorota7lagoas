@@ -145,34 +145,50 @@ const imagensOrdenadas = [...imagens].sort((a, b) => {
             ) : (
 
              imagensOrdenadas.map(img => (
+                  <div
+  key={img.id}
+  className="galleryCard"
+  onClick={() => setSelectedImg(img)}
+>
 
-                <div
-                  key={img.id}
-                  className="galleryCard"
-                  onClick={() => setSelectedImg(img)}
-                >
+  <img
+    src={img.url}
+    alt={img.titulo || "Imagem"}
+  />
 
-                  <img src={img.url} alt="" />
+  <div className="galleryOverlay">
 
-                  <div className="galleryOverlay">
+    <span className="galleryCategory">
+      {img.categoria}
+    </span>
 
-                    <span className="galleryCategory">
-                      {img.categoria}
-                    </span>
+    <button
+      className="iconBtn danger"
+      onClick={(e) => {
+        e.stopPropagation()
+        handleDelete(img.id)
+      }}
+    >
+      <FiTrash />
+    </button>
 
-                    <button
-                      className="iconBtn danger"
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleDelete(img.id)
-                      }}
-                    >
-                      <FiTrash />
-                    </button>
+  </div>
 
-                  </div>
+  {(img.titulo || img.subtitulo) && (
+    <div className="galleryInfo">
 
-                </div>
+      {img.titulo && (
+        <h3>{img.titulo}</h3>
+      )}
+
+      {img.subtitulo && (
+        <p>{img.subtitulo}</p>
+      )}
+
+    </div>
+  )}
+
+</div>
 
               ))
 
@@ -242,9 +258,30 @@ const imagensOrdenadas = [...imagens].sort((a, b) => {
               <FiX size={22} />
             </button>
 
-            <div className="galeriaModalContent">
-              <img src={selectedImg.url} alt="" />
-            </div>
+           <div className="galeriaModalContent">
+
+  <img
+    src={selectedImg.url}
+    alt={selectedImg.titulo || "Imagem"}
+  />
+
+  <div className="galeriaModalInfo">
+
+    {selectedImg.titulo && (
+      <h2>{selectedImg.titulo}</h2>
+    )}
+
+    {selectedImg.subtitulo && (
+      <h4>{selectedImg.subtitulo}</h4>
+    )}
+
+    {selectedImg.legenda && (
+      <p>{selectedImg.legenda}</p>
+    )}
+
+  </div>
+
+</div>
 
           </div>
         )}

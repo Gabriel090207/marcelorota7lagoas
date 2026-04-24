@@ -73,16 +73,41 @@ const imagensFiltradas =
 
               imagensFiltradas.map(img => (
 
-                <div
-                  key={img.id}
-                  className="galeriaItem"
-                  onClick={() => setSelectedImg(img)}
-                >
-                  <img src={img.url} alt="" />
-                </div>
+  <div key={img.id}>
 
-              ))
+  <div
+    className="galeriaItem"
+    onClick={() => setSelectedImg(img)}
+  >
+    <img
+      src={img.url}
+      alt={img.titulo || "Imagem"}
+    />
 
+    {(img.titulo || img.subtitulo) && (
+      <div className="galeriaItem__info">
+
+        {img.titulo && (
+          <h3>{img.titulo}</h3>
+        )}
+
+        {img.subtitulo && (
+          <p>{img.subtitulo}</p>
+        )}
+
+      </div>
+    )}
+  </div>
+
+  {img.legenda && (
+    <span className="galeriaCardLegendaOutside">
+      {img.legenda}
+    </span>
+  )}
+
+</div>
+
+))
             )}
 
           </div>
@@ -111,8 +136,31 @@ const imagensFiltradas =
          
           {/* IMAGEM */}
           <div className="galeriaModalContent">
-            <img src={selectedImg.url} alt="" />
-          </div>
+
+  <img
+    src={selectedImg.url}
+    alt={selectedImg.titulo || "Imagem"}
+  />
+
+  <div className="galeriaModalInfo">
+
+    {selectedImg.titulo && (
+      <h2>{selectedImg.titulo}</h2>
+    )}
+
+    {selectedImg.subtitulo && (
+      <h4>{selectedImg.subtitulo}</h4>
+    )}
+
+   {selectedImg.legenda && (
+  <span className="galeriaLegenda">
+    {selectedImg.legenda}
+  </span>
+)}
+
+  </div>
+
+</div>
 
         </div>
       )}

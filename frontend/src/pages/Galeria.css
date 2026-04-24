@@ -291,6 +291,7 @@
   height: 100%;
 
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 
@@ -301,9 +302,121 @@
 
 .galeriaModalContent img {
   max-width: 90%;
-  max-height: 90%;
+  max-height: 75%;
 
   border-radius: 12px;
 
   box-shadow: 0 0 40px rgba(0,0,0,0.6);
+}
+
+
+/* INFO SOBRE FOTO */
+
+.galeriaItem {
+  position: relative;
+}
+
+.galeriaItem__info {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  padding: 14px;
+
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,0.88) 0%,
+    rgba(0,0,0,0.45) 60%,
+    rgba(0,0,0,0) 100%
+  );
+}
+
+.galeriaItem__info h3 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #fff;
+}
+
+.galeriaItem__info p {
+  margin: 4px 0 0;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.8);
+}
+
+/* TEXTO MODAL */
+
+.galeriaModalInfo {
+  width: 90%;
+  max-width: 900px;
+  margin-top: 18px;
+  text-align: left;
+}
+
+.galeriaModalInfo h2 {
+  margin: 0 0 8px;
+  font-size: 1.4rem;
+  color: #fff;
+}
+
+.galeriaModalInfo h4 {
+  margin: 0 0 10px;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #d1d5db;
+}
+
+.galeriaModalInfo p {
+  margin: 0;
+  color: #9ca3af;
+  line-height: 1.6;
+  font-size: 0.95rem;
+}
+
+.galeriaModalInfo span {
+  display: block;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .galeriaModalContent {
+    padding: 20px;
+  }
+
+  .galeriaModalContent img {
+    max-width: 100%;
+    max-height: 60%;
+  }
+
+  .galeriaModalInfo {
+    width: 100%;
+  }
+
+  .galeriaModalInfo h2 {
+    font-size: 1.1rem;
+  }
+
+  .galeriaModalInfo h4 {
+    font-size: 0.95rem;
+  }
+
+  .galeriaModalInfo p {
+    font-size: 0.88rem;
+  }
+}
+
+
+
+/* LEGENDA FORA DO CARD */
+
+.galeriaCardLegendaOutside {
+  display: block;
+  margin-top: 8px;
+  padding: 0 4px;
+
+  color: #9ca3af;
+  font-size: 0.62rem;
+  font-style: italic;
+  line-height: 1.4;
 }

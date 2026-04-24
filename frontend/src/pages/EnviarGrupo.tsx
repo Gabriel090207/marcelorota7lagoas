@@ -143,17 +143,17 @@ export default function EnviarGrupo() {
           onChange={(e) => setNome(e.target.value)}
         />
 
-        <select
-          className="selectInput"
-          value={tipo}
-          onChange={(e) => setTipo(e.target.value)}
-        >
-          <option value="">Tipo</option>
-          <option>WhatsApp</option>
-          <option>Telegram</option>
-          <option>Facebook</option>
-          <option>Discord</option>
-        </select>
+       <select
+  className="selectInput"
+  value={tipo}
+  onChange={(e) => setTipo(e.target.value)}
+>
+  <option value="">Tipo</option>
+  <option>WhatsApp</option>
+  <option>Telegram</option>
+  <option>Instagram</option>
+  <option>Discord</option>
+</select>
 
         <input
           className="input"

@@ -21,6 +21,8 @@ export default function EnviarFoto() {
   const [titulo, setTitulo] = useState("")
   const [categoria, setCategoria] = useState("")
   const [file, setFile] = useState<File | null>(null)
+  const [subtitulo, setSubtitulo] = useState("")
+const [legenda, setLegenda] = useState("")
 
   const [loading, setLoading] = useState(false)
 
@@ -56,17 +58,21 @@ export default function EnviarFoto() {
         },
         body: JSON.stringify({
           tipo: "galeria",
-          titulo,
-          categoria,
-          imagem: imageUrl
+titulo,
+subtitulo,
+legenda,
+categoria,
+imagem: imageUrl
         })
       })
 
       showToast("success", "Imagem enviada para análise!")
 
       setTitulo("")
-      setCategoria("")
-      setFile(null)
+setSubtitulo("")
+setLegenda("")
+setCategoria("")
+setFile(null)
 
     } catch (error) {
       console.error(error)
@@ -105,6 +111,22 @@ export default function EnviarFoto() {
           value={titulo}
           onChange={(e) => setTitulo(e.target.value)}
         />
+
+        <input
+  type="text"
+  placeholder="Subtítulo (opcional)"
+  className="input"
+  value={subtitulo}
+  onChange={(e) => setSubtitulo(e.target.value)}
+/>
+
+<input
+  type="text"
+  placeholder="Legenda da foto (opcional)"
+  className="input"
+  value={legenda}
+  onChange={(e) => setLegenda(e.target.value)}
+/>
 
         {/* CATEGORIA */}
         <select

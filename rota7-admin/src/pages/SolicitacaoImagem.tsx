@@ -27,11 +27,13 @@ export default function SolicitacaoImagem() {
   const handleAprovar = async () => {
     try {
 
-      await createImagem({
-        titulo: data.titulo,
-        categoria: data.categoria,
-        url: data.imagem
-      })
+     await createImagem({
+  titulo: data.titulo,
+  subtitulo: data.subtitulo,
+  legenda: data.legenda,
+  categoria: data.categoria,
+  url: data.imagem
+})
 
       await fetch(`${import.meta.env.VITE_API_URL}/solicitacoes/${id}`, {
         method: "DELETE"
@@ -68,9 +70,32 @@ export default function SolicitacaoImagem() {
 
         <div className="form">
 
-          <input className="input" value={data.titulo} disabled />
-          <input className="input" value={data.categoria} disabled />
+         <input
+  className="input"
+  value={data.titulo || ""}
+  disabled
+/>
 
+<input
+  className="input"
+  value={data.subtitulo || ""}
+  disabled
+  placeholder="Sem subtítulo"
+/>
+
+<input
+  className="input"
+  value={data.legenda || ""}
+  disabled
+  placeholder="Sem legenda"
+/>
+
+<input
+  className="input"
+  value={data.categoria || ""}
+  disabled
+/>
+            
           {data.imagem && (
             <img src={data.imagem} style={{ width: "100%", borderRadius: 10 }} />
           )}

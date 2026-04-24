@@ -106,16 +106,16 @@ export default function EditarGrupo() {
           />
 
           <select
-            className="selectInput"
-            value={tipo}
-            onChange={(e) => setTipo(e.target.value)}
-          >
-            <option value="">Tipo</option>
-            <option>WhatsApp</option>
-            <option>Telegram</option>
-            <option>Facebook</option>
-            <option>Discord</option>
-          </select>
+  className="selectInput"
+  value={tipo}
+  onChange={(e) => setTipo(e.target.value)}
+>
+  <option value="">Tipo</option>
+  <option>WhatsApp</option>
+  <option>Telegram</option>
+  <option>Instagram</option>
+  <option>Discord</option>
+</select>
 
           <input
             className="input"

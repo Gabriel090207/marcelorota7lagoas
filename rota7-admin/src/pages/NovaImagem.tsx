@@ -23,6 +23,8 @@ export default function NovaImagem() {
   const [titulo, setTitulo] = useState("")
   const [categoria, setCategoria] = useState("")
   const [file, setFile] = useState<File | null>(null)
+  const [subtitulo, setSubtitulo] = useState("")
+const [legenda, setLegenda] = useState("")
 
   const [loading, setLoading] = useState(false)
 
@@ -51,16 +53,20 @@ export default function NovaImagem() {
       const imageUrl = await uploadImage(file)
 
       await createImagem({
-        titulo,
-        categoria,
-        url: imageUrl
-      })
+  titulo,
+  subtitulo,
+  legenda,
+  categoria,
+  url: imageUrl
+})
 
       showToast("success", "Imagem enviada com sucesso!")
 
-      setTitulo("")
-      setCategoria("")
-      setFile(null)
+     setTitulo("")
+setSubtitulo("")
+setLegenda("")
+setCategoria("")
+setFile(null)
 
     } catch (error) {
       console.error(error)
@@ -98,6 +104,23 @@ export default function NovaImagem() {
             value={titulo}
             onChange={(e) => setTitulo(e.target.value)}
           />
+
+
+          <input
+  type="text"
+  placeholder="Subtítulo (opcional)"
+  className="input"
+  value={subtitulo}
+  onChange={(e) => setSubtitulo(e.target.value)}
+/>
+
+<input
+  type="text"
+  placeholder="Legenda da foto (opcional)"
+  className="input"
+  value={legenda}
+  onChange={(e) => setLegenda(e.target.value)}
+/>
 
           {/* CATEGORIA */}
           <select
