@@ -1,8 +1,14 @@
 import "./BlogDetalhe.css"
 import { useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { FiArrowLeft, FiX, FiShare2 } from "react-icons/fi"
-import { FiTrash } from "react-icons/fi"
+import {
+  FiArrowLeft,
+  FiX,
+  FiShare2,
+  FiTrash,
+  FiCheckCircle,
+  FiAlertCircle
+} from "react-icons/fi"
 import { getBlogBySlug, getComentariosByBlog } from "../services/api"
 import { createComentario } from "../services/api"
 
@@ -27,7 +33,8 @@ const [user, setUser] = useState<any>(null)
   const [blog, setBlog] = useState<any>(null)
   const [selectedImg, setSelectedImg] = useState<string | null>(null)
   const [toastOpen, setToastOpen] = useState(false)
-  const [toastMessage, setToastMessage] = useState("")
+const [toastType, setToastType] = useState<"success" | "error">("success")
+const [toastMessage, setToastMessage] = useState("")
 
 const handleShare = () => {
 
@@ -70,7 +77,7 @@ const handleComentar = async () => {
 
   try {
     const res = await createComentario({
-      blogId: blog.id || blog.slug,
+      blogId: blog.slug || blog.id,
       userId: user.id,
       nome: user.nome,
       comentario: novoComentario
@@ -84,7 +91,7 @@ const handleComentar = async () => {
     }
 
     setNovoComentario("")
-showToast("Comentário enviado para aprovação.")
+showToast("success", "Comentário enviado para aprovação.")
 
   } catch (err) {
     console.error("ERRO AO ENVIAR:", err)
@@ -103,7 +110,7 @@ useEffect(() => {
   getBlogBySlug(slug)
     .then((data) => {
       setBlog(data)
-      return getComentariosByBlog(data.id || data.slug)
+      return getComentariosByBlog(data.slug || data.id)
     })
     .then(setComentarios)
     .catch(console.error)
@@ -146,7 +153,11 @@ useEffect(() => {
 
   
 
-const showToast = (message: string) => {
+const showToast = (
+  type: "success" | "error",
+  message: string
+) => {
+  setToastType(type)
   setToastMessage(message)
   setToastOpen(true)
 
@@ -158,11 +169,28 @@ const showToast = (message: string) => {
   return (
     <main className="blogDetalhe">
 
-      {toastOpen && (
-  <div className="blogToast">
-    {toastMessage}
+      <div className={`adminToast adminToast--${toastType} ${toastOpen ? "show" : ""}`}>
+  <div className="adminToast__icon">
+    {toastType === "success"
+      ? <FiCheckCircle size={18} />
+      : <FiAlertCircle size={18} />}
   </div>
-)}
+
+  <div className="adminToast__content">
+    <strong>
+      {toastType === "success" ? "Sucesso" : "Atenção"}
+    </strong>
+    <span>{toastMessage}</span>
+  </div>
+
+  <button
+    className="adminToast__close"
+    onClick={() => setToastOpen(false)}
+    type="button"
+  >
+    <FiX size={18} />
+  </button>
+</div>
 
  <Helmet>
   <title>{blog.titulo}</title>

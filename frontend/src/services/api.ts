@@ -34,7 +34,10 @@ export const getDicaById = async (id: string) => {
   return res.json()
 }
 
-
+export const getDicaBySlug = async (slug: string) => {
+  const res = await fetch(`${API_URL}/dicas/${slug}`)
+  return res.json()
+}
 
 export async function getEventos() {
   const res = await fetch(`${import.meta.env.VITE_API_URL}/eventos`)

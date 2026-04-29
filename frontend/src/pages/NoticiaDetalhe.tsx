@@ -1,12 +1,23 @@
 import "./NoticiaDetalhe.css"
 import { useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
-import { getNoticiaBySlug } from "../services/api"
+import {
+  getNoticiaBySlug,
+  getComentariosByBlog,
+  createComentario
+} from "../services/api"
 
-import { FiArrowLeft, FiX, FiShare2 } from "react-icons/fi"
+import {
+  FiArrowLeft,
+  FiX,
+  FiShare2,
+  FiTrash
+} from "react-icons/fi"
 import { useNavigate } from "react-router-dom"
 
 import { Helmet } from "react-helmet-async"
+
+import ConfirmModal from "../components/ConfirmModal/ConfirmModal"
 
 export default function NoticiaDetalhe() {
 
@@ -14,8 +25,19 @@ export default function NoticiaDetalhe() {
 
   const { slug } = useParams()
   const [noticia, setNoticia] = useState<any>(null)
-  const [selectedImg, setSelectedImg] = useState<string | null>(null)
+const [selectedImg, setSelectedImg] = useState<string | null>(null)
 
+const [comentarios, setComentarios] = useState<any[]>([])
+const [novoComentario, setNovoComentario] = useState("")
+const [showAllComentarios, setShowAllComentarios] = useState(false)
+const [modalOpen, setModalOpen] = useState(false)
+const [selectedComentario, setSelectedComentario] = useState<string | null>(null)
+const [user, setUser] = useState<any>(null)
+
+
+const [toastOpen, setToastOpen] = useState(false)
+const [toastType, setToastType] = useState<"success" | "error">("success")
+const [toastMessage, setToastMessage] = useState("")
 
 const handleShare = () => {
 
@@ -36,22 +58,121 @@ const handleShare = () => {
   window.open(whatsappUrl, "_blank")
 }
 
-  // 🔥 BUSCA POR SLUG
-  useEffect(() => {
-    if (slug) {
-      getNoticiaBySlug(slug).then((data) => {
-        console.log("IMAGEM:", data.imagem)
-        setNoticia(data)
-      })
+
+const showToast = (
+  type: "success" | "error",
+  message: string
+) => {
+  setToastType(type)
+  setToastMessage(message)
+  setToastOpen(true)
+
+  setTimeout(() => {
+    setToastOpen(false)
+  }, 3000)
+}
+
+
+const handleComentar = async () => {
+  const user = JSON.parse(localStorage.getItem("portalUser") || "null")
+
+  if (!user) {
+    window.dispatchEvent(new Event("openLoginModal"))
+    return
+  }
+
+  if (!novoComentario.trim()) return
+
+  try {
+    const res = await createComentario({
+      blogId: noticia.id || noticia.slug,
+      userId: user.id,
+      nome: user.nome,
+      comentario: novoComentario
+    })
+
+    if (!res || res.erro) {
+      showToast("error", "Erro ao enviar comentário.")
+      return
     }
-  }, [slug])
+
+    setNovoComentario("")
+    showToast("success", "Comentário enviado para aprovação.")
+
+  } catch (err) {
+    console.error(err)
+    showToast("error", "Erro ao enviar comentário.")
+  }
+}
+
+  // 🔥 BUSCA POR SLUG
+ useEffect(() => {
+  if (slug) {
+    getNoticiaBySlug(slug).then((data) => {
+      setNoticia(data)
+
+      getComentariosByBlog(data.id || data.slug)
+        .then(setComentarios)
+        .catch(console.error)
+    })
+  }
+
+  const storedUser = JSON.parse(localStorage.getItem("portalUser") || "null")
+setUser(storedUser)
+
+const handleLogin = () => {
+  const updatedUser = JSON.parse(localStorage.getItem("portalUser") || "null")
+  setUser(updatedUser)
+}
+
+window.addEventListener("loginSuccess", handleLogin)
+
+return () => {
+  window.removeEventListener("loginSuccess", handleLogin)
+}
+
+}, [slug])
 
   if (!noticia) {
     return <p style={{ padding: 40 }}>Carregando...</p>
   }
 
+
+  const handleDeleteComentario = async () => {
+  if (!selectedComentario) return
+
+  try {
+    await fetch(
+      `${import.meta.env.VITE_API_URL}/comentarios/${selectedComentario}`,
+      { method: "DELETE" }
+    )
+
+    setComentarios(prev =>
+      prev.filter(c => c.id !== selectedComentario)
+    )
+
+    setModalOpen(false)
+
+    showToast("success", "Comentário removido.")
+
+  } catch (err) {
+    console.error(err)
+    showToast("error", "Erro ao remover comentário.")
+  }
+}
+
   return (
     <main className="noticiaDetalhe">
+      
+
+      <div className={`adminToast adminToast--${toastType} ${toastOpen ? "show" : ""}`}>
+  <div className="adminToast__content">
+    <strong>
+      {toastType === "success" ? "Sucesso" : "Atenção"}
+    </strong>
+    <span>{toastMessage}</span>
+  </div>
+</div>
 
       <Helmet>
         <title>{noticia.titulo}</title>
@@ -169,7 +290,17 @@ const handleShare = () => {
       )}
 
   {/* VIDEOS */}
-{(noticia.videoLink || noticia.videoArquivo) && (
+{(
+  (noticia.videoLink && String(noticia.videoLink).trim() !== "") ||
+  (
+    noticia.videoArquivo &&
+    (
+      Array.isArray(noticia.videoArquivo)
+        ? noticia.videoArquivo.length > 0
+        : String(noticia.videoArquivo).trim() !== ""
+    )
+  )
+) && (
   <section className="noticiaDetalhe__video">
 
     <h3>Vídeos</h3>
@@ -225,6 +356,85 @@ const handleShare = () => {
   </section>
 )}
 
+<section className="comentarios">
+
+  <h3>{comentarios.length} Comentários</h3>
+
+  <div className="comentarioInput">
+    <input
+      placeholder="Escreva um comentário..."
+      value={novoComentario}
+      onChange={(e) => setNovoComentario(e.target.value)}
+    />
+
+    <button onClick={handleComentar}>
+      Comentar
+    </button>
+  </div>
+
+  <div className="comentariosLista">
+
+    {(showAllComentarios
+  ? comentarios
+  : comentarios.slice(0, 3)
+).map((c) => {
+  const isOwner = user && user.id === c.userId
+
+  return (
+    <div key={c.id} className="comentarioItem">
+
+      <div className="comentarioAvatar">
+        {c.nome?.substring(0, 2).toUpperCase()}
+      </div>
+
+      <div className="comentarioConteudo">
+
+        <div className="comentarioHeader">
+
+          <span className="comentarioNome">
+            {c.nome}
+          </span>
+
+          {isOwner && (
+            <button
+              className="comentarioDelete"
+              onClick={() => {
+                setSelectedComentario(c.id)
+                setModalOpen(true)
+              }}
+            >
+              <FiTrash size={12} />
+            </button>
+          )}
+
+        </div>
+
+        <p>{c.comentario}</p>
+
+      </div>
+
+    </div>
+  )
+})}
+
+  </div>
+
+  {comentarios.length > 3 && (
+    <div className="comentariosToggle">
+      <button
+        onClick={() =>
+          setShowAllComentarios(!showAllComentarios)
+        }
+      >
+        {showAllComentarios
+          ? "Ocultar comentários"
+          : `Ver todos (${comentarios.length})`}
+      </button>
+    </div>
+  )}
+
+</section>
+
       {/* SHARE */}
       <div className="noticiaDetalhe__share">
         <button
@@ -235,6 +445,14 @@ const handleShare = () => {
           <span>Compartilhar</span>
         </button>
       </div>
+
+      <ConfirmModal
+  open={modalOpen}
+  title="Excluir comentário"
+  message="Tem certeza que deseja excluir este comentário?"
+  onConfirm={handleDeleteComentario}
+  onCancel={() => setModalOpen(false)}
+/>
 
     </main>
   )
