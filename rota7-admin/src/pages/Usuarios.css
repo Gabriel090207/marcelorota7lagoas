@@ -2,6 +2,7 @@
   padding: 40px;
 }
 
+/* HEADER */
 .adminPage__header {
   display: flex;
   justify-content: space-between;
@@ -17,17 +18,16 @@
   color: var(--color-text-secondary);
 }
 
-/* TABELA USUÁRIOS */
-
-.usersTable {
+/* TABELA */
+.adminTable {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.usersTable__row {
+.adminTable__rowUsers {
   display: grid;
-  grid-template-columns: 1fr 420px 170px;
+  grid-template-columns: 1fr 350px 60px;
   align-items: center;
 
   padding: 18px;
@@ -39,40 +39,117 @@
   transition: 0.25s;
 }
 
-.usersTable__row:hover {
-  transform: translateY(-2px);
+.adminTable__row:hover {
   border-color: rgba(255,122,0,0.5);
 }
 
-.usersTable__name {
+.adminTable__title {
   font-weight: 500;
 }
 
-.usersTable__email {
-  text-align: left;
-  white-space: nowrap;
-  color: var(--color-text-secondary);
-}
-
-.usersTable__phone {
-  text-align: right;
-  white-space: nowrap;
+.adminTable__category {
+  font-size: 0.9rem;
   color: var(--color-primary);
+
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: unset;
 }
 
+/* AÇÕES */
+.adminTable__actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.iconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  border-radius: 8px;
+
+  background: rgba(255,255,255,0.05);
+  color: var(--color-text);
+
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.iconBtn:hover {
+  background: rgba(255,122,0,0.2);
+}
+
+.iconBtn.danger:hover {
+  background: rgba(239,68,68,0.2);
+  color: #ef4444;
+}
+
+/* TOAST */
+.adminToast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-24px);
+
+  z-index: 9999;
+
+  min-width: 320px;
+  max-width: 420px;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(12,12,12,0.96);
+
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s ease;
+}
+
+.adminToast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+
+.adminToast--success {
+  border-color: rgba(255,140,0,0.45);
+}
+
+.adminToast--error {
+  border-color: rgba(239,68,68,0.35);
+}
+
+.adminToast__content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.adminToast__close {
+  background: transparent;
+  border: none;
+  color: #aaa;
+  cursor: pointer;
+}
+
+/* MOBILE */
 @media (max-width: 768px) {
-  .usersTable__row {
+  .adminTable__row {
     grid-template-columns: 1fr;
-    gap: 8px;
-    text-align: left;
+    gap: 10px;
   }
 
-  .usersTable__email {
-    text-align: left;
-    white-space: normal;
-  }
-
-  .usersTable__phone {
-    text-align: left;
+  .adminTable__actions {
+    justify-content: flex-start;
   }
 }

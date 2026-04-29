@@ -19,6 +19,11 @@ def get_users():
 
     return users
 
+@router.delete("/users/{user_id}")
+def delete_user(user_id: str):
+    db.collection("users").document(user_id).delete()
+    return {"message": "Usuário removido com sucesso"}
+
 # 🔐 REGISTRAR
 @router.post("/register")
 def register(user: User):

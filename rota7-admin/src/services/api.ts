@@ -342,3 +342,11 @@ export const getUsers = async () => {
   const res = await fetch(`${API_URL}/auth/users`)
   return res.json()
 }
+
+export const deleteUser = async (id: string) => {
+  const res = await fetch(`${API_URL}/auth/users/${id}`, {
+    method: "DELETE"
+  })
+
+  return res.json()
+}
