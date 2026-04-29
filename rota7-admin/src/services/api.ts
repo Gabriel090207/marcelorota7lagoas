@@ -335,3 +335,10 @@ export const deleteBlog = async (id: string) => {
 
   return res.json()
 }
+
+
+// 🔥 USUÁRIOS
+export const getUsers = async () => {
+  const res = await fetch(`${API_URL}/auth/users`)
+  return res.json()
+}

@@ -7,10 +7,11 @@ import {
   FiTool,
   FiCalendar,
   FiUsers,
+  FiUser,
   FiImage,
   FiLayers,
   FiTag,
-  FiBookOpen
+  FiBookOpen,
 } from "react-icons/fi"
 
 export default function AdminSidebar({ menuOpen, closeMenu }: any) {
@@ -29,6 +30,17 @@ export default function AdminSidebar({ menuOpen, closeMenu }: any) {
           <FiGrid className="sidebarIcon" />
           <span>Dashboard</span>
         </NavLink>
+
+        <NavLink
+  to="/usuarios"
+  className={({ isActive }) =>
+    `sidebarItem ${isActive ? "active" : ""}`
+  }
+  onClick={closeMenu}
+>
+  <FiUser className="sidebarIcon" />
+  <span>Usuários</span>
+</NavLink>
 
         <NavLink
           to="/noticias"

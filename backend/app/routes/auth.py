@@ -5,6 +5,20 @@ from app.services.firebase import db
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
 
+# 🔥 LISTAR USUÁRIOS
+@router.get("/users")
+def get_users():
+    users_ref = db.collection("users").stream()
+
+    users = []
+
+    for doc in users_ref:
+        data = doc.to_dict()
+        data["id"] = doc.id
+        users.append(data)
+
+    return users
+
 # 🔐 REGISTRAR
 @router.post("/register")
 def register(user: User):
