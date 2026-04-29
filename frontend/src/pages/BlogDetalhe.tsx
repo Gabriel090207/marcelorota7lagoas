@@ -26,7 +26,8 @@ const [user, setUser] = useState<any>(null)
 
   const [blog, setBlog] = useState<any>(null)
   const [selectedImg, setSelectedImg] = useState<string | null>(null)
-
+  const [toastOpen, setToastOpen] = useState(false)
+  const [toastMessage, setToastMessage] = useState("")
 
 const handleShare = () => {
 
@@ -82,8 +83,8 @@ const handleComentar = async () => {
       return
     }
 
-    setComentarios(prev => [res, ...prev])
     setNovoComentario("")
+showToast("Comentário enviado para aprovação.")
 
   } catch (err) {
     console.error("ERRO AO ENVIAR:", err)
@@ -145,8 +146,24 @@ useEffect(() => {
 
   
 
+const showToast = (message: string) => {
+  setToastMessage(message)
+  setToastOpen(true)
+
+  setTimeout(() => {
+    setToastOpen(false)
+  }, 3000)
+}
+
   return (
     <main className="blogDetalhe">
+
+      {toastOpen && (
+  <div className="blogToast">
+    {toastMessage}
+  </div>
+)}
+
  <Helmet>
   <title>{blog.titulo}</title>
 

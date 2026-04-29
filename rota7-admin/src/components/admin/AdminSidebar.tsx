@@ -12,6 +12,7 @@ import {
   FiLayers,
   FiTag,
   FiBookOpen,
+  FiMessageCircle,
 } from "react-icons/fi"
 
 export default function AdminSidebar({ menuOpen, closeMenu }: any) {
@@ -42,6 +43,17 @@ export default function AdminSidebar({ menuOpen, closeMenu }: any) {
   <span>Usuários</span>
 </NavLink>
 
+<NavLink
+  to="/comentarios"
+  className={({ isActive }) =>
+    `sidebarItem ${isActive ? "active" : ""}`
+  }
+  onClick={closeMenu}
+>
+  <FiMessageCircle className="sidebarIcon" />
+  <span>Comentários</span>
+</NavLink>
+
         <NavLink
           to="/noticias"
           className={({ isActive }) =>
@@ -63,6 +75,8 @@ export default function AdminSidebar({ menuOpen, closeMenu }: any) {
   <FiBookOpen className="sidebarIcon" />
   <span>Blog</span>
 </NavLink>
+
+
 
         <NavLink
           to="/dicas"

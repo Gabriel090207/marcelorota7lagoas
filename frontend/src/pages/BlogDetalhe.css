@@ -485,3 +485,23 @@
   justify-content: space-between; /* 🔥 empurra pro canto direito */
   align-items: center;
 }
+
+
+.blogToast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+
+  padding: 14px 18px;
+  border-radius: 14px;
+
+  background: rgba(15,15,15,0.96);
+  border: 1px solid rgba(255,122,0,0.45);
+
+  color: #fff;
+  font-size: 0.95rem;
+
+  box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+}

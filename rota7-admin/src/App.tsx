@@ -6,6 +6,7 @@ import PrivateRoute from "./components/PrivateRoute"
 // ================= DASHBOARD =================
 import Dashboard from "./pages/Dashboard"
 import Usuarios from "./pages/Usuarios"
+import Comentarios from "./pages/Comentarios"
 
 // ================= CONTEÚDO =================
 import Noticias from "./pages/Noticias"
@@ -75,6 +76,15 @@ function App() {
       <Usuarios />
     </PrivateRoute>
   } 
+/>
+
+<Route
+  path="/comentarios"
+  element={
+    <PrivateRoute>
+      <Comentarios />
+    </PrivateRoute>
+  }
 />
 
         {/* ================= NOTÍCIAS ================= */}

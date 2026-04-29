@@ -350,3 +350,29 @@ export const deleteUser = async (id: string) => {
 
   return res.json()
 }
+
+
+// =======================
+// COMENTÁRIOS ADMIN
+// =======================
+
+export const getComentariosPendentes = async () => {
+  const res = await fetch(`${API_URL}/comentarios`)
+  return res.json()
+}
+
+export const aprovarComentario = async (id: string) => {
+  const res = await fetch(`${API_URL}/comentarios/${id}/aprovar`, {
+    method: "PUT"
+  })
+
+  return res.json()
+}
+
+export const rejeitarComentario = async (id: string) => {
+  const res = await fetch(`${API_URL}/comentarios/${id}/rejeitar`, {
+    method: "PUT"
+  })
+
+  return res.json()
+}
